@@ -6,8 +6,8 @@ Feature: CMS Component: Section Widget
         Background:
             Given I navigate to ITG test environment
              When I enter 'autouser' and '1Qwertasdf' on Login Page
-              # And I click on Login Button with 'valid' Credentials
-              # And I click on 'Editing mode' toggle Button
+              And I click on Login Button with 'valid' Credentials
+              And I click on 'Editing mode' toggle button
 
         @PreRequisite
         Scenario: Create a Section Widget
