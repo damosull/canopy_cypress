@@ -5,7 +5,7 @@ import LoginPage from '../../support/PageObjects/LoginPage';
 const loginPage = new LoginPage();
 
 Given('I navigate to ITG test environment', () => {
-    cy.visit('https://cloud-automation-eu.itgcanopy.com/itg');
+    cy.visit('https://itg.staging.itgcanopy.com/');
 });
 
 When('I enter {string} and {string} on Login Page', (username, password) => {

@@ -1,11 +1,11 @@
 class LoginPage {
 
     getUsernameInput() {
-        return cy.get(`[data-test-id="field-login"]`).first()
+        return cy.get(`[formcontrolname="email"]`)
     }
 
     getPasswordInput() {
-        return cy.get(`[data-test-id="field-password"]`).first()
+        return cy.get(`[formcontrolname="password"]`)
     }
 }
 
