@@ -42,7 +42,7 @@ And('I click on clear layout Button', () => {
 });
 
 And('I create a Section Widget by API', () => {
-    
+
     // const command: any = `curl --location --request POST '${process.env.BASE_URL}${process.env.API_KEY}/com.intrepia.luma.SaveSiteMenuPage' \
     // --header 'Content-Type: application/json' \
     // --data-raw '{"menuID":"3","page":{"name":"3","fragments":[{"widget":"section","metadata":{"width":100,"alignment":"center","spacing":{"top":0,"right":0,"bottom":0,"left":0},"title":"Section","columns":[{"size":1,"alignment":"start","items":0}]},"fragments":[]}]}}'`;
@@ -55,4 +55,47 @@ And('I create a Section Widget by API', () => {
     // let resp: any = await child_process.execSync(command);
     // let result: any = await resp.toString('UTF8');
     // return JSON.parse(result);
+
+    cy.request({
+        method: 'POST',
+        url: 'https://cloud-automation-eu.itgcanopy.com/itg/servlet/api/v1/',
+        body: {
+            "menuID": "3",
+            "page": {
+                "name": "3",
+                "fragments": [
+                    {
+                        "widget": "section",
+                        "metadata": {
+                            "width": 100,
+                            "alignment": "center",
+                            "spacing": {
+                                "top": 0,
+                                "right": 0,
+                                "bottom": 0,
+                                "left": 0
+                            },
+                            "title": "Section",
+                            "columns": [
+                                {
+                                    "size": 1,
+                                    "alignment": "start",
+                                    "items": 0
+                                }
+                            ]
+                        },
+                        "fragments": [
+
+                        ]
+                    }
+                ]
+            }
+        },
+        headers: {
+            'x-api-key': 'dc8QF66HOSMaPGUZFx1vEaC90vpuJgUm',
+        }
+    }).then(resp => {
+        // expect(resp.status).to.eq(201);
+        // expect(resp.body).to.have.property('title', 'My Post Title')
+    })
 });

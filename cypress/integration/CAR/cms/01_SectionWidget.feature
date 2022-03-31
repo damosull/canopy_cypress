@@ -12,3 +12,4 @@ Feature: CMS Component: Section Widget
         @PreRequisite
         Scenario: Create a Section Widget
               And I click on clear layout Button
+              And I create a Section Widget by API
