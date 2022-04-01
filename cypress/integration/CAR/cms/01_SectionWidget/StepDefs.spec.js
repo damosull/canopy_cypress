@@ -1,6 +1,7 @@
 import { Given, When, Then } from 'cypress-cucumber-preprocessor/steps';
 import LoginPage from '../../../../support/PageObjects/LoginPage';
 import HomePage from '../../../../support/PageObjects/HomePage';
+import '@4tw/cypress-drag-drop';
 
 const loginPage = new LoginPage();
 const homePage = new HomePage();
@@ -41,61 +42,31 @@ And('I click on clear layout Button', () => {
     homePage.getClearLayoutButton().click()
 });
 
-And('I create a Section Widget by API', () => {
+And('I create a {string} Widget', (widget) => {
 
-    // const command: any = `curl --location --request POST '${process.env.BASE_URL}${process.env.API_KEY}/com.intrepia.luma.SaveSiteMenuPage' \
-    // --header 'Content-Type: application/json' \
-    // --data-raw '{"menuID":"3","page":{"name":"3","fragments":[{"widget":"section","metadata":{"width":100,"alignment":"center","spacing":{"top":0,"right":0,"bottom":0,"left":0},"title":"Section","columns":[{"size":1,"alignment":"start","items":0}]},"fragments":[]}]}}'`;
-    // return await CurlRequests.curlRequest(command).catch(
-    //   (error: any) => {
-    //     return error;
-    //   },
-    // );
-    // 
-    // let resp: any = await child_process.execSync(command);
-    // let result: any = await resp.toString('UTF8');
-    // return JSON.parse(result);
+  var value;
 
-    cy.request({
-        method: 'POST',
-        url: 'https://cloud-automation-eu.itgcanopy.com/itg/servlet/api/v1/',
-        body: {
-            "menuID": "3",
-            "page": {
-                "name": "3",
-                "fragments": [
-                    {
-                        "widget": "section",
-                        "metadata": {
-                            "width": 100,
-                            "alignment": "center",
-                            "spacing": {
-                                "top": 0,
-                                "right": 0,
-                                "bottom": 0,
-                                "left": 0
-                            },
-                            "title": "Section",
-                            "columns": [
-                                {
-                                    "size": 1,
-                                    "alignment": "start",
-                                    "items": 0
-                                }
-                            ]
-                        },
-                        "fragments": [
+  switch (widget) {
+  case 'Section':
+    value = '0';
+    break;
+  case 'Heading':
+    value = '1';
+    break;
+  case 'Image':
+    value = '2';
+    break;
+  case 'WYSIWYG':
+    value = '3';
+    break;
+  case 'Resource List':
+    value = '4';
+    break;
+  case 'Button':
+    value = '5';
+    break;
+  }
 
-                        ]
-                    }
-                ]
-            }
-        },
-        headers: {
-            'x-api-key': 'dc8QF66HOSMaPGUZFx1vEaC90vpuJgUm',
-        }
-    }).then(resp => {
-        // expect(resp.status).to.eq(201);
-        // expect(resp.body).to.have.property('title', 'My Post Title')
-    })
+  cy.get('.ItgToolbarWidget-container').eq(value).drag('.ItgSectionWidget-column');
+  cy.contains('Editing '+widget).should('be.visible');
 });

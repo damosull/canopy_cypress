@@ -1,7 +1,6 @@
 @test
 Feature: CMS Component: Section Widget
-
-              Description : Feature covers all the Section widget Configurations
+Feature covers all the Section widget Configurations
 
         Background:
             Given I navigate to ITG test environment
@@ -12,4 +11,4 @@ Feature: CMS Component: Section Widget
         @PreRequisite
         Scenario: Create a Section Widget
               And I click on clear layout Button
-              And I create a Section Widget by API
+              And I create a 'Section' Widget

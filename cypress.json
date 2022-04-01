@@ -1,4 +1,5 @@
 {
-    "baseUrl": "https://cloud-automation-eu.itgcanopy.com/itg",
-    "testFiles": "**/*.feature"
+    "baseUrl": "https://itg.staging.itgcanopy.com/",
+    "testFiles": "**/*.feature",
+    "defaultCommandTimeout": 10000
 }
