@@ -28,9 +28,24 @@ class HomePage {
     return cy.get('.ItgCmsPage-widgetSettings');
   }
 
-
   getEditingSectionPanelHeader () {
     return cy.get('.ItgWidgetSettings-header');
+  }
+
+  getActiveWidgetTitle () {
+    return cy.get('.ItgActiveWidget-title');
+  }
+
+  getActiveWidget () {
+    return cy.get('itg-active-widget[class*="is-active"]');
+  }
+
+  getConfigWidth () {
+    return cy.get('.ItgWidgetSettings-widthField > .ItgWidgetSettings-inputContainer > .mat-slider');
+  }
+
+  getWidgets () {
+    return cy.get('.ItgActiveWidget');
   }
 }
 

@@ -1,6 +1,6 @@
 import { Given, When, And, Then } from 'cypress-cucumber-preprocessor/steps';
-import LoginPage from '../../../../support/PageObjects/LoginPage';
-import HomePage from '../../../../support/PageObjects/HomePage';
+import LoginPage from '../PageObjects/LoginPage';
+import HomePage from '../PageObjects/HomePage';
 import '@4tw/cypress-drag-drop';
 
 const loginPage = new LoginPage();
@@ -88,21 +88,20 @@ And('I click on widget Settings Button', () => {
   homePage.getWidgetSettingsBtn().click();
 });
 
-And('I see Widget Settings Panel is shown with header {string}', () => {
-  homePage.getWidgetSettingsBtn().click();
+And('I see Widget Settings Panel is shown with header {string}', (text) => {
+  homePage.getActiveWidgetTitle().should('have.text', text);
 });
 
-And('I update {string}', (title) => {
+And('I update {string} widget title with {string}', (title, text) => {
   var value;
 
   switch (title) {
-  case 'Section widget title':
+  case 'Section':
     value = 'title';
     break;
   }
 
-  cy.get(`[formcontrolname="${value}"]`).type('asdf');
-
+  cy.get(`[formcontrolname="${value}"]`).clear().type(text);
 });
 
 // Probably a better way to write this step, we'll need to refactor. Did this to speed up completing the feature
@@ -119,6 +118,58 @@ And('Right hand panel is shown', () => {
   homePage.getEditingSectionPanel().should('be.visible');
 });
 
+And('Config panel is collapsed', () => {
+  homePage.getEditingSectionPanel().should('not.be.visible');
+});
+
 And('Right hand panel is titled {string}', (widgetHeader) => {
   homePage.getEditingSectionPanelHeader().should('have.text', widgetHeader);
+});
+
+And('Widget is removed', () => {
+  homePage.getActiveWidgetTitle().should('not.be.visible');
+});
+
+And('I select {string} widget Alignment on Config Panel', (alignment) => {
+  cy.get('[aria-label="'+alignment+'"]').click();
+});
+
+And('I set the widget Width on Config Panel', () => {
+
+  const currentValue  = 100;
+  const targetValue = 70;
+  const increment = 1;
+  const steps = (currentValue - targetValue) / increment;
+  const arrows = '{leftarrow}'.repeat(steps);
+
+  homePage.getConfigWidth().should('have.attr', 'aria-valuenow', currentValue).type(arrows);
+
+  homePage.getConfigWidth().should('have.attr', 'aria-valuenow', 20);
+});
+
+And('Widget is aligned to {string}', (alignment) => {
+  if (alignment === 'Left') {
+    alignment = 'margin: 0px;';
+  } else if (alignment === 'Center') {
+    alignment = 'margin: 0px auto;';
+  } else if (alignment === 'Right') {
+    alignment = '0px 0px 0px auto;';
+  }
+
+  homePage.getActiveWidget().should('have.attr', 'style')
+    .and('contain', alignment);
+});
+
+And('Widget width is adjusted as per the config', () => {
+  homePage.getActiveWidget().should('have.attr', 'style')
+    .and('contain', 'width: 20%;');
+});
+
+And('All widgets are cleared', () => {
+  homePage.getWidgets().should('have.length', 1);
+});
+
+And('Widget being edited is highlighted', () => {
+  homePage.getActiveWidget().should('have.attr', 'class')
+    .and('contain', 'is-active');
 });
