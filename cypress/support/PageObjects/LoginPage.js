@@ -1,20 +1,20 @@
 class LoginPage {
 
-    getUsernameInput() {
-        return cy.get('[formcontrolname="email"]')
-    }
+  getUsernameInput () {
+    return cy.get('[formcontrolname="email"]');
+  }
 
-    getPasswordInput() {
-        return cy.get('[formcontrolname="password"]')
-    }
+  getPasswordInput () {
+    return cy.get('[formcontrolname="password"]');
+  }
 
-    getLoginButton() {
-        return cy.get('button[type="submit"]')
-    }
+  getLoginButton () {
+    return cy.get('button[type="submit"]');
+  }
 
-    getLogoutButton() {
-        return cy.get('.ItgToolbar-signOut')
-    }
+  getLogoutButton () {
+    return cy.get('.ItgToolbar-signOut');
+  }
 }
 
 export default LoginPage;

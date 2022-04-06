@@ -10,9 +10,18 @@
   "license": "ISC",
   "dependencies": {
     "@4tw/cypress-drag-drop": "^2.1.0",
-    "cypress": "^9.5.3"
-  },
-  "devDependencies": {
+    "cypress": "^9.5.3",
+    "@babel/core": "^7.16.0",
+    "@babel/eslint-parser": "^7.16.3",
+    "@cucumber/cucumber": "^8.0.0-rc.1",
+    "@types/cypress-cucumber-preprocessor": "^4.0.1",
+    "chalk": "^4.1.2",
+    "cucumber": "^7.0.0-rc.0",
+    "eslint": "^8.9.0",
+    "eslint-plugin-cypress": "^2.12.1",
+    "eslint-plugin-jsonc": "^2.2.1",
+    "eslint-plugin-md": "^1.0.19",
+    "fs-extra": "^10.0.0",
     "cypress-cucumber-preprocessor": "^4.3.1"
   },
   "cypress-cucumber-preprocessor": {
