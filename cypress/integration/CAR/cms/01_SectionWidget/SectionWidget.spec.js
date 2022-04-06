@@ -1,6 +1,6 @@
-import { Given, When, And } from 'cypress-cucumber-preprocessor/steps';
-import LoginPage from '../PageObjects/LoginPage';
-import HomePage from '../PageObjects/HomePage';
+import { Given, When, And, Then } from 'cypress-cucumber-preprocessor/steps';
+import LoginPage from '../../../../support/PageObjects/LoginPage';
+import HomePage from '../../../../support/PageObjects/HomePage';
 import '@4tw/cypress-drag-drop';
 
 const loginPage = new LoginPage();
@@ -65,7 +65,7 @@ And('I create a {string} Widget', (widget) => {
   }
 
   cy.get('.ItgToolbarWidget-container').eq(value).drag('.ItgSectionWidget-column');
-  cy.contains('Editing '+widget).should('be.visible');
+  cy.contains('Editing ' + widget).should('be.visible');
 });
 
 And('Left hand panel is shown', () => {
@@ -90,4 +90,35 @@ And('I click on widget Settings Button', () => {
 
 And('I see Widget Settings Panel is shown with header {string}', () => {
   homePage.getWidgetSettingsBtn().click();
+});
+
+And('I update {string}', (title) => {
+  var value;
+
+  switch (title) {
+  case 'Section widget title':
+    value = 'title';
+    break;
+  }
+
+  cy.get(`[formcontrolname="${value}"]`).type('asdf');
+
+});
+
+// Probably a better way to write this step, we'll need to refactor. Did this to speed up completing the feature
+Then('{string} widget title is reset', (title) => {
+  cy.get(':nth-child(1) > .ItgActiveWidget > .ItgActiveWidget-container > .ItgActiveWidget-header > .ItgActiveWidget-title').should('have.text', title);
+});
+// Probably a better way to write this step, we'll need to refactor. Did this to speed up completing the feature
+Then('{string} widget title is not reset', (title) => {
+  cy.get(':nth-child(1) > .ItgActiveWidget > .ItgActiveWidget-container > .ItgActiveWidget-header > .ItgActiveWidget-title').should('have.text', title + 'asdf');
+});
+
+
+And('Right hand panel is shown', () => {
+  homePage.getEditingSectionPanel().should('be.visible');
+});
+
+And('Right hand panel is titled {string}', (widgetHeader) => {
+  homePage.getEditingSectionPanelHeader().should('have.text', widgetHeader);
 });

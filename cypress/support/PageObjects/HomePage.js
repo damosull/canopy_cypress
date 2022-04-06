@@ -23,6 +23,15 @@ class HomePage {
   getWidgetSettingsBtn () {
     return cy.get(':nth-child(1) > .ItgActiveWidget > .ItgActiveWidget-container > .ItgActiveWidget-buttons > .ItgActiveWidget-button');
   }
+
+  getEditingSectionPanel () {
+    return cy.get('.ItgCmsPage-widgetSettings');
+  }
+
+
+  getEditingSectionPanelHeader () {
+    return cy.get('.ItgWidgetSettings-header');
+  }
 }
 
 export default HomePage;
