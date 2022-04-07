@@ -131,12 +131,12 @@ And('Widget is removed', () => {
 });
 
 And('I select {string} widget Alignment on Config Panel', (alignment) => {
-  cy.get('[aria-label="'+alignment+'"]').click();
+  cy.get('[aria-label="' + alignment + '"]').click();
 });
 
 And('I set the widget Width on Config Panel', () => {
 
-  const currentValue  = 100;
+  const currentValue = 100;
   const targetValue = 70;
   const increment = 1;
   const steps = (currentValue - targetValue) / increment;
@@ -172,4 +172,38 @@ And('All widgets are cleared', () => {
 And('Widget being edited is highlighted', () => {
   homePage.getActiveWidget().should('have.attr', 'class')
     .and('contain', 'is-active');
+});
+
+And('Default padding for {string} widget is set to {string}', (widgetName, spacing) => {
+  if (widgetName === 'Section') {
+    homePage.getSectionWidget().should('have.attr', 'style')
+      .and('contain', 'padding: ' + spacing + ';');
+  }
+});
+
+And('I select the {string} Spacing Option', (padding) => {
+  // TODO: NOT SURE IF WE NEED TO USE THE PADDING VARIABLE HERE, PROBABLY DO WHEN WE USE LEFT & RIGHT, BUT SEE. MAKE A NOTE THAT YOU SIMPLIFIED WHAT WAS IN ANOTHER STEP, BUT HE CAN REFACOTR IT IF NEEDS BE
+  // TODO: Do we need the duplicate steps below, are they needed? I think they will be needed actually, but comment them out to see first
+  const currentValue = 0;
+
+  if (padding === 'Top') {
+    homePage.getWidgetSpacingSlider().should('have.attr', 'aria-valuenow', currentValue).type(1);
+    homePage.getWidgetSpacingSlider().should('have.attr', 'aria-valuenow', 50);
+  } else if (padding === 'Right') {
+    cy.contains(padding).click();
+    homePage.getWidgetSpacingSlider().should('have.attr', 'aria-valuenow', currentValue).type(1);
+    homePage.getWidgetSpacingSlider().should('have.attr', 'aria-valuenow', 50);
+  } else if (padding === 'Bottom') {
+    cy.contains(padding).click();
+    homePage.getWidgetSpacingSlider().should('have.attr', 'aria-valuenow', currentValue).type(1);
+    homePage.getWidgetSpacingSlider().should('have.attr', 'aria-valuenow', 50);
+  } else if (padding === 'Left') {
+    cy.contains(padding).click();
+    homePage.getWidgetSpacingSlider().should('have.attr', 'aria-valuenow', currentValue).type(1);
+    homePage.getWidgetSpacingSlider().should('have.attr', 'aria-valuenow', 50);
+  }
+});
+
+And('{string} Widget padding is adjusted', (widgetName) => {
+  // TODO - unsure how to do this
 });

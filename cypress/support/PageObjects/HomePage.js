@@ -47,6 +47,14 @@ class HomePage {
   getWidgets () {
     return cy.get('.ItgActiveWidget');
   }
+
+  getSectionWidget () {
+    return cy.get('.ItgSectionWidget-activeWidget > .ItgActiveWidget-container');
+  }
+
+  getWidgetSpacingSlider () {
+    return cy.get('.ItgWidgetSettings-spacingSlider > label > .ItgWidgetSettings-inputContainer > .mat-slider');
+  }
 }
 
 export default HomePage;
