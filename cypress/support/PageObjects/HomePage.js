@@ -59,6 +59,18 @@ class HomePage {
   getBasket () {
     return cy.get('.ItgToolbar-basket');
   }
+
+  getButtonButtonStyleRadioButton () {
+    return cy.get('[id=mat-radio-2-input]');
+  }
+
+  getOpenInTabCheckBox () {
+    return cy.get('[id=mat-checkbox-1-input]');
+  }
+
+  getDestinationUrlInput () {
+    return cy.get('[formcontrolname="url"]');
+  }
 }
 
 export default HomePage;

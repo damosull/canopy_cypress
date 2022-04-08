@@ -71,15 +71,7 @@ And('I click on widget Settings Button', () => {
 });
 
 And('I update {string} widget title with {string}', (title, text) => {
-  var value;
-
-  switch (title) {
-  case 'Section':
-    value = 'title';
-    break;
-  }
-
-  cy.get(`[formcontrolname="${value}"]`).clear().type(text);
+  cy.get(`[formcontrolname="${title}"]`).clear().type(text);
 });
 
 Then('widget title is set to {string}', (title) => {
@@ -165,4 +157,20 @@ And('I set the {string} Spacing Option to {string}', (padding, value) => {
   cy.contains(padding).click();
   homePage.getWidgetSpacingSlider().should('have.attr', 'aria-valuenow', currentValue).type(arrows);
   homePage.getWidgetSpacingSlider().should('have.attr', 'aria-valuenow', value);
+});
+
+Then('the {string} button style radio button is {string}', (button, option) => {
+  if (button === 'Button') {
+    homePage.getButtonButtonStyleRadioButton().should(`be.${option}`);
+  }
+});
+
+Then('Open in New Tab option is {string}', (option) => {
+  if (option === 'checked') {
+    homePage.getOpenInTabCheckBox().should('be.checked');
+  }
+});
+
+And('Destination URL is {string}', (url) => {
+  homePage.getDestinationUrlInput().should('have.text', `${url}`);
 });
