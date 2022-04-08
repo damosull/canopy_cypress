@@ -1,23 +1,11 @@
 import { Given, And, Then } from 'cypress-cucumber-preprocessor/steps';
-import LoginPage from '../PageObjects/LoginPage';
 import HomePage from '../PageObjects/HomePage';
 import '@4tw/cypress-drag-drop';
 
-const loginPage = new LoginPage();
 const homePage = new HomePage();
 
 Given('I login to ITG', () => {
   cy.login();
-});
-
-And('I click on Login Button with {string} Credentials', (validity) => {
-  if (validity === 'valid' || validity === 'invalid') {
-    loginPage.getLoginButton().should('not.have.attr', 'disabled');
-    loginPage.getLoginButton().click();
-  }
-  if (validity === 'valid') {
-    loginPage.getLogoutButton().should('be.visible');
-  }
 });
 
 And('I click on {string} button', (button) => {
