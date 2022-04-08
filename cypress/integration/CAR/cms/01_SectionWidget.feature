@@ -30,12 +30,14 @@ Feature covers all the Section widget Configurations
     Given I click on 'Publish' button
     Then I see 'Editing mode' button
 
+  @ignore
   Scenario: 05 Revert button
     Given I click on widget Settings Button
-    And I update 'Section' widget title with 'New Title'
+    And I update 'Section' widget title with 'Hello'
     When I click on 'Revert' button
-    Then widget title is set to 'New Title'
+    Then widget title is set to 'Section'
 
+  @ignore
   Scenario: 06 Publish and Revert Layout
     Given I click on widget Settings Button
     And I update 'Section' widget title with 'New Title'

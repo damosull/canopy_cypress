@@ -1,5 +1,8 @@
 {
-  "baseUrl": "https://itg.dev.itgcanopy.com",
+  "env": {
+    "TAGS": "not @ignore"
+  },
+  "baseUrl": "https://itg.staging.itgcanopy.com",
   "testFiles": "**/*.feature",
   "defaultCommandTimeout": 10000,
   "experimentalSessionSupport": true

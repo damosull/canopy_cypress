@@ -83,7 +83,7 @@ And('I update {string} widget title with {string}', (title, text) => {
 });
 
 Then('widget title is set to {string}', (title) => {
-  homePage.getActiveWidgetTitle().contains(title);
+  homePage.getActiveWidgetTitle().should('have.text', title);
 });
 
 And('Right hand panel is shown', () => {

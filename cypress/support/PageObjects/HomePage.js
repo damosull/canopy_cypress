@@ -33,7 +33,7 @@ class HomePage {
   }
 
   getActiveWidgetTitle () {
-    return cy.get('.ItgActiveWidget-title');
+    return cy.get(':nth-child(1) > .ItgActiveWidget > .ItgActiveWidget-container > .ItgActiveWidget-header > .ItgActiveWidget-title');
   }
 
   getActiveWidget () {

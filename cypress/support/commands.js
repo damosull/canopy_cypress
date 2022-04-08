@@ -3,7 +3,7 @@ import HomePage from '../support/PageObjects/HomePage';
 
 const loginPage = new LoginPage();
 const homePage = new HomePage();
-const username = 'itgappro';
+const username = 'autouser';
 const password = '1Qwertasdf';
 
 // ***********************************************
