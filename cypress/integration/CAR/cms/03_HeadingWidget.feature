@@ -1,12 +1,12 @@
 @test
-Feature: 01 Section Widget
-Feature covers all the Section widget Configurations
+Feature: 03 Heading Widget
+Feature covers all the Heading widget Configurations
 
-  Background: Login & Create a Section Widget
+  Background: Login & Create a Heading Widget
     Given I login to ITG
     And I click on 'Editing mode' button
     When I click on clear layout Button
-    Then I create a 'Section' Widget
+    Then I create a 'Heading' Widget
 
   Scenario: 01 User with both CMS and EditPages option is able to see Edit Button on CMS Editor
     Given I click on 'Close editor' button
@@ -35,7 +35,7 @@ Feature covers all the Section widget Configurations
     Given I click on widget Settings Button
     And I update the widget title to 'Hello'
     When I click on 'Revert' button
-    Then widget title is set to 'Section'
+    Then widget title is set to 'Button'
 
   @ignore
   Scenario: 06 Publish and Revert Layout
@@ -44,15 +44,15 @@ Feature covers all the Section widget Configurations
     And I click on 'Publish' button
     And I click on 'Editing mode' button
     When I click on 'Revert' button
-    Then widget title is set to 'Section'
+    Then widget title is set to 'Heading'
 
   Scenario: 07 Right hand Panel - Widget Settings Panel
     Given I click on widget Settings Button
     Then Right hand panel is shown
-    And Right hand panel is titled ' Editing Section '
+    And Right hand panel is titled ' Editing Heading '
     And Widget being edited is highlighted
 
-  Scenario: 08 Edit Section Widget Title
+  Scenario: 08 Edit Heading Widget Title
     Given I click on widget Settings Button
     When I update the widget title to 'New Title'
     Then widget title is set to 'New Title'
@@ -86,9 +86,9 @@ Feature covers all the Section widget Configurations
   
   Scenario Outline: 13 Edit Spacing - <spacing>
     Given I click on widget Settings Button
-    And padding for 'Section' widget is set to '0'
+    And padding for 'Heading' widget is set to '0'
     When I set the '<spacing>' Spacing Option to '25'
-    Then padding for 'Section' widget is set to '25'
+    Then padding for 'Heading' widget is set to '25'
 
     Examples:
       | spacing |

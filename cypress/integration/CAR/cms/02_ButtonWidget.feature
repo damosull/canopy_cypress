@@ -1,5 +1,5 @@
 @test
-Feature: 01 Button Widget
+Feature: 02 Button Widget
 Feature covers all the Button widget Configurations
 
   Background: Login & Create a Button Widget
@@ -33,14 +33,14 @@ Feature covers all the Button widget Configurations
   @ignore
   Scenario: 05 Revert button
     Given I click on widget Settings Button
-    And I update 'Button' widget title with 'Hello'
+    And I update the widget title to 'Hello'
     When I click on 'Revert' button
     Then widget title is set to 'Button'
 
   @ignore
   Scenario: 06 Publish and Revert Layout
     Given I click on widget Settings Button
-    And I update 'Button' widget title with 'New Title'
+    And I update the widget title to 'New Title'
     And I click on 'Publish' button
     And I click on 'Editing mode' button
     When I click on 'Revert' button
@@ -54,7 +54,7 @@ Feature covers all the Button widget Configurations
 
   Scenario: 08 Edit Button Widget Title
     Given I click on widget Settings Button
-    When I update 'Button' widget title with 'New Title'
+    When I update the widget title to 'New Title'
     Then widget title is set to 'New Title'
 
   Scenario: 09 Close Config Panel

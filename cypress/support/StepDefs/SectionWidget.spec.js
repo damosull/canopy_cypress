@@ -70,8 +70,8 @@ And('I click on widget Settings Button', () => {
   homePage.getWidgetSettingsBtn().click();
 });
 
-And('I update {string} widget title with {string}', (title, text) => {
-  cy.get(`[formcontrolname="${title}"]`).clear().type(text);
+And('I update the widget title to {string}', (text) => {
+  cy.get('[formcontrolname=title]').clear().type(text);
 });
 
 Then('widget title is set to {string}', (title) => {
@@ -91,7 +91,7 @@ And('Right hand panel is titled {string}', (widgetHeader) => {
 });
 
 And('Widget is removed', () => {
-  homePage.getActiveWidgetTitle().should('not.be.visible');
+  homePage.getActiveWidgetTitle().should('not.exist');
 });
 
 And('I select {string} widget Alignment on Config Panel', (alignment) => {
