@@ -55,6 +55,10 @@ class HomePage {
   getWidgetSpacingSlider () {
     return cy.get('.ItgWidgetSettings-spacingSlider > label > .ItgWidgetSettings-inputContainer > .mat-slider');
   }
+
+  getBasket () {
+    return cy.get('.ItgToolbar-basket');
+  }
 }
 
 export default HomePage;

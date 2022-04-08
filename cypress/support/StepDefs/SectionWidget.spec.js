@@ -1,4 +1,4 @@
-import { Given, When, And, Then } from 'cypress-cucumber-preprocessor/steps';
+import { Given, And, Then } from 'cypress-cucumber-preprocessor/steps';
 import LoginPage from '../PageObjects/LoginPage';
 import HomePage from '../PageObjects/HomePage';
 import '@4tw/cypress-drag-drop';
@@ -6,14 +6,8 @@ import '@4tw/cypress-drag-drop';
 const loginPage = new LoginPage();
 const homePage = new HomePage();
 
-Given('I navigate to ITG test environment', () => {
-  cy.visit('https://itg.staging.itgcanopy.com/');
-});
-
-When('I enter {string} and {string} on Login Page', (username, password) => {
-  loginPage.getLoginButton().should('have.attr', 'disabled');
-  loginPage.getUsernameInput().type(username);
-  loginPage.getPasswordInput().type(password);
+Given('I login to ITG', () => {
+  cy.login();
 });
 
 And('I click on Login Button with {string} Credentials', (validity) => {
@@ -106,13 +100,13 @@ And('I update {string} widget title with {string}', (title, text) => {
 
 // Probably a better way to write this step, we'll need to refactor. Did this to speed up completing the feature
 Then('{string} widget title is reset', (title) => {
-  cy.get(':nth-child(1) > .ItgActiveWidget > .ItgActiveWidget-container > .ItgActiveWidget-header > .ItgActiveWidget-title').should('have.text', title);
-});
-// Probably a better way to write this step, we'll need to refactor. Did this to speed up completing the feature
-Then('{string} widget title is not reset', (title) => {
-  cy.get(':nth-child(1) > .ItgActiveWidget > .ItgActiveWidget-container > .ItgActiveWidget-header > .ItgActiveWidget-title').should('have.text', title + 'asdf');
+  homePage.getActiveWidgetTitle().should('have.text', title);
 });
 
+// Probably a better way to write this step, we'll need to refactor. Did this to speed up completing the feature
+Then('{string} widget title is not reset', (title) => {
+  homePage.getActiveWidgetTitle().should('have.text', 'Page'+title + 'asdf');
+});
 
 And('Right hand panel is shown', () => {
   homePage.getEditingSectionPanel().should('be.visible');
@@ -134,7 +128,7 @@ And('I select {string} widget Alignment on Config Panel', (alignment) => {
   cy.get('[aria-label="' + alignment + '"]').click();
 });
 
-And('I set the widget Width on Config Panel', () => {
+And('I set the widget Width on Config Panel to {string}', (value) => {
 
   const currentValue = 100;
   const targetValue = 70;
@@ -144,7 +138,7 @@ And('I set the widget Width on Config Panel', () => {
 
   homePage.getConfigWidth().should('have.attr', 'aria-valuenow', currentValue).type(arrows);
 
-  homePage.getConfigWidth().should('have.attr', 'aria-valuenow', 20);
+  homePage.getConfigWidth().should('have.attr', 'aria-valuenow', value);
 });
 
 And('Widget is aligned to {string}', (alignment) => {
@@ -160,9 +154,9 @@ And('Widget is aligned to {string}', (alignment) => {
     .and('contain', alignment);
 });
 
-And('Widget width is adjusted as per the config', () => {
+And('Widget width is set to {string}', (value) => {
   homePage.getActiveWidget().should('have.attr', 'style')
-    .and('contain', 'width: 20%;');
+    .and('contain', 'width: '+value+'%;');
 });
 
 And('All widgets are cleared', () => {
@@ -174,36 +168,23 @@ And('Widget being edited is highlighted', () => {
     .and('contain', 'is-active');
 });
 
-And('Default padding for {string} widget is set to {string}', (widgetName, spacing) => {
+And('padding for {string} widget is set to {string}', (widgetName, spacing) => {
   if (widgetName === 'Section') {
     homePage.getSectionWidget().should('have.attr', 'style')
-      .and('contain', 'padding: ' + spacing + ';');
+      .and('contain', spacing+'px');
   }
 });
 
-And('I select the {string} Spacing Option', (padding) => {
-  // TODO: NOT SURE IF WE NEED TO USE THE PADDING VARIABLE HERE, PROBABLY DO WHEN WE USE LEFT & RIGHT, BUT SEE. MAKE A NOTE THAT YOU SIMPLIFIED WHAT WAS IN ANOTHER STEP, BUT HE CAN REFACOTR IT IF NEEDS BE
-  // TODO: Do we need the duplicate steps below, are they needed? I think they will be needed actually, but comment them out to see first
+And('I set the {string} Spacing Option to {string}', (padding, value) => {
+
   const currentValue = 0;
+  const targetValue = value;
+  const increment = 5;
+  const steps = (targetValue - currentValue) / increment;
+  const arrows = '{leftarrow}'.repeat(steps);
 
-  if (padding === 'Top') {
-    homePage.getWidgetSpacingSlider().should('have.attr', 'aria-valuenow', currentValue).type(1);
-    homePage.getWidgetSpacingSlider().should('have.attr', 'aria-valuenow', 50);
-  } else if (padding === 'Right') {
-    cy.contains(padding).click();
-    homePage.getWidgetSpacingSlider().should('have.attr', 'aria-valuenow', currentValue).type(1);
-    homePage.getWidgetSpacingSlider().should('have.attr', 'aria-valuenow', 50);
-  } else if (padding === 'Bottom') {
-    cy.contains(padding).click();
-    homePage.getWidgetSpacingSlider().should('have.attr', 'aria-valuenow', currentValue).type(1);
-    homePage.getWidgetSpacingSlider().should('have.attr', 'aria-valuenow', 50);
-  } else if (padding === 'Left') {
-    cy.contains(padding).click();
-    homePage.getWidgetSpacingSlider().should('have.attr', 'aria-valuenow', currentValue).type(1);
-    homePage.getWidgetSpacingSlider().should('have.attr', 'aria-valuenow', 50);
-  }
-});
 
-And('{string} Widget padding is adjusted', (widgetName) => {
-  // TODO - unsure how to do this
+  cy.contains(padding).click();
+  homePage.getWidgetSpacingSlider().should('have.attr', 'aria-valuenow', currentValue).type(arrows);
+  homePage.getWidgetSpacingSlider().should('have.attr', 'aria-valuenow', value);
 });

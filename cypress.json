@@ -1,5 +1,6 @@
 {
-  "baseUrl": "https://itg.staging.itgcanopy.com/",
+  "baseUrl": "https://itg.dev.itgcanopy.com",
   "testFiles": "**/*.feature",
-  "defaultCommandTimeout": 10000
+  "defaultCommandTimeout": 10000,
+  "experimentalSessionSupport": true
 }
