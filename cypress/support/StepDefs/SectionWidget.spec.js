@@ -82,10 +82,6 @@ And('I click on widget Settings Button', () => {
   homePage.getWidgetSettingsBtn().click();
 });
 
-And('I see Widget Settings Panel is shown with header {string}', (text) => {
-  homePage.getActiveWidgetTitle().should('have.text', text);
-});
-
 And('I update {string} widget title with {string}', (title, text) => {
   var value;
 
@@ -98,14 +94,8 @@ And('I update {string} widget title with {string}', (title, text) => {
   cy.get(`[formcontrolname="${value}"]`).clear().type(text);
 });
 
-// Probably a better way to write this step, we'll need to refactor. Did this to speed up completing the feature
-Then('{string} widget title is reset', (title) => {
-  homePage.getActiveWidgetTitle().should('have.text', title);
-});
-
-// Probably a better way to write this step, we'll need to refactor. Did this to speed up completing the feature
-Then('{string} widget title is not reset', (title) => {
-  homePage.getActiveWidgetTitle().should('have.text', 'Page'+title + 'asdf');
+Then('widget title is set to {string}', (title) => {
+  homePage.getActiveWidgetTitle().contains(title);
 });
 
 And('Right hand panel is shown', () => {

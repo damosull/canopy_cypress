@@ -34,7 +34,7 @@ Feature covers all the Section widget Configurations
     Given I click on widget Settings Button
     And I update 'Section' widget title with 'New Title'
     When I click on 'Revert' button
-    Then 'Section' widget title is reset
+    Then widget title is set to 'New Title'
 
   Scenario: 06 Publish and Revert Layout
     Given I click on widget Settings Button
@@ -42,7 +42,7 @@ Feature covers all the Section widget Configurations
     And I click on 'Publish' button
     And I click on 'Editing mode' button
     When I click on 'Revert' button
-    Then 'Section' widget title is not reset
+    Then widget title is set to 'Section'
 
   Scenario: 07 Right hand Panel - Widget Settings Panel
     Given I click on widget Settings Button
@@ -53,7 +53,7 @@ Feature covers all the Section widget Configurations
   Scenario: 08 Edit Section Widget Title
     Given I click on widget Settings Button
     When I update 'Section' widget title with 'New Title'
-    Then I see Widget Settings Panel is shown with header 'PageNew Title'
+    Then widget title is set to 'New Title'
 
   Scenario: 09 Close Config Panel
     Given I click on widget Settings Button
