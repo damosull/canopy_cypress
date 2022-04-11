@@ -71,6 +71,10 @@ class HomePage {
   getDestinationUrlInput () {
     return cy.get('[formcontrolname="url"]');
   }
+
+  getButtonTextInput () {
+    return cy.get('[formcontrolname="text"]');
+  }
 }
 
 export default HomePage;

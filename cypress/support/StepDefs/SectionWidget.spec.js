@@ -174,3 +174,15 @@ Then('Open in New Tab option is {string}', (option) => {
 And('Destination URL is {string}', (url) => {
   homePage.getDestinationUrlInput().should('have.text', `${url}`);
 });
+
+When('I add text to the button or link', () => {
+    homePage.getButtonTextInput().type('Test me')
+});
+
+And('I set Destination URL to {string}', (url) => {
+  cy.get('[formcontrolname=url]').clear().type(url);
+});
+
+And('I {string} open in new tab checkbox', (checkOrUncheck) => {
+  `cy.get('[id=mat-checkbox-1-input]').${checkOrUncheck}({force: true});`
+});

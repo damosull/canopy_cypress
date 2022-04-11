@@ -109,9 +109,16 @@ Feature covers all the Button widget Configurations
     Then Open in New Tab option is 'checked'
     And Destination URL is ''
 
-  Scenario: 16 Add Button and Open URL in new tab
-# TODO: MERGE BELOW SCENARIOS INTO ONE WITH AN EXAMPLES TABLE
-#   Scenario Outline: Add Button and Open URL in new tab
-# Scenario Outline: Add Button and Open URL in same tab
-# Scenario Outline: Add Link and Open URL in new tab
-# Scenario Outline: Add Link and Open URL in same tab
+  Scenario Outline: 16 Add Button and Open URL in new tab
+    When I add text to the button or link
+    And I set Destination URL to '<url>'
+    And I '<openInNewTab>' open in new tab checkbox
+    And I click on 'Test me' button
+# I WAS UNSURE ON HOW TO ASSERT ON THIS SCENARIO, CAN YOU PLEASE TAKE A LOOK?
+    Examples:
+      | inputType | url                                           | openInNewTab |
+      | button    | https://cloud-test-ng.itgcanopy.com/itg-test/ | check        |
+      | link      | https://cloud-test-ng.itgcanopy.com/itg-test/ | check        |
+      | button    | https://cloud-test-ng.itgcanopy.com/itg-test/ | uncheck      |
+      | link      | https://cloud-test-ng.itgcanopy.com/itg-test/ | uncheck      |
+      
