@@ -104,21 +104,30 @@ Feature covers all the Button widget Configurations
     And Config panel is collapsed
 
   Scenario: 15 Default Button Style and Tab
-    When I click on widget Settings Button
+    Given I click on widget Settings Button
     Then the 'Button' button style radio button is 'checked'
-    Then Open in New Tab option is 'checked'
+    And Open in New Tab option is 'checked'
     And Destination URL is ''
 
-  Scenario Outline: 16 Add Button and Open URL in new tab
-    When I add text to the button or link
+  Scenario Outline: 16 Add Button and Open URL in a new tab
+    Given I add 'Test me' text to the button or link
     And I set Destination URL to '<url>'
-    And I '<openInNewTab>' open in new tab checkbox
-    And I click on 'Test me' button
-# I WAS UNSURE ON HOW TO ASSERT ON THIS SCENARIO, CAN YOU PLEASE TAKE A LOOK?
+    When I 'check' open in new tab checkbox
+    Then clicking 'Test me' button opens url in a new tab
+    
     Examples:
-      | inputType | url                                           | openInNewTab |
-      | button    | https://cloud-test-ng.itgcanopy.com/itg-test/ | check        |
-      | link      | https://cloud-test-ng.itgcanopy.com/itg-test/ | check        |
-      | button    | https://cloud-test-ng.itgcanopy.com/itg-test/ | uncheck      |
-      | link      | https://cloud-test-ng.itgcanopy.com/itg-test/ | uncheck      |
+      | inputType | url                                           |
+      | button    | https://cloud-test-ng.itgcanopy.com/itg-test/ |
+      | link      | https://cloud-test-ng.itgcanopy.com/itg-test/ |
+      
+  Scenario Outline: 17 Add Button and Open URL in the same tab
+    Given I add 'Test me' text to the button or link
+    And I set Destination URL to '<url>'
+    When I 'uncheck' open in new tab checkbox
+    Then clicking 'Test me' button opens url in the same tab
+
+    Examples:
+      | inputType | url                                           |
+      | button    | https://cloud-test-ng.itgcanopy.com/itg-test/ |
+      | link      | https://cloud-test-ng.itgcanopy.com/itg-test/ |
       

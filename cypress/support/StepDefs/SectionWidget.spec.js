@@ -1,4 +1,4 @@
-import { Given, And, Then } from 'cypress-cucumber-preprocessor/steps';
+import { Given, And, Then, When } from 'cypress-cucumber-preprocessor/steps';
 import HomePage from '../PageObjects/HomePage';
 import '@4tw/cypress-drag-drop';
 
@@ -175,8 +175,8 @@ And('Destination URL is {string}', (url) => {
   homePage.getDestinationUrlInput().should('have.text', `${url}`);
 });
 
-When('I add text to the button or link', () => {
-    homePage.getButtonTextInput().type('Test me')
+When('I add {string} text to the button or link', (text) => {
+  homePage.getButtonTextInput().type(text);
 });
 
 And('I set Destination URL to {string}', (url) => {
@@ -184,5 +184,17 @@ And('I set Destination URL to {string}', (url) => {
 });
 
 And('I {string} open in new tab checkbox', (checkOrUncheck) => {
-  `cy.get('[id=mat-checkbox-1-input]').${checkOrUncheck}({force: true});`
+  if (checkOrUncheck === 'check') {
+    homePage.getOpenInTabCheckBox().check({force: true});
+  } else {
+    homePage.getOpenInTabCheckBox().uncheck({force: true});
+  }
+});
+
+And('clicking {string} button opens url in the same tab', (text) => {
+  cy.contains(text).should('have.attr', 'target', '_self');
+});
+
+And('clicking {string} button opens url in a new tab', (text) => {
+  cy.contains(text).should('have.attr', 'target', '_blank');
 });

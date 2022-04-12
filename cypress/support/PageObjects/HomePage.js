@@ -65,7 +65,7 @@ class HomePage {
   }
 
   getOpenInTabCheckBox () {
-    return cy.get('[id=mat-checkbox-1-input]');
+    return cy.get('#mat-checkbox-1-input');
   }
 
   getDestinationUrlInput () {
