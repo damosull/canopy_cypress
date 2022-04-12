@@ -46,7 +46,7 @@ And('I create a {string} Widget', (widget) => {
     break;
   }
 
-  cy.get('.ItgToolbarWidget-container').eq(value).drag('.ItgSectionWidget-column');
+  cy.get('.ItgToolbarWidget-container').eq(value).drag('.ItgSectionWidget-column', { target: { position: 'top' }});
   cy.contains('Editing ' + widget).should('be.visible');
 });
 
