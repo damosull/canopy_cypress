@@ -72,8 +72,36 @@ class HomePage {
     return cy.get('[formcontrolname="url"]');
   }
 
-  getButtonTextInput () {
+  getWidgetTextInput () {
     return cy.get('[formcontrolname="text"]');
+  }
+
+  getFontSizeSlider () {
+    return cy.get('.ItgHeadingWidgetSettings-fontSizeField > .mat-slider');
+  }
+
+  getBoldFontButton () {
+    return cy.get('#mat-button-toggle-10-button');
+  }
+
+  getItalicFontButton () {
+    return cy.get('#mat-button-toggle-11-button');
+  }
+
+  getUnderlineFontButton () {
+    return cy.get('#mat-button-toggle-12-button');
+  }
+
+  getHeadingWidgetContent () {
+    return cy.get('.ItgHeadingWidget-content');
+  }
+
+  getResourceListWidgetCount () {
+    return cy.get('.ItgResourceListWidget-count');
+  }
+
+  getResourceListSearchInput () {
+    return cy.get('.ItgResourceListSearch-searchInput');
   }
 }
 

@@ -175,8 +175,8 @@ And('Destination URL is {string}', (url) => {
   homePage.getDestinationUrlInput().should('have.text', `${url}`);
 });
 
-When('I add {string} text to the button or link', (text) => {
-  homePage.getButtonTextInput().type(text);
+When('I add {string} text to the widget', (text) => {
+  homePage.getWidgetTextInput().type(text);
 });
 
 And('I set Destination URL to {string}', (url) => {
@@ -197,4 +197,76 @@ And('clicking {string} button opens url in the same tab', (text) => {
 
 And('clicking {string} button opens url in a new tab', (text) => {
   cy.contains(text).should('have.attr', 'target', '_blank');
+});
+
+// TODO: can I refactor this to use same step as in line 101?
+And('I set the Font Size on Config Panel to {string}', (value) => {
+
+  const currentValue = 24;
+  const targetValue = 17;
+  const increment = 1;
+  const steps = (currentValue - targetValue) / increment;
+  const arrows = '{leftarrow}'.repeat(steps);
+
+  homePage.getFontSizeSlider().should('have.attr', 'aria-valuenow', currentValue).type(arrows);
+
+  homePage.getFontSizeSlider().should('have.attr', 'aria-valuenow', value);
+});
+
+And('I select the font type {string}, {string}, {string}', (bold, italic, underline) => {
+  if (bold === 'true') {
+    homePage.getBoldFontButton().click();
+  }
+
+  if (italic === 'true') {
+    homePage.getItalicFontButton().click();
+  }
+
+  if (underline === 'true') {
+    homePage.getUnderlineFontButton().click();
+  }
+});
+
+Then('Text {string} is shown on the widget with selected font size and type {string}, {string}, {string}', (freeText, bold, italic, underline) => {
+  homePage.getHeadingWidgetContent().should('have.text', ' ' + freeText + ' ');
+  homePage.getHeadingWidgetContent().should('have.css', 'font-size', '14px');
+
+  if (bold === 'true') {
+    homePage.getHeadingWidgetContent().should('have.css', 'font-weight', '700'); // Bold = 700
+  }
+
+  if (italic === 'true') {
+    homePage.getHeadingWidgetContent().should('have.css', 'font-style', 'italic');
+  }
+
+  if (underline === 'true') {
+    homePage.getHeadingWidgetContent().should('have.css', 'text-decoration-line', 'underline');
+  }
+});
+
+
+Then('Asset count is listed on the Resource list widget', () => {
+  homePage.getResourceListWidgetCount().contains('items found');
+});
+
+And('I enter {string} into the {string} input', (text, inputField) => {
+  if (inputField === 'Resource List Search') {
+    homePage.getResourceListSearchInput().clear().type(text);
+  }
+});
+
+And('I click the search option', () => {
+  cy.get('.mat-option-text').click();
+});
+
+And('{string} is displayed', (text)=> {
+  cy.contains(text).should('be.visible');
+});
+
+And('I navigate to the last asset', () => {
+  cy.get('.ItgResourceListResultGrid-result').last().trigger('mouseover');
+});
+
+And('I click button based on aria-label {string}', (label) => {
+  cy.get('[aria-label="' + label + '"]').click();
 });

@@ -110,7 +110,7 @@ Feature covers all the Button widget Configurations
     And Destination URL is ''
 
   Scenario Outline: 16 Add Button and Open URL in a new tab
-    Given I add 'Test me' text to the button or link
+    Given I add 'Test me' text to the widget
     And I set Destination URL to '<url>'
     When I 'check' open in new tab checkbox
     Then clicking 'Test me' button opens url in a new tab
@@ -121,7 +121,7 @@ Feature covers all the Button widget Configurations
       | link      | https://cloud-test-ng.itgcanopy.com/itg-test/ |
       
   Scenario Outline: 17 Add Button and Open URL in the same tab
-    Given I add 'Test me' text to the button or link
+    Given I add 'Test me' text to the widget
     And I set Destination URL to '<url>'
     When I 'uncheck' open in new tab checkbox
     Then clicking 'Test me' button opens url in the same tab

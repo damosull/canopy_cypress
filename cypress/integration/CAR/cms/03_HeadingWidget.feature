@@ -102,3 +102,17 @@ Feature covers all the Heading widget Configurations
     When I click on clear layout Button
     Then All widgets are cleared
     And Config panel is collapsed
+
+  Scenario Outline: 15 Edit Widget Text, Text Font, Text size`
+    Given I click on widget Settings Button
+    When I add '<FreeText>' text to the widget
+    And I set the Font Size on Config Panel to '<FontSize>'
+    And I select the font type '<Bold>', '<Italic>', '<Underline>'
+    Then Text '<FreeText>' is shown on the widget with selected font size and type '<Bold>', '<Italic>', '<Underline>'
+    And I click on 'Publish' button
+    And Text '<FreeText>' is shown on the widget with selected font size and type '<Bold>', '<Italic>', '<Underline>'
+    # Not sure if the extra assertion is needed 
+
+    Examples:
+      | FreeText     | FontSize | Bold | Italic | Underline |
+      | Heading_auto | 14       | true | true   | true      |
