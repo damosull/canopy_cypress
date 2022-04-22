@@ -86,9 +86,9 @@ Feature covers all the Heading widget Configurations
   
   Scenario Outline: 13 Edit Spacing - <spacing>
     Given I click on widget Settings Button
-    And padding for 'Heading' widget is set to '0'
+    And padding for widget is set to '0'
     When I set the '<spacing>' Spacing Option to '25'
-    Then padding for 'Heading' widget is set to '25'
+    Then padding for widget is set to '25'
 
     Examples:
       | spacing |

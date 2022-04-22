@@ -138,11 +138,9 @@ And('Widget being edited is highlighted', () => {
     .and('contain', 'is-active');
 });
 
-And('padding for {string} widget is set to {string}', (widgetName, spacing) => {
-  if (widgetName === 'Section') {
-    homePage.getSectionWidget().should('have.attr', 'style')
-      .and('contain', spacing+'px');
-  }
+And('padding for widget is set to {string}', (spacing) => {
+  homePage.getSectionWidget().should('have.attr', 'style')
+    .and('contain', spacing+'px');
 });
 
 And('I set the {string} Spacing Option to {string}', (padding, value) => {
@@ -243,7 +241,6 @@ Then('Text {string} is shown on the widget with selected font size and type {str
     homePage.getHeadingWidgetContent().should('have.css', 'text-decoration-line', 'underline');
   }
 });
-
 
 Then('Asset count is listed on the Resource list widget', () => {
   homePage.getResourceListWidgetCount().contains('items found');
