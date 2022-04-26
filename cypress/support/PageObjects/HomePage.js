@@ -103,6 +103,42 @@ class HomePage {
   getResourceListSearchInput () {
     return cy.get('.ItgResourceListSearch-searchInput');
   }
+
+  getListCheckBox () {
+    return cy.xpath("//span[text() = ' List ']//ancestor::mat-radio-button");
+  }
+
+  getGridCheckBox () {
+    return cy.xpath("//span[text() = ' Grid ']//ancestor::mat-radio-button");
+  }
+
+  getAssetsInGrid () {
+    return cy.get('.ItgResourceListResultGrid-result');
+  }
+
+  getAssetName () {
+    return cy.get('.ItgResourceListDetailLink-resultName');
+  }
+
+  getAssetType () {
+    return cy.get('.ItgResourceListResultGrid-resultSubTitle');
+  }
+
+  getAssetNameInList () {
+    return cy.get('.ItgResourceListDetailLink-resultName');
+  }
+
+  getAssetTypeInList () {
+    return cy.get('.cdk-column-type');
+  }
+
+  getPaginationPaginationStyleRdo () {
+    return cy.get('#mat-radio-7 > .mat-radio-label');
+  }
+
+  getResultsPerPageDropdown () {
+    return cy.get('mat-select[formcontrolname="pageSize"]');
+  }
 }
 
 export default HomePage;

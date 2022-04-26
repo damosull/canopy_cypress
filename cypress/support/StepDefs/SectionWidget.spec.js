@@ -4,6 +4,10 @@ import '@4tw/cypress-drag-drop';
 
 const homePage = new HomePage();
 
+let assetName = 'damo';
+let assetType = 'damo1';
+let myUrl = '';
+
 Given('I login to ITG', () => {
   cy.login();
 });
@@ -261,9 +265,170 @@ And('{string} is displayed', (text)=> {
 });
 
 And('I navigate to the last asset', () => {
-  cy.get('.ItgResourceListResultGrid-result').last().trigger('mouseover');
+  homePage.getAssetsInGrid().last().trigger('mouseover');
 });
 
 And('I click button based on aria-label {string}', (label) => {
   cy.get('[aria-label="' + label + '"]').click();
+});
+
+And('I click on Domain option on Toolbar', () => {
+  cy.get('.ItgDomainDropdown-menuButton').click();
+});
+
+And('I select {string} domain', (domain) => {
+  cy.get('.mat-menu-content').contains(domain).click();
+});
+
+And('I check the Include Sub Domains in results checkbox', () => {
+  cy.get('[formcontrolname=subDomains]').click();
+});
+
+And('I check the Include Parent Domains in results checkbox', () => {
+  cy.get('[formcontrolname=inheritDomains]').click();
+});
+
+Then('Load More pagination style is selected', () => {
+  cy.get('[id=mat-radio-5]').should('have.attr', 'class')
+    .and('contain', 'mat-radio-checked');
+});
+
+And('Results per page config is {string}', (result) => {
+  cy.get('[formcontrolname=pageSize]').should('have.text', result);
+});
+
+And('Results per page drop down has the below options', (dataTable) => {
+  cy.get('#mat-select-value-3').click();
+  dataTable.rawTable.forEach(($ele, index) => {
+    cy.get(`#mat-select-2-panel > #mat-option-${index +4}`).should('have.text', ' ' + $ele.toString() + ' ');
+  });
+});
+
+And('Results per page should be {string} {string}', (string, value) => {
+  let expectedCount = 0;
+  if (string === 'equal to') {
+    expectedCount = value;
+    homePage.getAssetsInGrid().should('have.length', expectedCount);
+  }
+});
+
+Then('Grid View is set by default on Config Panel', () => {
+  cy.xpath('//span[text() = " Grid "]//ancestor::mat-radio-button').should('have.attr', 'class')
+    .and('contain', 'mat-radio-checked');
+});
+
+And('Resource List columns should have the below headings', (dataTable) => {
+  dataTable.rawTable.forEach(($ele, index) => {
+    cy.get('tr > th').eq(index + 1).should('have.text', ' ' + $ele.toString() + ' ');
+  });
+});
+
+And('Assets on Resource List are shown in {string} view', (string) => {
+  if (string === 'Grid') {
+    cy.get('.ItgResourceListResultGrid-container').should('be.visible');
+  }
+  if (string === 'List') {
+    cy.get('.ItgResourceListResultTable-container').should('be.visible');
+  }
+});
+
+And('I select {string} view as Search Result style', (string) => {
+  if (string === 'List') {
+    homePage.getListCheckBox().should('be.visible');
+    homePage.getListCheckBox().click();
+  }
+  if (string === 'Grid') {
+    homePage.getGridCheckBox().should('be.visible');
+    homePage.getGridCheckBox().click();
+  }
+});
+
+And('AssetName and AssetType are shown under the asset in Grid view', () => {
+  homePage.getAssetName().should('be.visible');
+  cy.get('.ItgResourceListDetailLink-resultSubTitle').should('be.visible');
+});
+
+And('I click on the first AssetName in Asset {string} view', (view) => {
+  if (view === 'Grid') {
+    homePage.getAssetType().first().then($el => {
+      assetType = $el.text();
+    });
+    homePage.getAssetName().first().then($el => {
+      assetName = $el.text();
+    }).click();
+  }
+
+  if (view === 'List') {
+    homePage.getAssetTypeInList().get(1).then($el => {
+      assetType = $el.text();
+    });
+    homePage.getAssetNameInList().first().then($el => {
+      assetName = $el.text();
+    }).click();
+  }
+});
+
+Then('Asset Details Page opens with AssetName as Title', () => {
+  cy.url().should('include', 'assetDetails');
+  cy.get('.ItgAssetDetails-name').should('have.text', assetName);
+});
+
+And('Asset Type is displayed on Asset Details page', () => {
+  cy.url().should('include', 'assetDetails');
+  cy.get('.ItgAssetDetails-type').invoke('text').should('include', assetType);
+});
+
+And('Asset Preview is displayed on Asset Details page', () => {
+  cy.get('.ItgAssetDetails-image').should('be.visible');
+});
+
+And('URL captures Asset Details page', () => {
+  cy.url().should('include', 'detailItem=');
+  cy.url().then(url => {
+    myUrl = url;
+  });
+});
+
+And('I am on same page on refreshing the page', () => {
+  cy.reload();
+  cy.url().should('include', myUrl);
+});
+
+And('I click on Browser Back button', () => {
+  cy.go('back');
+});
+
+And('I see the first asset on Asset {string} view', (view) => {
+  if (view === 'Grid') {
+    homePage.getAssetsInGrid().first().should('be.visible');
+  }
+
+  if (view === 'List') {
+  }
+});
+
+And('I select {string} pagination and {string} results per page', (pagination, results) => {
+
+  if (pagination === 'Pagination') {
+    homePage.getPaginationPaginationStyleRdo().should('be.visible');
+    homePage.getPaginationPaginationStyleRdo().click();
+  }
+
+  // homePage.getResultsPerPageDropdown().click();
+
+  homePage.getResultsPerPageDropdown().click().get('mat-option').contains(results).click();
+});
+
+And('I click on Select Visible icon', () => {
+  cy.get('.ItgResourceListWidget-selectVisible').click();
+});
+
+Then('All visible assets are selected', () => {
+
+  // TODO: tomorrow, compare the count of the below, should match.
+  // tricky to get them to compare thoug
+
+  cy.get('.ItgResourceListResultGrid-checkbox');
+
+  cy.get('.ItgResourceListResultGrid-checkbox.mat-checkbox-checked');
 });

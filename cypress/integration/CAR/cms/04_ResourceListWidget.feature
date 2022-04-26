@@ -125,88 +125,104 @@ Ability to add Resource List widget and edit the configuration
     #  "And I am brought to the top of the page"
 
   Scenario Outline: 18 Inherit/include Assets from parent/sub domains
-        # And I click on Domain option on Toolbar
-        # And I select Domain '<Domain>'
+    And I click on Domain option on Toolbar
+    And I select 'Team ITG' domain
     And I click on 'Resource List' button
-        # And I set Include sub-domains in results to '<subDomain>'
-        # And I set Include parent domains in results to '<Inherit>'
+    And I check the Include Sub Domains in results checkbox
+    And I check the Include Parent Domains in results checkbox
+    # TODO: wasn't sure how to do this step these, think they use API call
         # Then Asset Count should be updated based on '<subDomain>','<Inherit>'
-        # And I set the Domain back to Default Domain
+    And I click on Domain option on Toolbar
+    And I select '- System -' domain
 
-#         Examples:
-#             | Domain  | subDomain | Inherit |
-#             | TeamITG | true      | true    |
-#             | TeamITG | true      | false   |
-#             | TeamITG | false     | true    |
+    Examples:
+      | subDomain | Inherit |
+      | true      | true    |
+      | true      | false   |
+      | false     | true    |
 
-#     Scenario: Default Pagination and Results per page
-#         And I click on 'Resource List' widget Settings Button
-#         Then Load More is the default pagination style selected
-#         And Results per page config is defaulted to '50'
-#         And Results per page drop down has the options '10,50,80,100,150'
-#         And Results per page should be 'Equal To' '50'
+  Scenario: 19  Default Pagination and Results per page
+    Given I click on widget Settings Button
+    Then Load More pagination style is selected
+    And Results per page config is '50'
+    And Results per page drop down has the below options
+      | 10  |
+      | 50  |
+      | 80  |
+      | 100 |
+      | 150 |
+    And Results per page should be 'equal to' '50'
 
-#     Scenario: Default Grid View of Assets
-#         And I click on 'Resource List' widget Settings Button
-#         Then Grid View is set by default on Config Panel
-#         And I click on 'View preview' toggle Button
-#         And Assets on Resource List are shown in 'Grid' View
-#         And AssetName and AssetType are shown under the asset in Grid view
+  Scenario: 20 Default Grid View of Assets
+    Given I click on widget Settings Button
+    Then Grid View is set by default on Config Panel
+    And I click on 'Publish' button
+    And Assets on Resource List are shown in 'Grid' view
+    And AssetName and AssetType are shown under the asset in Grid view
 
-#     Scenario: List View of Assets
-#         And I click on 'Resource List' widget Settings Button
-#         And I select 'List' view as Search result style
-#         Then Resource List columns should be 'Preview','Name','Extension','Filesize','Type','Adaptor Type'
-#         And Assets on Resource List are shown in 'List' View
+  Scenario: 21 List View of Assets
+    Given I click on widget Settings Button
+    And I select 'List' view as Search Result style
+    Then Resource List columns should have the below headings
+      | Preview      |
+      | Name         |
+      | Extension    |
+      | Filesize     |
+      | Type         |
+      | Adaptor Type |
+    And Assets on Resource List are shown in 'List' view
 
-#     Scenario:Asset Details Page in Grid View
-#         And I click on 'Resource List' widget Settings Button
-#         And I select 'Grid' view as Search result style
-#         And I click on the first AssetName in Asset 'Grid' view
-#         Then Asset Details Page opens with AssetName as Title
-#         And Asset Type is displayed on Asset Details Page
+  Scenario: 22 Asset Details Page in Grid View
+    Given I click on widget Settings Button
+    And I select 'Grid' view as Search Result style
+    And I click on the first AssetName in Asset 'Grid' view
+    Then Asset Details Page opens with AssetName as Title
+    And Asset Type is displayed on Asset Details page
+    # TODO: Below step is failing, think element might have been renamed
+    # And Asset Preview is displayed on Asset Details page
+
+  Scenario: 23 Asset Details Page in List View
+    Given I click on widget Settings Button
+    And I select 'List' view as Search Result style
+    And I click on the first AssetName in Asset 'List' view
+    Then Asset Details Page opens with AssetName as Title
+    And Asset Type is displayed on Asset Details page
+        # TODO: Below step is failing, think element might have been renamed
 #         And Asset Preview is displayed on Asset Details Page
 
-#     Scenario:Asset Details Page in List View
-#         And I click on 'Resource List' widget Settings Button
-#         And I select 'List' view as Search result style
-#         And I click on the first AssetName in Asset 'List' view
-#         Then Asset Details Page opens with AssetName as Title
-#         And Asset Type is displayed on Asset Details Page
-#         And Asset Preview is displayed on Asset Details Page
+  Scenario: 24 URL capture of Asset Details Page
+    Given I click on widget Settings Button
+    And I select 'Grid' view as Search Result style
+    And I click on the first AssetName in Asset 'Grid' view
+    Then URL captures Asset Details page
+    And I am on same page on refreshing the page
 
-#     Scenario: URL capture of Asset Details Page
-#         And I click on 'Resource List' widget Settings Button
-#         And I select 'Grid' view as Search result style
-#         And I click on the first AssetName in Asset 'Grid' view
-#         Then URL captures Asset Details Page
-#         And I am on same page on refreshing the page
+  Scenario Outline: 25 Retain position of asset on navigating back from Details to ListPage
+    Given I click on widget Settings Button
+    And I select '<AssetView>' view as Search Result style
+    And I click on the first AssetName in Asset '<AssetView>' view
+    And I click on Browser Back button
+    And I see the first asset on Asset '<AssetView>' view
 
-#     #access last asset insetad of first
-#     Scenario Outline: Retain position of asset on navigating back from Details to ListPage
-#         And I click on 'Resource List' widget Settings Button
-#         And I select '<AssetView>' view as Search result style
-#         And I click on the first AssetName in Asset '<AssetView>' view
-#         And I click on Browser Back button
-#         And I see the first asset on Asset '<AssetView>' view
+    Examples:
+      | AssetView |
+      | Grid      |
+      | List      |
 
-#         Examples:
-#             | AssetView |
-#             | Grid      |
-#             | List      |
-
-#     Scenario: Asset Selection retained over pagination
-#         And I click on 'Resource List' widget Settings Button
-#         And I select 'Pagination' Pagination and '10' Results per page
-#         And I select 'Grid' view as Search result style
-#         And I click on Select visible icon
-#         Then All visible Assets are selected
-#         And I select pagination Navigator 'Last page'
-#         And I select pagination Navigator 'First page'
-#         And All visible Assets are selected
+#   Scenario: 26 Asset Selection retained over pagination
+#     Given I click on widget Settings Button
+#     And I select 'Pagination' pagination and '10' results per page
+#     And I select 'Grid' view as Search Result style
+#     And I click on Select Visible icon
+#     # TODO: tomorrow, get below step working, tricky to compare them
+#     Then All visible assets are selected
+# #         And I select pagination Navigator 'Last page'
+# #         And I select pagination Navigator 'First page'
+# #         And All visible Assets are selected
 
 #     Scenario: Asset Selection not retained on navigating to Asset Detail page
 #         And I click on 'Resource List' widget Settings Button
+# TODO: below line has already been added
 #         And I select 'Grid' view as Search result style
 #         And I click on Select visible icon
 #         Then All visible Assets are selected
@@ -229,6 +245,7 @@ Ability to add Resource List widget and edit the configuration
 #         And I set Include sub-domains in results to 'true'
 #         And I set Include parent domains in results to 'true'
 #         And I select '<PaginationStyle>' Pagination and '<ResultCount>' Results per page
+# TODO: below line has already been added
 #         And I select 'Grid' view as Search result style
 #         And I click on 'Close editor' toggle Button
 #         And I select the Sort options '<SortOption>' and '<SortOrder>'
@@ -247,6 +264,7 @@ Ability to add Resource List widget and edit the configuration
 #         And I set Include sub-domains in results to 'true'
 #         And I set Include parent domains in results to 'true'
 #         And I select '<PaginationStyle>' Pagination and '<ResultCount>' Results per page
+# TODO: below line has already been added
 #         And I select 'Grid' view as Search result style
 #         Then Results per page should be 'Equal To' '<ResultCount>'
 #         And I Scroll beyond the last asset
@@ -265,6 +283,7 @@ Ability to add Resource List widget and edit the configuration
 #         And I set Include sub-domains in results to 'true'
 #         And I set Include parent domains in results to 'true'
 #         And I select '<PaginationStyle>' Pagination and '<ResultCount>' Results per page
+# TODO: below line has already been added
 #         And I select 'Grid' view as Search result style
 #         Then Results per page should be 'Equal To' '<ResultCount>'
 #         And I click on Load more button
@@ -282,6 +301,7 @@ Ability to add Resource List widget and edit the configuration
 #         And I set Include sub-domains in results to 'true'
 #         And I set Include parent domains in results to 'true'
 #         And I select '<PaginationStyle>' Pagination and '<ResultCount>' Results per page
+# TODO: below line has already been added
 #         And I select 'Grid' view as Search result style
 #         Then Icons 'Next Page' and 'Last Page' are disabled when i click 'Last Page'
 #         And Icons 'Previous Page' and 'First Page' are disabled when i click 'First Page'
@@ -301,6 +321,7 @@ Ability to add Resource List widget and edit the configuration
 #     Scenario Outline: No InfiniteScroll/LoadMore/Pagination when there are no more assets to load
 #         And I click on 'Resource List' widget Settings Button
 #         And I select '<PaginationStyle>' Pagination and '<ResultCount>' Results per page
+# TODO: below line has already been added
 #         And I select 'Grid' view as Search result style
 #         And I search for the first asset
 #         And I Scroll beyond the last asset
@@ -317,6 +338,7 @@ Ability to add Resource List widget and edit the configuration
 #     Scenario Outline: Select Visible assets
 #         And I click on 'Resource List' widget Settings Button
 #         And I select '<PaginationStyle>' Pagination and '<ResultCount>' Results per page
+# TODO: below line has already been added
 #         And I select 'Grid' view as Search result style
 #         And I click on Select visible icon
 #         Then All visible Assets are selected
