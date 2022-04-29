@@ -139,6 +139,42 @@ class HomePage {
   getResultsPerPageDropdown () {
     return cy.get('mat-select[formcontrolname="pageSize"]');
   }
+
+  getPaginatorFirst () {
+    return  cy.get('.mat-paginator-navigation-first');
+  }
+
+  getPaginatorLast () {
+    return cy.get('.mat-paginator-navigation-last');
+  }
+
+  getPaginatorPrev () {
+    return  cy.get('.mat-paginator-navigation-previous');
+  }
+
+  getPaginatorNext () {
+    return  cy.get('.mat-paginator-navigation-next');
+  }
+
+  getSortDirectionBtn () {
+    return cy.get('.ItgResourceListSorter-direction');
+  }
+
+  getIncludeSubDomains () {
+    return cy.get('[formcontrolname=subDomains]');
+  }
+
+  getIncludeParentDomains () {
+    return cy.get('[formcontrolname="inheritDomains"]');
+  }
+
+  getSortOption () {
+    return cy.get('.ItgResourceListSorter-label .mat-button-wrapper');
+  }
+
+  getPaginationStyle () {
+    return cy.get('mat-radio-group[formcontrolname="paginationStyle"]');
+  }
 }
 
 export default HomePage;

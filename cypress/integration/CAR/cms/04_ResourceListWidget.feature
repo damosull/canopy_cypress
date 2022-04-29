@@ -209,53 +209,56 @@ Ability to add Resource List widget and edit the configuration
       | Grid      |
       | List      |
 
-#   Scenario: 26 Asset Selection retained over pagination
-#     Given I click on widget Settings Button
-#     And I select 'Pagination' pagination and '10' results per page
-#     And I select 'Grid' view as Search Result style
-#     And I click on Select Visible icon
-#     # TODO: tomorrow, get below step working, tricky to compare them
-#     Then All visible assets are selected
-# #         And I select pagination Navigator 'Last page'
-# #         And I select pagination Navigator 'First page'
-# #         And All visible Assets are selected
+  Scenario: 26 Asset Selection retained over pagination
+    Given I click on widget Settings Button
+    And I select 'Pagination' pagination and '10' results per page
+    And I select 'Grid' view as Search Result style
+    And I click on Select Visible icon
+    Then All visible assets are selected
+    And I select pagination Navigator 'Last page'
+    And I select pagination Navigator 'First page'
+    And All visible assets are selected
 
-#     Scenario: Asset Selection not retained on navigating to Asset Detail page
-#         And I click on 'Resource List' widget Settings Button
-# TODO: below line has already been added
-#         And I select 'Grid' view as Search result style
-#         And I click on Select visible icon
-#         Then All visible Assets are selected
-#         And I click on the first AssetName in Asset 'Grid' view
-#         And I click on Browser Back button
-#         And All visible Assets are not selected
+  Scenario: 27 Asset Selection not retained on navigating to Asset Detail page
+    Given I click on widget Settings Button
+    And I select 'Grid' view as Search Result style
+    And I click on Select Visible icon
+    Then All visible assets are selected
+    And I click on the first AssetName in Asset 'Grid' view
+    And I click on Browser Back button
+    And All visible assets are not selected
 
+  Scenario: 28 Sort dropdown, Default Sort Options and tooltip on Ascending-Descending arrow
+    Given I click on widget Settings Button
+    When I click on 'Close editor' button
+    Then Sort options are defaulted to Date Created and Descending
+    And the below sort options are available
+      | Name          |
+      | Type          |
+      | State         |
+      | Date Created  |
+      | Date Modified |
+      # TODO: in below step trigger('mouseover') isn't showing tooltip, need to look into this more
+    Then I see 'Descending' tooltip on hovering over Sort Direction
+    And I set the sort direction to 'Ascending'
+    And I see 'Ascending' tooltip on hovering over Sort Direction
 
-#     Scenario: Sort dropdown, Default Sort Options and tooltip on Ascending-Descending arrow
-#         And I click on 'Close editor' toggle Button
-#         Then Sort options are defaulted to Date Created and Descending
-#         And I see the sort options 'Name,Type,State,Date Created,Date Modified'
-#         Then I see 'Descending' tooltip on hovering over Sort Direction
-#         And I set the sort direction to 'Ascending'
-#         And I see 'Ascending' tooltip on hovering over Sort Direction
-
-
-#     Scenario Outline:Assets Sorted as per the Sort options
-#         And I click on 'Resource List' widget Settings Button
-#         And I set Include sub-domains in results to 'true'
-#         And I set Include parent domains in results to 'true'
-#         And I select '<PaginationStyle>' Pagination and '<ResultCount>' Results per page
-# TODO: below line has already been added
-#         And I select 'Grid' view as Search result style
-#         And I click on 'Close editor' toggle Button
-#         And I select the Sort options '<SortOption>' and '<SortOrder>'
+# TODO: started working on some of the below steps
+  # Scenario Outline: 29 Assets Sorted as per the Sort options
+  #   Given I click on widget Settings Button
+  #   And I set Include Sub-Domains in Results to 'true'
+  #   And I set Include Parent Domains in Results to 'true'
+  #   And I select '<PaginationStyle>' pagination and '<ResultCount>' results per page
+    # And I select 'Grid' view as Search Result style
+    # And I click on 'Close editor' button
+    #     And I select the Sort options '<SortOption>' and '<SortOrder>'
 #         Then Selected Sort option '<SortOption>' is highlighted
 #         And Sort options '<SortOption>' and '<SortOrder>' is shown in URL
 #         And Assets are sorted as per Sort options '<SortOption>', '<SortOrder>', '<ResultCount>'
 
-#         Examples:
-#             | PaginationStyle | ResultCount | SortOption | SortOrder |
-#             | Load more       | 10          | Name       | Ascending |
+    # Examples:
+    #   | PaginationStyle | ResultCount | SortOption | SortOrder |
+    #   | Load more       | 10          | Name       | Ascending |
 
 
 #     #Change the Result count in Examples to big number after loading more assets

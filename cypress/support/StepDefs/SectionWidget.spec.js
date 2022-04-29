@@ -4,8 +4,8 @@ import '@4tw/cypress-drag-drop';
 
 const homePage = new HomePage();
 
-let assetName = 'damo';
-let assetType = 'damo1';
+let assetName = '';
+let assetType = '';
 let myUrl = '';
 
 Given('I login to ITG', () => {
@@ -281,7 +281,7 @@ And('I select {string} domain', (domain) => {
 });
 
 And('I check the Include Sub Domains in results checkbox', () => {
-  cy.get('[formcontrolname=subDomains]').click();
+  homePage.getIncludeSubDomains().click();
 });
 
 And('I check the Include Parent Domains in results checkbox', () => {
@@ -356,6 +356,7 @@ And('I click on the first AssetName in Asset {string} view', (view) => {
     homePage.getAssetName().first().then($el => {
       assetName = $el.text();
     }).click();
+    cy.get('.ItgAssetDetails-name').should('be.visible');
   }
 
   if (view === 'List') {
@@ -366,6 +367,8 @@ And('I click on the first AssetName in Asset {string} view', (view) => {
       assetName = $el.text();
     }).click();
   }
+
+  // need to check URL contains assetDetails
 });
 
 Then('Asset Details Page opens with AssetName as Title', () => {
@@ -399,11 +402,21 @@ And('I click on Browser Back button', () => {
 });
 
 And('I see the first asset on Asset {string} view', (view) => {
+  let firstAsset;
   if (view === 'Grid') {
     homePage.getAssetsInGrid().first().should('be.visible');
+    homePage.getAssetsInGrid().first().then($el => {
+      firstAsset = $el.text();
+      expect(firstAsset).to.contain(assetName);
+    });
   }
 
   if (view === 'List') {
+    homePage.getAssetNameInList().first().should('be.visible');
+    homePage.getAssetNameInList().first().then($el => {
+      firstAsset = $el.text();
+      expect(firstAsset).to.contain(assetName);
+    });
   }
 });
 
@@ -414,8 +427,6 @@ And('I select {string} pagination and {string} results per page', (pagination, r
     homePage.getPaginationPaginationStyleRdo().click();
   }
 
-  // homePage.getResultsPerPageDropdown().click();
-
   homePage.getResultsPerPageDropdown().click().get('mat-option').contains(results).click();
 });
 
@@ -424,11 +435,94 @@ And('I click on Select Visible icon', () => {
 });
 
 Then('All visible assets are selected', () => {
+  cy.get('.ItgResourceListResultGrid-checkbox.mat-checkbox-checked').then($el => {
+    let checkedResultsCount = $el.length;
+    cy.get('.ItgResourceListResultGrid-checkbox').then($el => {
+      expect($el).to.have.length(checkedResultsCount);
+    });
+  });
+});
 
-  // TODO: tomorrow, compare the count of the below, should match.
-  // tricky to get them to compare thoug
+And('I select pagination Navigator {string}', (page) => {
+  if (page === 'First page') {
+    homePage.getPaginatorFirst().click();
+  }
 
-  cy.get('.ItgResourceListResultGrid-checkbox');
+  if (page === 'Last page') {
+    homePage.getPaginatorLast().click();
+  }
 
-  cy.get('.ItgResourceListResultGrid-checkbox.mat-checkbox-checked');
+  if (page === 'Next page') {
+    homePage.getPaginatorNext().click();
+  }
+
+  if (page === 'Previous page') {
+    homePage.getPaginatorPrev().click();
+  }
+});
+
+Then('All visible assets are not selected', () => {
+  cy.get('.ItgResourceListResultGrid-checkbox').should('have.attr', 'class')
+    .and('not.contain', 'mat-checkbox-checked');
+});
+
+Then('Sort options are defaulted to Date Created and Descending', () => {
+  homePage.getSortOption().should('have.text', ' By: Date Created arrow_drop_down');
+
+  homePage.getSortDirectionBtn().should('have.attr', 'aria-label', 'Descending');
+});
+
+And('the below sort options are available', (dataTable) => {
+  cy.get('.ItgResourceListSorter-label').click();
+  dataTable.rawTable.forEach(($ele, index) => {
+    cy.get('.mat-menu-content > button').eq(index).should('have.text', ' ' + $ele.toString() + ' ');
+  });
+  cy.get('.ItgResourceListSorter-activeOption').click();
+});
+
+And('I see {string} tooltip on hovering over Sort Direction', (direction) => {
+  // # TODO: in below step trigger('mouseover') isn't showing tooltip, need to look into this more
+  homePage.getSortDirectionBtn().trigger('mouseover');
+  // TODO: below works fine if I hover manually during test so leave below, it's just the mouseover that needs to be fixed
+  // cy.get('.cdk-overlay-container .mat-tooltip').should('have.text', direction);
+});
+
+And('I set the sort direction to {string}', (direction) => {
+  homePage.getSortDirectionBtn().invoke('attr', 'aria-label').then(currentDirection => {
+    if (direction !== currentDirection) {
+      homePage.getSortDirectionBtn().click();
+    }
+  });
+});
+
+And('I set Include Sub-Domains in Results to {string}', (includeSubDomain) => {
+  homePage.getIncludeSubDomains().invoke('attr', 'class').then(getClassAttribute => {
+    if ((includeSubDomain === 'true' && !getClassAttribute.includes('mat-checkbox-checked')) || (includeSubDomain === 'false' && getClassAttribute.includes('mat-checkbox-checked'))) {
+      homePage.getIncludeSubDomains().click();
+    }
+  });
+});
+// TODO: merge above & below steps (just use {string} as the Sub/Parent parts)
+
+And('I set Include Parent Domains in Results to {string}', (includeParentDomain) => {
+  homePage.getIncludeParentDomains().invoke('attr', 'class').then(getClassAttribute => {
+    if ((includeParentDomain === 'true' && !getClassAttribute.includes('mat-checkbox-checked')) || (includeParentDomain === 'false' && getClassAttribute.includes('mat-checkbox-checked'))) {
+      homePage.getIncludeParentDomains().click();
+    }
+  });
+});
+
+And('I select {string} pagination and {string} results per page', (paginationStyle, resultsPerPage) => {
+// 1. filterElementAll
+
+  // USING: homePage.getPaginationStyle() & paginationStyle ("Load More")
+
+
+
+  homePage.getResultsPerPageDropdown().click();
+// then selectFromListBox(resultsPerPage)
+});
+
+And('I select the Sort options {string} and {string}', (sortOption, sortOrder) => {
+  homePage.getSortOption().click();
 });
