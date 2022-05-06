@@ -136,6 +136,14 @@ class HomePage {
     return cy.get('#mat-radio-7 > .mat-radio-label');
   }
 
+  getLoadMorePaginationStyleRdo () {
+    return cy.get('#mat-radio-5 > .mat-radio-label');
+  }
+
+  getInfiniteScrollPaginationStyleRdo () {
+    return cy.get('#mat-radio-6 > .mat-radio-label');
+  }
+
   getResultsPerPageDropdown () {
     return cy.get('mat-select[formcontrolname="pageSize"]');
   }
@@ -174,6 +182,118 @@ class HomePage {
 
   getPaginationStyle () {
     return cy.get('mat-radio-group[formcontrolname="paginationStyle"]');
+  }
+
+  getSortOptionList () {
+    return cy.get('.cdk-overlay-pane div[role="menu"]');
+  }
+
+  getActiveSortOption () {
+    return cy.get('.ItgResourceListSorter-activeOption');
+  }
+
+  getLoadMoreBtn () {
+    return cy.get('.ItgResourceListWidget-loadMore .mat-button-wrapper');
+  }
+
+  getSnackBar () {
+    return cy.get('.ItgAssetSnackbar-container');
+  }
+
+  getBackToTopBtn () {
+    return cy.get('.ItgScrollTop-container > .mat-focus-indicator');
+  }
+
+  getKeywordFilterBtn () {
+    return cy.get('.ItgResourceListKeywordFilter-panel');
+  }
+
+  getDomainFilterBtn () {
+    return cy.get('itg-resource-list-domain-filter [role="button"]');
+  }
+
+  getStateFilterBtn () {
+    return cy.get('itg-resource-list-state-filter [role="button"]');
+  }
+
+  getTypesFilterBtn () {
+    return cy.get('itg-resource-list-types-filter [role="button"]');
+  }
+
+  getAdaptorFilterBtn () {
+    return cy.get('itg-resource-list-adaptor-filter [role="button"]');
+  }
+
+  getPhaseFilterBtn () {
+    return cy.get('itg-resource-list-phase-filter [role="button"]');
+  }
+
+  getKeywordFilterSubMenu () {
+    return cy.get('.ItgResourceListKeywordFilter-subPanel .mat-list-text');
+  }
+
+  getDomainFilterSubMenu () {
+    return cy.get('itg-resource-list-domain-filter .mat-list-text');
+  }
+
+  getStateFilterSubMenu () {
+    return cy.get('itg-resource-list-state-filter .mat-list-text');
+  }
+
+  getTypesFilterSubMenu () {
+    return cy.get('itg-resource-list-types-filter .mat-checkbox-label');
+  }
+
+  getKeyWordsMenuText () {
+    return cy.get('.mat-expansion-panel-header-title');
+  }
+
+  getKeyWordsMenu () {
+    return cy.get('.ItgResourceListKeywordFilter-subPanel');
+  }
+
+  getAdaptorFilterSubMenu () {
+    return cy.get('itg-resource-list-adaptor-filter mat-list-option');
+  }
+
+  getPhaseFilterMenu () {
+    return cy.get('.ItgResourceListPhaseFilter-label');
+  }
+
+  getDropdownOverlay () {
+    return cy.get('.cdk-overlay-pane > .cdk-overlay-pane');
+  }
+
+  getAppliedFilters () {
+    return cy.get('[aria-labelledby="appliedFilters"] > [role="option"]');
+  }
+
+  getCancelAppliedFilters () {
+    return cy.get('[aria-labelledby="appliedFilters"] > .mat-icon');
+  }
+
+  getShowKeyWordCount () {
+    return cy.get('.ItgResourceListWidgetSettings-keywordSettings [formcontrolname="showCount"]');
+  }
+
+  getAppliedFilterText () {
+    return cy.get('#appliedFilters');
+  }
+
+  getAppliedFiltersArea () {
+    return cy.get('[aria-label="appliedFilters"]');
+  }
+
+  getMultiSelectAdaptorFilter () {
+    return cy.get('.ItgResourceListWidgetSettings-adaptorSettings [formcontrolname="multiple"]');
+  }
+
+  getAdaptorLabel () {
+    return cy.get('input[data-placeholder="Adaptors"]');
+  }
+
+  getSpinnerLabel () {
+    return cy.get('#spinnerLabel');
   }
 }
 

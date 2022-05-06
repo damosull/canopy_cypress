@@ -51,6 +51,9 @@ Ability to add Resource List widget and edit the configuration
     Then Right hand panel is shown
     And Right hand panel is titled ' Editing Resource List '
     And Widget being edited is highlighted
+    And I click on 'Close editor' button
+TODO:  need to get below step working
+THen Widgets are not highlighted in Preview mode
 
   Scenario: 08 Edit Heading Widget Title
     Given I click on widget Settings Button
@@ -243,301 +246,296 @@ Ability to add Resource List widget and edit the configuration
     And I set the sort direction to 'Ascending'
     And I see 'Ascending' tooltip on hovering over Sort Direction
 
-# TODO: started working on some of the below steps
-  # Scenario Outline: 29 Assets Sorted as per the Sort options
+  Scenario Outline: 29 Assets Sorted as per the Sort options
+    Given I click on widget Settings Button
+    And I set Include 'Sub' Domains in Results to 'true'
+    And I set Include 'Parent' Domains in Results to 'true'
+    And I select '<PaginationStyle>' pagination and '<ResultCount>' results per page
+    And I select 'Grid' view as Search Result style
+    And I click on 'Close editor' button
+    And I select the Sort options '<SortOption>' and '<SortOrder>'
+    Then Selected Sort option '<SortOption>' is highlighted
+    And Sort options '<SortOption>' and '<SortOrder>' is shown in URL
+    And Assets are sorted as per Sort options '<SortOption>', '<SortOrder>', '<ResultCount>'
+
+    Examples:
+      | PaginationStyle | ResultCount | SortOption | SortOrder |
+      | Load more       | 10          | Name       | Ascending |
+
+  Scenario Outline: 30 Infinite Scroll
+    Given I click on widget Settings Button
+    And I set Include 'Sub' Domains in Results to 'true'
+    And I set Include 'Parent' Domains in Results to 'true'
+    And I select '<PaginationStyle>' pagination and '<ResultCount>' results per page
+    And I select 'Grid' view as Search Result style
+    Then Results per page should be 'equal to' '<ResultCount>'
+    And I scroll beyond the last asset
+    And Results per page should be 'twice' '<ResultCount>'
+    And I scroll beyond the last asset
+    And Results per page should be 'thrice' '<ResultCount>'
+
+    Examples:
+      | PaginationStyle | ResultCount |
+      | Infinite scroll | 10          |
+      | Infinite scroll | 50          |
+
+  Scenario Outline: 31 Load More
+    Given I click on widget Settings Button
+    And I set Include 'Sub' Domains in Results to 'true'
+    And I set Include 'Parent' Domains in Results to 'true'
+    And I select '<PaginationStyle>' pagination and '<ResultCount>' results per page
+    And I select 'Grid' view as Search Result style
+    Then Results per page should be 'equal to' '<ResultCount>'
+    And I click on 'Load more' button
+    And Results per page should be 'twice' '<ResultCount>'
+    And I click on 'Load more' button
+    And Results per page should be 'thrice' '<ResultCount>'
+
+    Examples:
+      | PaginationStyle | ResultCount |
+      | Load more       | 10          |
+      | Load more       | 100         |
+
+  Scenario Outline: 32 Pagination
+    Given I click on widget Settings Button
+    And I set Include 'Sub' Domains in Results to 'true'
+    And I set Include 'Parent' Domains in Results to 'true'
+    And I select '<PaginationStyle>' pagination and '<ResultCount>' results per page
+    And I select 'Grid' view as Search Result style
+    Then Icons 'Next Page' and 'Last Page' are disabled when I click 'Last Page'
+    And Icons 'Previous Page' and 'First Page' are disabled when I click 'First Page'
+    # TODO: skipped for now to speed up time, was taking too long to work out dataTables & scenario outline together
+    # And Pagination Range and PageNo on URL are shown for '<ResultCount>'
+    #   | Pagination    |
+    #   | Last Page     |
+    #   | Previous Page |
+    #   | First Page    |
+    #   | Next Page     |
+    And Results per page should be 'equal to' '<ResultCount>'
+    And URL captures Asset Details page
+    And I am on same page on refreshing the page
+
+    Examples:
+      | PaginationStyle | ResultCount |
+      | Pagination      | 10          |
+
+  Scenario Outline: 33 No InfiniteScroll/LoadMore/Pagination when there are no more assets to load
+    Given I click on widget Settings Button
+    And I select '<PaginationStyle>' pagination and '<ResultCount>' results per page
+    And I select 'Grid' view as Search Result style
+    And I search for the first asset
+    And I scroll beyond the last asset
+    Then Results per page should be 'equal to' '1'
+    And Load More button is not displayed
+    And Pagination is disabled
+
+    Examples:
+      | PaginationStyle | ResultCount |
+      | Infinite scroll | 10          |
+      | Load more       | 50          |
+      | Pagination      | 10          |
+
+  Scenario Outline: 34 Select Visible assets
+    Given I click on widget Settings Button
+    And I select '<PaginationStyle>' pagination and '<ResultCount>' results per page
+    And I select 'Grid' view as Search Result style
+    And I click on Select Visible icon
+    Then All visible assets are selected
+    And Count of selected items '<ResultCount>' is displayed on snack bar
+    And First asset is unselected as I uncheck the first asset
+    And I click on 'Clear all' button
+    And All visible Assets are unselected and Snack bar is not displayed
+
+    Examples:
+      | PaginationStyle | ResultCount |
+      | Load more       | 50          |
+
+  Scenario: 35 Back To Top button is not hidden when there is a snack bar
+    And I click on Select Visible icon
+    Then Snack bar is displayed
+    And I navigate to the last asset
+    # TODO: in below step need to figure out how to validate the hover, I can validate the aria-label alright
+    Then Back to Top arrow is displayed with 'Back to Top' tooltip upon hover
+    When I click button based on aria-label "Back to Top"
+    And I am brought back to top
+
+  Scenario Outline: 36 Enable/Disable Filters
+    Given I click on widget Settings Button
+    When Enable '<FilterType>' Filter is unchecked on CMS Editor
+    And '<FilterType>' filter 'is not' shown in widget
+    And I 'check' Enable '<FilterType>' Filter on Config panel
+    And '<FilterType>' filter 'is' shown in widget
+
+    Examples:
+      | FilterType |
+      | keyword    |
+      | types      |
+      | state      |
+      | domains    |
+      | adaptor    |
+      | phase      |
+
+  Scenario Outline: 37 Counts shown on filters
+    Given I click on widget Settings Button
+    And I 'check' Enable '<FilterType>' Filter on Config panel
+    # TODO: below step created, but can't find the elements
+    # Then Show '<FilterType>' count option is checked by default
+    And I click on 'Close editor' button
+    And I click on '<FilterType>' filter on widget
+    And Counts are displayed on '<FilterType>' filter
+
+    Examples:
+      | FilterType |
+      | keyword    |
+      | domains    |
+      | state      |
+      | types      |
+
+    #Get State filter configured on stage
+  Scenario Outline: 38 Count on filter matches the count of list View
+    Given I click on widget Settings Button
+    And I 'check' Enable '<FilterType>' Filter on Config panel
+    And I click on 'Close editor' button
+    And I select the first '<FilterType>' filter
+    Then Count on filter matches the count of list View
+
+    Examples:
+      | FilterType |
+      | keyword    |
+      | domain     |
+      | state      |
+      | types      |
+
+  Scenario Outline: 39 Applied Filters and Remove pills
+    Given I click on widget Settings Button
+    And I 'check' Enable '<FilterType>' Filter on Config panel
+    And I click on 'Close editor' button
+    And I select the first '<FilterType>' filter
+    Then Applied Filter is displayed as pill
+    And I click on X button on Applied Filter
+    And Applied Filter is removed
+
+    Examples:
+      | FilterType |
+      | keyword    |
+      | domain     |
+      | state      |
+      | types      |
+      | adaptor    |
+      | phase      |
+
+  Scenario Outline: 40 Set Applied Filters and Disable Filter
+    Given I click on widget Settings Button
+    And I 'check' Enable '<FilterType>' Filter on Config panel
+    And I select the first '<FilterType>' filter
+    Then Applied Filter is displayed as pill
+    And I 'uncheck' Enable '<FilterType>' Filter on Config panel
+    And '<FilterType>' filter 'is not' shown in widget
+    And Applied Filters are not shown on the widget
+
+    Examples:
+      | FilterType |
+      | keyword    |
+      | domain     |
+      | state      |
+      | types      |
+      | adaptor    |
+      | phase      |
+
+  @retry @failure
+  Scenario: 41 Disable Counts on Keyword filters
+    Given I click on widget Settings Button
+    And I 'check' Enable 'Keyword' Filter on Config panel
+    And I 'uncheck' Show keyword count on Config panel
+    And I click on 'Close editor' button
+    # And I click on Keywords filter on widget
+    And I select the first 'keyword' filter
+    # TODO: below step needs to be fixed when I can run code
+    Then Counts are not displayed on Keyword filters
+
+    # include count of assets
+  Scenario: 42 Clear All Filters
+    Given I click on widget Settings Button
+    And I 'check' Enable 'keyword' Filter on Config panel
+    And I click on 'Close editor' button
+    And I select the first 'keyword' filter
+    And Keyword filter parameters are displayed on URL
+    And I click on Clear All button
+    And All the applied filters are cleared
+    And Keyword Filters are removed from URL
+
+  # Scenario: 43 Add to Basket
+  #   And I clear the basket using API
+  #   And I add the first asset to Basket
+  #   Then Toast Notification is displayed with number of items added to basket
+  #   And Basket count is updated
+
+  Scenario: 44 Adaptor Filter - Single Selection
+    Given I click on widget Settings Button
+    And I 'check' Enable 'adaptor' Filter on Config panel
+    And I click on 'Close editor' button
+    And I select the first 'adaptor' filter
+    Then Applied Filter is displayed as pill
+    And I select the second adaptor filter
+    And First adaptor filter 'is' UnChecked
+    And Filter pill is updated to second filter
+
+  Scenario: 45 Adaptor Filter - multiple Selection
+    Given I click on widget Settings Button
+    And I 'check' Enable 'adaptor' Filter on Config panel
+    And I 'select' multiSelect option for adaptor filter
+    And I click on 'Close editor' button
+    And I select the first 'adaptor' filter
+    Then Applied Filter is displayed as pill
+    And I select the second adaptor filter
+    And First adaptor filter 'is not' UnChecked
+    And Additional filter pill is displayed with second adaptor
+
+  # Scenario: Adaptor filter - Adaptor label
   #   Given I click on widget Settings Button
-  #   And I set Include Sub-Domains in Results to 'true'
-  #   And I set Include Parent Domains in Results to 'true'
-  #   And I select '<PaginationStyle>' pagination and '<ResultCount>' results per page
-    # And I select 'Grid' view as Search Result style
-    # And I click on 'Close editor' button
-    #     And I select the Sort options '<SortOption>' and '<SortOrder>'
-#         Then Selected Sort option '<SortOption>' is highlighted
-#         And Sort options '<SortOption>' and '<SortOrder>' is shown in URL
-#         And Assets are sorted as per Sort options '<SortOption>', '<SortOrder>', '<ResultCount>'
-
-    # Examples:
-    #   | PaginationStyle | ResultCount | SortOption | SortOrder |
-    #   | Load more       | 10          | Name       | Ascending |
-
-
-#     #Change the Result count in Examples to big number after loading more assets
-#     Scenario Outline: Infinite Scroll
-#         And I click on 'Resource List' widget Settings Button
-#         And I set Include sub-domains in results to 'true'
-#         And I set Include parent domains in results to 'true'
-#         And I select '<PaginationStyle>' Pagination and '<ResultCount>' Results per page
-# TODO: below line has already been added
-#         And I select 'Grid' view as Search result style
-#         Then Results per page should be 'Equal To' '<ResultCount>'
-#         And I Scroll beyond the last asset
-#         And Results per page should be 'Twice' '<ResultCount>'
-#         And I Scroll beyond the last asset
-#         And Results per page should be 'Thrice' '<ResultCount>'
-
-#         Examples:
-#             | PaginationStyle | ResultCount |
-#             | Infinite scroll | 10          |
-#             | Infinite scroll | 50          |
-
-#     #Change the Result count in Examples to big number after loading more assets
-#     Scenario Outline: Load More
-#         And I click on 'Resource List' widget Settings Button
-#         And I set Include sub-domains in results to 'true'
-#         And I set Include parent domains in results to 'true'
-#         And I select '<PaginationStyle>' Pagination and '<ResultCount>' Results per page
-# TODO: below line has already been added
-#         And I select 'Grid' view as Search result style
-#         Then Results per page should be 'Equal To' '<ResultCount>'
-#         And I click on Load more button
-#         And Results per page should be 'Twice' '<ResultCount>'
-#         And I click on Load more button
-#         And Results per page should be 'Thrice' '<ResultCount>'
-
-#         Examples:
-#             | PaginationStyle | ResultCount |
-#             | Load more       | 10          |
-#             | Load more       | 100         |
-
-#     Scenario Outline: Pagination
-#         And I click on 'Resource List' widget Settings Button
-#         And I set Include sub-domains in results to 'true'
-#         And I set Include parent domains in results to 'true'
-#         And I select '<PaginationStyle>' Pagination and '<ResultCount>' Results per page
-# TODO: below line has already been added
-#         And I select 'Grid' view as Search result style
-#         Then Icons 'Next Page' and 'Last Page' are disabled when i click 'Last Page'
-#         And Icons 'Previous Page' and 'First Page' are disabled when i click 'First Page'
-#         And Pagination Range and PageNo on URL are shown for '<ResultCount>'
-#             | Pagination    |
-#             | Last Page     |
-#             | Previous Page |
-#             | First Page    |
-#             | Next Page     |
-#         And Results per page should be 'Equal To' '<ResultCount>'
-#         And I am on the same page when i refresh the page
-
-#         Examples:
-#             | PaginationStyle | ResultCount |
-#             | Pagination      | 10          |
-
-#     Scenario Outline: No InfiniteScroll/LoadMore/Pagination when there are no more assets to load
-#         And I click on 'Resource List' widget Settings Button
-#         And I select '<PaginationStyle>' Pagination and '<ResultCount>' Results per page
-# TODO: below line has already been added
-#         And I select 'Grid' view as Search result style
-#         And I search for the first asset
-#         And I Scroll beyond the last asset
-#         Then Results per page do not change
-#         And Load More button is not displayed
-#         And Pagination is disabled
-
-#         Examples:
-#             | PaginationStyle | ResultCount |
-#             | Infinite scroll | 10          |
-#             | Load more       | 50          |
-#             | Pagination      | 10          |
-
-#     Scenario Outline: Select Visible assets
-#         And I click on 'Resource List' widget Settings Button
-#         And I select '<PaginationStyle>' Pagination and '<ResultCount>' Results per page
-# TODO: below line has already been added
-#         And I select 'Grid' view as Search result style
-#         And I click on Select visible icon
-#         Then All visible Assets are selected
-#         And Count of selected items '<ResultCount>' is displayed on snack bar
-#         And First asset is unselected as i uncheck the first asset
-#         And I click on Clear All button on Snack bar
-#         And All visible Assets are unselected and Snack bar is not displayed
-
-#         Examples:
-#             | PaginationStyle | ResultCount |
-#             | Load more       | 50          |
-
-#     Scenario: Back To Top button is not hidden when there is a snack bar
-#         And I click on Select visible icon
-#         Then Snack bar is displayed
-#         And I navigate to the last asset
-#         Then Back to Top arrow is displayed with 'Back to Top' tooltip upon hover
-#         And I click on Back to top arrow
-#         And I am navigated back to top
-
-#     Scenario Outline: Enable/Disable Filters
-#         And I click on 'Resource List' widget Settings Button
-#         Then Enable '<FilterType>' Filter is unchecked on CMS Editor
-#         And '<FilterType>' filter 'is not' shown in widget
-#         And I 'check' Enable '<FilterType>' Filter on Config panel
-#         And '<FilterType>' filter 'is' shown in widget
-
-#         Examples:
-#             | FilterType |
-#             | keyword    |
-#             | domain     |
-#             | state      |
-#             | types      |
-#             | adaptor    |
-#             | phase      |
-
-
-
-#     #disable counts too
-#     Scenario Outline: Counts shown on filters
-#         And I click on 'Resource List' widget Settings Button
-#         And I 'check' Enable '<FilterType>' Filter on Config panel
-#         Then Show '<FilterType>' count option is checked by default
-#         And I click on 'View preview' toggle Button
-#         And I click on '<FilterType>' filter on widget
-#         And Counts are displayed on '<FilterType>' filter
-
-#         Examples:
-#             | FilterType |
-#             | keyword    |
-#             | domain     |
-#             | state      |
-#             | types      |
-
-#     #Get State filter configured on stage
-#     Scenario Outline: Count on filter matches the count of list View
-#         And I click on 'Resource List' widget Settings Button
-#         And I 'check' Enable '<FilterType>' Filter on Config panel
-#         And I click on 'View preview' toggle Button
-#         And I select the first '<FilterType>' filter
-#         Then Count on filter matches the count of list View
-
-#         Examples:
-#             | FilterType |
-#             | keyword    |
-#             | domain     |
-#             | state      |
-#             | types      |
-
-#     Scenario Outline: Applied Filters and Remove pills
-#         And I click on 'Resource List' widget Settings Button
-#         And I 'check' Enable '<FilterType>' Filter on Config panel
-#         And I click on 'View preview' toggle Button
-#         And I select the first '<FilterType>' filter
-#         Then Applied Filter is displayed as pill
-#         And I click on X button on Applied Filter
-#         And Applied Filter is removed
-
-#         Examples:
-#             | FilterType |
-#             | keyword    |
-#             | domain     |
-#             | state      |
-#             | types      |
-#             | adaptor    |
-#             | phase      |
-
-#     Scenario Outline: Set Applied Filters and Disable Filter
-#         And I click on 'Resource List' widget Settings Button
-#         And I 'check' Enable '<FilterType>' Filter on Config panel
-#         And I select the first '<FilterType>' filter
-#         Then Applied Filter is displayed as pill
-#         And I 'uncheck' Enable '<FilterType>' Filter on Config panel
-#         And '<FilterType>' filter 'is not' shown in widget
-#         And Applied Filters are not shown on the widget
-
-#         Examples:
-#             | FilterType |
-#             | keyword    |
-#             | domain     |
-#             | state      |
-#             | types      |
-#             | adaptor    |
-#             | phase      |
-
-#     @retry @failure
-#     Scenario: Disable Counts on Keyword filters
-#         And I click on 'Resource List' widget Settings Button
-#         And I 'check' Enable 'Keyword' Filter on Config panel
-#         And I 'uncheck' Show keyword count on Config panel
-#         And I click on 'View preview' toggle Button
-#         #And I click on Keywords filter on widget
-#         And I select the first 'keyword' filter
-#         Then Counts are not displayed on Keyword filters
-
-#     # include count of assets
-#     Scenario: Clear All Filters
-#         And I click on 'Resource List' widget Settings Button
-#         And I 'check' Enable 'keyword' Filter on Config panel
-#         And I click on 'View preview' toggle Button
-#         And I select the first 'keyword' filter
-#         And Keyword filter parameters are displayed on URL
-#         And I click on Clear All button
-#         And All the applied filters are cleared
-#         And Keyword Filters are removed from URL
-
-#     Scenario: Add to Basket
-#         And I clear the basket using API
-#         And I add the first asset to Basket
-#         Then Toast Notification is displayed with number of items added to basket
-#         And Basket count is updated
-
-#     Scenario: Adaptor Filter - Single Selection
-#         And I click on 'Resource List' widget Settings Button
-#         And I 'check' Enable 'adaptor' Filter on Config panel
-#         And I click on 'View preview' toggle Button
-#         And I select the first 'adaptor' filter
-#         Then Applied Filter is displayed as pill
-#         And I select the second adaptor filter
-#         And First adaptor filter 'is' UnChecked
-#         And Filter pill is updated to second filter
-
-#     Scenario: Adaptor Filter - multiple Selection
-#         And I click on 'Resource List' widget Settings Button
-#         And I 'check' Enable 'adaptor' Filter on Config panel
-#         And I 'select' multiSelect option for adaptor filter
-#         And I click on 'View preview' toggle Button
-#         And I select the first 'adaptor' filter
-#         Then Applied Filter is displayed as pill
-#         And I select the second adaptor filter
-#         And First adaptor filter 'is not' UnChecked
-#         And Additional filter pill is displayed with second adaptor
-
-#     Scenario: Adaptor filter - Adaptor label
-#         And I click on 'Resource List' widget Settings Button
-#         And I 'check' Enable 'adaptor' Filter on Config panel
-#         And I input an adaptor label
-#         And I click on 'View preview' toggle Button
-#         And I select the first adaptor filter with label
+  #   And I 'check' Enable 'adaptor' Filter on Config panel
+  #       # TODO: work to be done in below step
+  #       # And I input an adaptor label
+  #   And I click on 'Close editor' button
+  #   And I select the first adaptor filter with label
 #         Then Adaptor Filter is shown with the adaptor label text
 #         And Applied filter pill has Adaptor label text
 
 #     Scenario: Phase Filter - Single Selection
-#         And I click on 'Resource List' widget Settings Button
+# Given I click on widget Settings Button
 #         And I 'check' Enable 'phase' Filter on Config panel
-#         And I click on 'View preview' toggle Button
+# And I click on 'Close editor' button
 #         And I select the first 'phase' filter
 #         Then Applied Filter is displayed as pill
 #         And I select the second phase filter
 #         And Filter pill is updated to second filter
 
 #     Scenario: Phase filter - Phase label
-#         And I click on 'Resource List' widget Settings Button
+# Given I click on widget Settings Button
 #         And I 'check' Enable 'phase' Filter on Config panel
 #         And I input a phase label
-#         And I click on 'View preview' toggle Button
+# And I click on 'Close editor' button
 #         And I select the first phase filter with label
 #         Then Phase Filter is shown with the phase label text
 #         And Applied filter pill has Phase label text
 
 #     Scenario: Retain position of asset on navigating back from Details to List page
-#         And I click on 'Resource List' widget Settings Button
+# Given I click on widget Settings Button
+# TODO: below, add to method on Line 423
 #         And I select 'Load more' Pagination and '50' Results per page
 #         And I click on the last Asset in the asset view
 #         And I click on Browser Back button
 #         Then I see the Last asset in the asset 'Grid' view
 
 #     Scenario: Asset Properties : Defaults to Name
-#         And I click on 'Resource List' widget Settings Button
+# Given I click on widget Settings Button
 #         Then Asset Properties has 'Name' as a default value
 #         And I search by 'Name' for asset 'TeamITG'
 #         And Search Filter is displayed as pill
 #     # And URL shows asset property 'Name' and value for asset 'TeamITG'
 
 #     Scenario: Asset Properties
-#         And I click on 'Resource List' widget Settings Button
+# Given I click on widget Settings Button
 #         And I select 'Id' from asset properties
 #         And I search by 'Id' for asset 'TeamITG'
 #         Then Search Filter is displayed as pill
