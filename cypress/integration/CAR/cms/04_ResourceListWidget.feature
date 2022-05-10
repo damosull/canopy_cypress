@@ -51,9 +51,6 @@ Ability to add Resource List widget and edit the configuration
     Then Right hand panel is shown
     And Right hand panel is titled ' Editing Resource List '
     And Widget being edited is highlighted
-    And I click on 'Close editor' button
-TODO:  need to get below step working
-THen Widgets are not highlighted in Preview mode
 
   Scenario: 08 Edit Heading Widget Title
     Given I click on widget Settings Button
@@ -106,11 +103,9 @@ THen Widgets are not highlighted in Preview mode
     Then All widgets are cleared
     And Config panel is collapsed
     
-    # TODO: finish
   Scenario: 15 Asset List Count
     Then Asset count is listed on the Resource list widget
-            #  TODO: Need to figure this out, not sure how to get the API response in the above step
-              # And Asset count is the same as List Asset API response
+    # And Asset count is the same as List Asset API response
 
   Scenario: 16 Asset List count : No Assets Found
     When I click on 'Publish' button
@@ -491,7 +486,7 @@ THen Widgets are not highlighted in Preview mode
     And First adaptor filter 'is not' UnChecked
     And Additional filter pill is displayed with second adaptor
 
-  # Scenario: Adaptor filter - Adaptor label
+    # Scenario: Adaptor filter - Adaptor label
   #   Given I click on widget Settings Button
   #   And I 'check' Enable 'adaptor' Filter on Config panel
   #       # TODO: work to be done in below step

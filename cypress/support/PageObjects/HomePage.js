@@ -105,11 +105,11 @@ class HomePage {
   }
 
   getListCheckBox () {
-    return cy.xpath("//span[text() = ' List ']//ancestor::mat-radio-button");
+    return cy.get('#mat-radio-3');
   }
 
   getGridCheckBox () {
-    return cy.xpath("//span[text() = ' Grid ']//ancestor::mat-radio-button");
+    return cy.get('#mat-radio-2');
   }
 
   getAssetsInGrid () {

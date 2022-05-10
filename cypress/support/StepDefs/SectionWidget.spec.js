@@ -12,7 +12,6 @@ let countOfFilters;
 let textOnFilter;
 let textOnSecondFilter;
 
-
 Given('I login to ITG', () => {
   cy.login();
 });
@@ -160,7 +159,6 @@ And('I set the {string} Spacing Option to {string}', (padding, value) => {
   const steps = (targetValue - currentValue) / increment;
   const arrows = '{leftarrow}'.repeat(steps);
 
-
   cy.contains(padding).click();
   homePage.getWidgetSpacingSlider().should('have.attr', 'aria-valuenow', currentValue).type(arrows);
   homePage.getWidgetSpacingSlider().should('have.attr', 'aria-valuenow', value);
@@ -206,7 +204,6 @@ And('clicking {string} button opens url in a new tab', (text) => {
   cy.contains(text).should('have.attr', 'target', '_blank');
 });
 
-// TODO: can I refactor this to use same step as in line 101?
 And('I set the Font Size on Config Panel to {string}', (value) => {
 
   const currentValue = 24;
@@ -239,7 +236,7 @@ Then('Text {string} is shown on the widget with selected font size and type {str
   homePage.getHeadingWidgetContent().should('have.css', 'font-size', '14px');
 
   if (bold === 'true') {
-    homePage.getHeadingWidgetContent().should('have.css', 'font-weight', '700'); // Bold = 700
+    homePage.getHeadingWidgetContent().should('have.css', 'font-weight', '700');
   }
 
   if (italic === 'true') {
@@ -270,7 +267,7 @@ And('{string} is displayed', (text)=> {
 });
 
 And('I navigate to the last asset', () => {
-  homePage.getAssetsInGrid().last().trigger('mouseover');
+  cy.get('.ItgResourceListResultGrid-result').last().trigger('mouseover');
 });
 
 And('I click button based on aria-label {string}', (label) => {
@@ -328,7 +325,7 @@ And('Results per page should be {string} {string}', (string, value) => {
 });
 
 Then('Grid View is set by default on Config Panel', () => {
-  cy.xpath('//span[text() = " Grid "]//ancestor::mat-radio-button').should('have.attr', 'class')
+  homePage.getGridCheckBox().should('have.attr', 'class')
     .and('contain', 'mat-radio-checked');
 });
 
@@ -360,27 +357,27 @@ And('I select {string} view as Search Result style', (string) => {
 
 And('AssetName and AssetType are shown under the asset in Grid view', () => {
   homePage.getAssetName().should('be.visible');
-  cy.get('.ItgResourceListDetailLink-resultSubTitle').should('be.visible');
+  cy.get('.ItgResourceListResultGrid-resultSubTitle').should('be.visible');
 });
 
 And('I click on the first AssetName in Asset {string} view', (view) => {
   if (view === 'Grid') {
-    homePage.getAssetType().first().then($el => {
-      assetType = $el.text();
-    });
-    homePage.getAssetName().first().then($el => {
-      // assetName = $el.text();
-    });
-    cy.get('.ItgAssetDetails-name').should('be.visible');
+    homePage.getAssetType().first().click();
+    //   assetType = $el.text();
+    // });
+    homePage.getAssetName().first().click();
+    //   // assetName = $el.text();
+    // });
+    // cy.get('.ItgAssetDetails-name').should('be.visible');
   }
 
   if (view === 'List') {
-    homePage.getAssetTypeInList().get(1).then($el => {
-      assetType = $el.text();
-    });
-    homePage.getAssetNameInList().first().then($el => {
-      assetName = $el.text();
-    }).click();
+    homePage.getAssetTypeInList().first().click();
+    //   assetType = $el.text();
+    // });
+    homePage.getAssetNameInList().first().click();
+    //   assetName = $el.text();
+    // }).click();
   }
 
   // need to check URL contains assetDetails
@@ -456,7 +453,7 @@ And('I click on Select Visible icon', () => {
 
 Then('All visible assets are selected', () => {
   cy.get('.ItgResourceListResultGrid-checkbox.mat-checkbox-checked').then($el => {
-    let checkedResultsCount = $el.length;
+    const checkedResultsCount = $el.length;
     cy.get('.ItgResourceListResultGrid-checkbox').then($el => {
       expect($el).to.have.length(checkedResultsCount);
     });
@@ -654,10 +651,10 @@ And('Pagination is disabled', () => {
 And('Count of selected items {string} is displayed on snack bar', (resultCount) => {
   cy.get('.ItgAssetSnackbar-label').then($el1 => {
     let assetCount;
-    let countText = $el1.text();
+    const countText = $el1.text();
     homePage.getResourceListWidgetCount().then($el => {
       assetCount = $el.text();
-      let snackBarCount = ' ' + resultCount + ' of ' + assetCount.replace(' items found ', '').trim() + ' items selected ';
+      const snackBarCount = ' ' + resultCount + ' of ' + assetCount.replace(' items found ', '').trim() + ' items selected ';
       expect(snackBarCount).to.eq(countText);
     });
   });
@@ -908,8 +905,8 @@ And('Counts are displayed on {string} filter', (filterType) => {
   }
 
   filterItem.then(item => {
-    let listItem = item.text();
-    let assetCount = Number(listItem.substring(listItem.indexOf('(') + 1,
+    const listItem = item.text();
+    const assetCount = Number(listItem.substring(listItem.indexOf('(') + 1,
       listItem.indexOf(')')));
     assert.isNumber(assetCount);
   });
@@ -990,7 +987,7 @@ Then('Count on filter matches the count of list View', () => {
   homePage.getResourceListWidgetCount().invoke('text').then(text => {
     assetCountTextSplit = text;
 
-    let count = textOnFilter.split(' ').pop();
+    const count = textOnFilter.split(' ').pop();
 
     filterCount = Number(count.substring(count.indexOf('(')+1, count.indexOf(')')));
 
@@ -1035,7 +1032,7 @@ And('I {string} Show keyword count on Config panel', (selection) => {
 
 Then('Counts are not displayed on Keyword filters', () => {
 // let isCountDisplayed = this.noCountOnKeywordFilters()
-  let countDisplay = [];
+  const countDisplay = [];
   // TODO: need to get the below converted to cypress when I can run to debug
   // for (const menu of await this.keywordFilterItem) {
   //   await this.elementToBeClickable(menu);
@@ -1115,7 +1112,7 @@ And('Additional filter pill is displayed with second adaptor', () => {
   homePage.getAppliedFilters().count().then(count => {
 
     homePage.getAppliedFilters().get(count - 2).invoke('text').then((textOnPill)=> {
-      let myTextOnPill = textOnPill.split('\n');
+      const myTextOnPill = textOnPill.split('\n');
       expect(textOnSecondFilter).to.contain(myTextOnPill[0]);
     });
   });
