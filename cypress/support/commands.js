@@ -30,15 +30,38 @@ Cypress.Commands.add('login', () => {
   cy.visit('/home');
   homePage.getBasket().should('be.visible');
 });
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add("drag", { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add("dismiss", { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This is will overwrite an existing command --
-// Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+
+Cypress.Commands.add('getAssetDetailsTabFields', () => {
+  let adaptorType;
+  let masterFileType;
+  let masterFileSize;
+  let versionNo;
+  let masterFile;
+  let modified;
+  let assetFolder;
+  let keywords; // split done here
+  let keywordsValue; // keywords.pop()
+  let keywordsTitle; // keywords.pop()
+  let assetFields // somethign donere here
+  let assetFieldsValue;  //assetFields.pop()
+  let assetFieldsTitle;  //assetFields.pop()
+
+  homePage.getAssetDetailTitle().should('be.visible');
+  
+  homePage.getAdaptorType().invoke('text').then(text => {
+    adaptorType = text;
+  });
+
+  homePage.getMasterFileType().invoke('text').then(text => {
+    masterFileType = text;
+  });
+
+  // TODO: do the below for the final variable to return everything in an object
+  // homePage.getAdaptorType().invoke('text').then(text => {
+  //   adaptorType = text;
+  // }).then(() => {
+  //   return {
+  //     adaptorType
+  //   };
+  // });
+});

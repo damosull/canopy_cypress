@@ -768,6 +768,12 @@ And('I {string} Enable {string} Filter on Config panel', (check, filterType) => 
         }
       });
     } else if (filterType === 'phase') {
+      cy.get(panelId).click();
+      cy.get(selectorId).invoke('attr', 'class').then(getClassAttribute => {
+        if (!getClassAttribute.includes('mat-checkbox-checked')) {
+          cy.get(selectorId).click();
+        }
+      });
       cy.get('#mat-checkbox-9').invoke('attr', 'class').then(getClassAttribute => {
         if (!getClassAttribute.includes('mat-checkbox-checked')) {
           cy.get('#mat-checkbox-9').click();
@@ -777,7 +783,6 @@ And('I {string} Enable {string} Filter on Config panel', (check, filterType) => 
       cy.get(panelId).click();
       cy.get(selectorId).invoke('attr', 'class').then(getClassAttribute => {
         if (!getClassAttribute.includes('mat-checkbox-checked')) {
-          // cy.get(panelId).click();
           cy.get(selectorId).click();
         }
       });
@@ -968,14 +973,11 @@ And('I select the first {string} filter', (filterType) => {
     });
   } else if (filterType === 'phase') {
     homePage.getPhaseFilterMenu().click();
-
-    homePage.getDropdownOverlay().get(1).invoke('text').then(text => {
+    homePage.getDropdownOverlay().eq(1).click();
+    homePage.getDropdownOverlay().eq(1).invoke('text').then(text => {
       filterSubMenuText = text;
-    });
-
-    homePage.getDropdownOverlay.get(1).click().then(() => {
       textOnFilter = 'Phase - ' + filterSubMenuText;
-    });
+    });    
   }
 });
 
@@ -999,9 +1001,10 @@ Then('Count on filter matches the count of list View', () => {
 });
 
 And('Applied Filter is displayed as pill', () => {
-  homePage.getAppliedFilters.last().invoke('text').then(text => {
+  homePage.getAppliedFilters().last().invoke('text').then(text => {
     let filterText = text;
     filterText = filterText.split('\n');
+    // TODO: There's a space in 'textOnFilter' that we need to remove somehow
     expect(textOnFilter).to.contain(filterText[0]);
   });
 });
@@ -1031,24 +1034,7 @@ And('I {string} Show keyword count on Config panel', (selection) => {
 });
 
 Then('Counts are not displayed on Keyword filters', () => {
-// let isCountDisplayed = this.noCountOnKeywordFilters()
   const countDisplay = [];
-  // TODO: need to get the below converted to cypress when I can run to debug
-  // for (const menu of await this.keywordFilterItem) {
-  //   await this.elementToBeClickable(menu);
-  //   await menu.click();
-  //   await this.keywordFilterSubMenu.each(async (item) => {
-  //     let presence = await this.isPresent(
-  //       item.element(this.keywordFilterSubMenuCount.locator()),
-  //     );
-  //     await countDisplay.push(presence);
-  //   });
-  // }
-  // return await countDisplay;
-
-
-// whatever is returned above is asserted on below
-// expect(isCountDisplayed.every(Boolean))to be false
 });
 
 And('Keyword filter parameters are displayed on URL', () => {
@@ -1086,8 +1072,8 @@ And('First adaptor filter {string} UnChecked', (selection) => {
 });
 
 And('Filter pill is updated to second filter', () => {
-
-  homePage.getAppliedFilters.last().invoke('text').then(text => {
+  cy.get('#spinnerLabel').should('not.exist');
+  homePage.getAppliedFilters().last().invoke('text').then(text => {
     let filterText = text;
     filterText = filterText.split('\n');
     expect(textOnSecondFilter).to.contain(filterText[0]);
@@ -1120,12 +1106,29 @@ And('Additional filter pill is displayed with second adaptor', () => {
 
 And('I input an adaptor label', () => {
   homePage.getAdaptorLabel().clear();
-  // TODO: convert below 2 into cypress
-  // process.env.LABEL = 'AdaptorLabel' + Date.now();
-  //   await this.adaptorLabel.sendKeys(process.env.LABEL);
 });
 
-// And('I select the first adaptor filter with label', () => {
-// //
-// // whatever is returned above needs to be assigned to global textOnFilter var
-// });
+And('I navigate to Asset Details page of asset {string}', (assetName) => {
+  homePage.getResourceListSearchInput().clear().type(assetName + '{enter}');
+  homePage.getSpinnerLabel().should('not.exist');
+  homePage.getAssetName().first().click();
+  homePage.getAssetDetailTitle().should('be.visible');
+  homePage.getAssetDetailTitle().should('have.text', assetName);
+});
+
+Then('Asset availability is shown on Asset Detail Page', () => {
+  cy.get('.ItgAssetDetails-availabilityContainer').should('be.visible');
+});
+
+Then('Fields on Asset details tab are populated correctly', () => {
+  let fields = cy.getAssetDetailsTabFields();
+  cy.log(fields);
+});
+
+And('I select the second phase filter', () => {
+  homePage.getPhaseFilterMenu().click();
+  homePage.getDropdownOverlay().eq(2).click();
+  homePage.getDropdownOverlay().eq(2).invoke('text').then(text => {
+    textOnSecondFilter = 'Phase - ' + text;
+  });
+});

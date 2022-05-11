@@ -9,6 +9,7 @@ Feature covers all the Button widget Configurations
     Then I create a 'Button' Widget
 
   Scenario: 01 User with both CMS and EditPages option is able to see Edit Button on CMS Editor
+    
     Given I click on 'Close editor' button
     And I see 'Editing mode' button
     When I click on 'Editing mode' button

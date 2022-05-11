@@ -261,11 +261,12 @@ class HomePage {
   }
 
   getDropdownOverlay () {
-    return cy.get('.cdk-overlay-pane > .cdk-overlay-pane');
+    return cy.get('.cdk-overlay-pane .mat-menu-item');
+    // return cy.get('.mat-menu-item');
   }
 
   getAppliedFilters () {
-    return cy.get('[aria-labelledby="appliedFilters"] > [role="option"]');
+    return cy.get('[aria-labelledby="appliedFilters"]');
   }
 
   getCancelAppliedFilters () {
@@ -294,6 +295,18 @@ class HomePage {
 
   getSpinnerLabel () {
     return cy.get('#spinnerLabel');
+  }
+
+  getAssetDetailTitle() {
+    return cy.get('.ItgAssetDetails-name');
+  }
+
+  getAdaptorType() {
+    return cy.get('.ItgAssetDetailsInfo-adaptorType > .mat-list-item-content > .mat-list-text > :nth-child(2)');
+  }
+
+  getMasterFileType() {
+    return cy.get('.ItgAssetDetailsInfo-masterFileType > .mat-list-item-content > .mat-list-text > :nth-child(2)');
   }
 }
 
