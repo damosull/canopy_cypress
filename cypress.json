@@ -4,6 +4,9 @@
   },
   "baseUrl": "https://itg.staging.itgcanopy.com",
   "testFiles": "**/*.feature",
-  "defaultCommandTimeout": 10000,
-  "experimentalSessionAndOrigin": true
+  "defaultCommandTimeout": 20000,
+  "experimentalSessionAndOrigin": true,
+  "experimentalSessionSupport": true,
+  "viewportHeight": 720,
+  "viewportWidth": 1280
 }

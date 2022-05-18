@@ -16,6 +16,14 @@ class HomePage {
     return cy.get('.ItgCmsPageToolkit-title');
   }
 
+  getWidget () {
+    return cy.get('.ItgToolbarWidget-container');
+  }
+
+  getblankArea () {
+    return '.ItgSectionWidget-column';
+  }
+
   getWidgetPanelCloseBtn () {
     return cy.get('.ItgCmsPageToolkit-closeButton');
   }
@@ -34,6 +42,10 @@ class HomePage {
 
   getActiveWidgetTitle () {
     return cy.get(':nth-child(1) > .ItgActiveWidget > .ItgActiveWidget-container > .ItgActiveWidget-header > .ItgActiveWidget-title');
+  }
+
+  getWidgetTitleField () {
+    return cy.get('[formcontrolname=title]');
   }
 
   getActiveWidget () {
@@ -60,6 +72,10 @@ class HomePage {
     return cy.get('.ItgToolbar-basket');
   }
 
+  getSnackBarRemoveButton () {
+    return cy.get('.ItgBasketSnackbarButtons-removeButton');
+  }
+
   getButtonButtonStyleRadioButton () {
     return cy.get('[id=mat-radio-2-input]');
   }
@@ -68,12 +84,40 @@ class HomePage {
     return cy.get('#mat-checkbox-1-input');
   }
 
+  getFilterSettings () {
+    return cy.get('itg-resource-list-filters-settings');
+  }
+
+  getSnackbar () {
+    return cy.get('.ItgAssetSnackbar-label');
+  }
+
   getDestinationUrlInput () {
-    return cy.get('[formcontrolname="url"]');
+    return cy.get('[formcontrolname=url]');
+  }
+
+  getSearchOption () {
+    return cy.get('.mat-option-text');
+  }
+
+  getDomainOption () {
+    return cy.get('.ItgDomainDropdown-menuButton');
+  }
+
+  getAssetLibraryButton () {
+    return cy.get('.ItgHome-menu > .ItgMenu-container > .ItgMenu-nav > .ItgMenu-nodeContainer > :nth-child(2) > .ItgMenu-nodeLink');
+  }
+
+  getDomain () {
+    return cy.get('.mat-menu-content');
   }
 
   getWidgetTextInput () {
     return cy.get('[formcontrolname="text"]');
+  }
+
+  getWidgetAlignment () {
+    return '[aria-label="value"]';
   }
 
   getFontSizeSlider () {
@@ -113,15 +157,71 @@ class HomePage {
   }
 
   getAssetsInGrid () {
-    return cy.get('.ItgResourceListResultGrid-result');
+    return cy.get('.ItgResourceListResultGrid-previewContainer');
+  }
+
+  getAssetCheckboxes () {
+    return cy.get('.mat-checkbox-input');
+  }
+
+  getSelectVisibleIcon () {
+    return cy.get('.ItgResourceListWidget-selectVisible');
+  }
+
+  getAssetsInList () {
+    return cy.get('.ItgResourceListResultTable-container');
   }
 
   getAssetName () {
     return cy.get('.ItgResourceListDetailLink-resultName');
   }
 
+  getAsset () {
+    return cy.get('.mat-checkbox-layout > .mat-checkbox-inner-container');
+  }
+
+  getPeriodFilter () {
+    return cy.get('.ItgResourceListPeriodFilter-container');
+  }
+
+  getPeriodStartDate () {
+    return cy.get('[placeholder="Start date"]');
+  }
+
+  getInstantField () {
+    return cy.get('[formcontrolname="instant"]');
+  }
+
+  getInstantDropdown () {
+    return cy.get('[id="mat-select-6-panel"]');
+  }
+
+  getPeriodEndDate () {
+    return cy.get('[placeholder="End date"]');
+  }
+
+  getAssetProperties () {
+    return cy.get('.mat-chip');
+  }
+
+  getListBox () {
+    return cy.get('[role="listbox"]');
+  }
+
+  getAssetPropertiesClear () {
+    return cy.get('#mat-chip-list-0 > .mat-chip-list-wrapper > .mat-chip > .mat-icon');
+  }
+
   getAssetType () {
-    return cy.get('.ItgResourceListResultGrid-resultSubTitle');
+    return cy.get('.ItgResourceListResultGrid-subTitle');
+  }
+
+  getAssetDetailsType () {
+    return cy.get('.ItgAssetDetails-type');
+  }
+
+  getAssetPreview () {
+    return cy.get('.ItgGizaViewer-frame');
   }
 
   getAssetNameInList () {
@@ -136,8 +236,16 @@ class HomePage {
     return cy.get('#mat-radio-7 > .mat-radio-label');
   }
 
+  getPagination () {
+    return cy.get('#mat-radio-7');
+  }
+
   getLoadMorePaginationStyleRdo () {
     return cy.get('#mat-radio-5 > .mat-radio-label');
+  }
+
+  getLoadMorePaginationStyle () {
+    return cy.get('[id=mat-radio-5]');
   }
 
   getInfiniteScrollPaginationStyleRdo () {
@@ -145,7 +253,15 @@ class HomePage {
   }
 
   getResultsPerPageDropdown () {
-    return cy.get('mat-select[formcontrolname="pageSize"]');
+    return cy.get('[formcontrolname=pageSize]');
+  }
+
+  getResultsPerPageValues () {
+    return '#mat-option-value > .mat-option-text';
+  }
+
+  getResourceListColumns () {
+    return cy.get('tr > th');
   }
 
   getPaginatorFirst () {
@@ -173,11 +289,19 @@ class HomePage {
   }
 
   getIncludeParentDomains () {
-    return cy.get('[formcontrolname="inheritDomains"]');
+    return cy.get('[formcontrolname=inheritDomains]');
   }
 
   getSortOption () {
     return cy.get('.ItgResourceListSorter-label .mat-button-wrapper');
+  }
+
+  getSortOptions () {
+    return cy.get('.ItgResourceListSorter-label');
+  }
+
+  getSortButton () {
+    return cy.get('.mat-menu-content > button');
   }
 
   getPaginationStyle () {
@@ -216,8 +340,20 @@ class HomePage {
     return cy.get('itg-resource-list-state-filter [role="button"]');
   }
 
+  getApprovedFilterCheckbox () {
+    return cy.get('.mat-pseudo-checkbox');
+  }
+
+  getApprovedButton () {
+    return cy.get('.mat-list-text');
+  }
+
   getTypesFilterBtn () {
     return cy.get('itg-resource-list-types-filter [role="button"]');
+  }
+
+  getClearAllButton () {
+    return cy.get('.ItgResourceListSearch-clearAll');
   }
 
   getAdaptorFilterBtn () {
@@ -262,7 +398,6 @@ class HomePage {
 
   getDropdownOverlay () {
     return cy.get('.cdk-overlay-pane .mat-menu-item');
-    // return cy.get('.mat-menu-item');
   }
 
   getAppliedFilters () {
@@ -293,20 +428,16 @@ class HomePage {
     return cy.get('input[data-placeholder="Adaptors"]');
   }
 
+  getPhaseLabel () {
+    return cy.get('input[data-placeholder="Phase"]');
+  }
+
   getSpinnerLabel () {
     return cy.get('#spinnerLabel');
   }
 
-  getAssetDetailTitle() {
+  getAssetDetailTitle () {
     return cy.get('.ItgAssetDetails-name');
-  }
-
-  getAdaptorType() {
-    return cy.get('.ItgAssetDetailsInfo-adaptorType > .mat-list-item-content > .mat-list-text > :nth-child(2)');
-  }
-
-  getMasterFileType() {
-    return cy.get('.ItgAssetDetailsInfo-masterFileType > .mat-list-item-content > .mat-list-text > :nth-child(2)');
   }
 }
 

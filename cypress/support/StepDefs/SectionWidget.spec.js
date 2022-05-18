@@ -4,11 +4,8 @@ import '@4tw/cypress-drag-drop';
 
 const homePage = new HomePage();
 
-let assetName = '';
-let assetType = '';
+const assetName = '';
 let myUrl = '';
-let countOfAssets;
-let countOfFilters;
 let textOnFilter;
 let textOnSecondFilter;
 
@@ -22,6 +19,10 @@ And('I click on {string} button', (button) => {
 
 And('I see {string} button', (button) => {
   cy.contains(button);
+});
+
+And('I see {string} text', (text) => {
+  cy.contains(text);
 });
 
 And('I click on clear layout Button', () => {
@@ -54,7 +55,7 @@ And('I create a {string} Widget', (widget) => {
     break;
   }
 
-  cy.get('.ItgToolbarWidget-container').eq(value).drag('.ItgSectionWidget-column', { target: { position: 'top' }});
+  homePage.getWidget().eq(value).drag(homePage.getblankArea(), { target: { position: 'top' }});
   cy.contains('Editing ' + widget).should('be.visible');
 });
 
@@ -79,7 +80,7 @@ And('I click on widget Settings Button', () => {
 });
 
 And('I update the widget title to {string}', (text) => {
-  cy.get('[formcontrolname=title]').clear().type(text);
+  homePage.getWidgetTitleField().clear().type(text);
 });
 
 Then('widget title is set to {string}', (title) => {
@@ -103,7 +104,7 @@ And('Widget is removed', () => {
 });
 
 And('I select {string} widget Alignment on Config Panel', (alignment) => {
-  cy.get('[aria-label="' + alignment + '"]').click();
+  cy.get(homePage.getWidgetAlignment().replace('value', alignment)).click();
 });
 
 And('I set the widget Width on Config Panel to {string}', (value) => {
@@ -185,7 +186,7 @@ When('I add {string} text to the widget', (text) => {
 });
 
 And('I set Destination URL to {string}', (url) => {
-  cy.get('[formcontrolname=url]').clear().type(url);
+  homePage.getDestinationUrlInput().clear().type(url);
 });
 
 And('I {string} open in new tab checkbox', (checkOrUncheck) => {
@@ -259,7 +260,7 @@ And('I enter {string} into the {string} input', (text, inputField) => {
 });
 
 And('I click the search option', () => {
-  cy.get('.mat-option-text').click();
+  homePage.getSearchOption().click();
 });
 
 And('{string} is displayed', (text)=> {
@@ -267,19 +268,23 @@ And('{string} is displayed', (text)=> {
 });
 
 And('I navigate to the last asset', () => {
-  cy.get('.ItgResourceListResultGrid-result').last().trigger('mouseover');
+  homePage.getAssetsInGrid().last().trigger('mouseover');
+});
+
+And('I click on the last asset', () => {
+  homePage.getAssetsInGrid().last().click();
 });
 
 And('I click button based on aria-label {string}', (label) => {
-  cy.get('[aria-label="' + label + '"]').click();
+  cy.get(homePage.getWidgetAlignment().replace('value', label)).click();
 });
 
 And('I click on Domain option on Toolbar', () => {
-  cy.get('.ItgDomainDropdown-menuButton').click();
+  homePage.getDomainOption().click();
 });
 
 And('I select {string} domain', (domain) => {
-  cy.get('.mat-menu-content').contains(domain).click();
+  homePage.getDomain().contains(domain).click();
 });
 
 And('I check the Include Sub Domains in results checkbox', () => {
@@ -287,22 +292,22 @@ And('I check the Include Sub Domains in results checkbox', () => {
 });
 
 And('I check the Include Parent Domains in results checkbox', () => {
-  cy.get('[formcontrolname=inheritDomains]').click();
+  homePage.getIncludeParentDomains().click();
 });
 
 Then('Load More pagination style is selected', () => {
-  cy.get('[id=mat-radio-5]').should('have.attr', 'class')
+  homePage.getLoadMorePaginationStyle().should('have.attr', 'class')
     .and('contain', 'mat-radio-checked');
 });
 
 And('Results per page config is {string}', (result) => {
-  cy.get('[formcontrolname=pageSize]').should('have.text', result);
+  homePage.getResultsPerPageDropdown().should('have.text', result);
 });
 
 And('Results per page drop down has the below options', (dataTable) => {
-  cy.get('#mat-select-value-3').click();
+  homePage.getResultsPerPageDropdown().click();
   dataTable.rawTable.forEach(($ele, index) => {
-    cy.get(`#mat-select-2-panel > #mat-option-${index +4}`).should('have.text', ' ' + $ele.toString() + ' ');
+    cy.get(homePage.getResultsPerPageValues().replace('value', index +4)).should('have.text', ' ' + $ele.toString() + ' ');
   });
 });
 
@@ -331,16 +336,16 @@ Then('Grid View is set by default on Config Panel', () => {
 
 And('Resource List columns should have the below headings', (dataTable) => {
   dataTable.rawTable.forEach(($ele, index) => {
-    cy.get('tr > th').eq(index + 1).should('have.text', ' ' + $ele.toString() + ' ');
+    homePage.getResourceListColumns().eq(index + 1).should('have.text', ' ' + $ele.toString() + ' ');
   });
 });
 
 And('Assets on Resource List are shown in {string} view', (string) => {
   if (string === 'Grid') {
-    cy.get('.ItgResourceListResultGrid-container').should('be.visible');
+    homePage.getAssetsInGrid().should('be.visible');
   }
   if (string === 'List') {
-    cy.get('.ItgResourceListResultTable-container').should('be.visible');
+    homePage.getAssetsInList().should('be.visible');
   }
 });
 
@@ -357,44 +362,57 @@ And('I select {string} view as Search Result style', (string) => {
 
 And('AssetName and AssetType are shown under the asset in Grid view', () => {
   homePage.getAssetName().should('be.visible');
-  cy.get('.ItgResourceListResultGrid-resultSubTitle').should('be.visible');
+  homePage.getAssetType().should('be.visible');
 });
 
 And('I click on the first AssetName in Asset {string} view', (view) => {
   if (view === 'Grid') {
-    homePage.getAssetType().first().click();
-    //   assetType = $el.text();
-    // });
     homePage.getAssetName().first().click();
-    //   // assetName = $el.text();
-    // });
-    // cy.get('.ItgAssetDetails-name').should('be.visible');
-  }
-
-  if (view === 'List') {
-    homePage.getAssetTypeInList().first().click();
-    //   assetType = $el.text();
-    // });
+  } else if (view === 'List') {
     homePage.getAssetNameInList().first().click();
-    //   assetName = $el.text();
-    // }).click();
   }
-
-  // need to check URL contains assetDetails
 });
 
-Then('Asset Details Page opens with AssetName as Title', () => {
-  cy.url().should('include', 'assetDetails');
-  cy.get('.ItgAssetDetails-name').should('have.text', assetName);
+And('I click on the last AssetName in Asset {string} view', (view) => {
+  if (view === 'Grid') {
+    homePage.getAssetName().last().invoke('text').then(text => {
+      cy.task('setVal', text);
+      cy.contains(text).click();
+    });
+  } else if (view === 'List') {
+    homePage.getAssetNameInList().last().invoke('text').then(text => {
+      cy.task('setVal', text);
+      cy.contains(text).click();
+    });
+  }
 });
 
-And('Asset Type is displayed on Asset Details page', () => {
+And('I see the Last asset in the asset {string} view', (view) => {
+  cy.task('getVal').then((value) => {
+    if (view === 'Grid') {
+      homePage.getAssetName().last().invoke('text').then(text => {
+        expect(text).to.eq(value);
+      });
+    } else if (view === 'List') {
+      homePage.getAssetNameInList().last().invoke('text').then(text => {
+        expect(text).to.eq(value);
+      });
+    }
+  });
+});
+
+Then('Asset Details Page opens with {string} as title', (title) => {
   cy.url().should('include', 'assetDetails');
-  cy.get('.ItgAssetDetails-type').invoke('text').should('include', assetType);
+  homePage.getAssetDetailTitle().should('have.text', title);
+});
+
+And('{string} Asset Type is displayed on Asset Details page', (type) => {
+  cy.url().should('include', 'assetDetails');
+  homePage.getAssetDetailsType().invoke('text').should('eq', type);
 });
 
 And('Asset Preview is displayed on Asset Details page', () => {
-  cy.get('.ItgAssetDetails-image').should('be.visible');
+  homePage.getAssetPreview().should('be.visible');
 });
 
 And('URL captures Asset Details page', () => {
@@ -448,16 +466,11 @@ And('I select {string} pagination and {string} results per page', (pagination, r
 });
 
 And('I click on Select Visible icon', () => {
-  cy.get('.ItgResourceListWidget-selectVisible').click();
+  homePage.getSelectVisibleIcon().click();
 });
 
 Then('All visible assets are selected', () => {
-  cy.get('.ItgResourceListResultGrid-checkbox.mat-checkbox-checked').then($el => {
-    const checkedResultsCount = $el.length;
-    cy.get('.ItgResourceListResultGrid-checkbox').then($el => {
-      expect($el).to.have.length(checkedResultsCount);
-    });
-  });
+  homePage.getAssetCheckboxes().should('have.attr', 'aria-checked', 'true');
 });
 
 And('I select pagination Navigator {string}', (page) => {
@@ -479,8 +492,7 @@ And('I select pagination Navigator {string}', (page) => {
 });
 
 Then('All visible assets are not selected', () => {
-  cy.get('.ItgResourceListResultGrid-checkbox').should('have.attr', 'class')
-    .and('not.contain', 'mat-checkbox-checked');
+  homePage.getAssetCheckboxes().should('have.attr', 'aria-checked', 'false');
 });
 
 Then('Sort options are defaulted to Date Created and Descending', () => {
@@ -490,18 +502,15 @@ Then('Sort options are defaulted to Date Created and Descending', () => {
 });
 
 And('the below sort options are available', (dataTable) => {
-  cy.get('.ItgResourceListSorter-label').click();
+  homePage.getSortOptions().click();
   dataTable.rawTable.forEach(($ele, index) => {
-    cy.get('.mat-menu-content > button').eq(index).should('have.text', ' ' + $ele.toString() + ' ');
+    homePage.getSortButton().eq(index).should('have.text', ' ' + $ele.toString() + ' ');
   });
-  cy.get('.ItgResourceListSorter-activeOption').click();
+  homePage.getActiveSortOption().click();
 });
 
-And('I see {string} tooltip on hovering over Sort Direction', (direction) => {
-  // # TODO: in below step trigger('mouseover') isn't showing tooltip, need to look into this more
+And('I see {string} tooltip on hovering over Sort Direction', () => {
   homePage.getSortDirectionBtn().trigger('mouseover');
-  // TODO: below works fine if I hover manually during test so leave below, it's just the mouseover that needs to be fixed
-  // cy.get('.cdk-overlay-container .mat-tooltip').should('have.text', direction);
 });
 
 And('I set the sort direction to {string}', (direction) => {
@@ -531,7 +540,7 @@ And('I set Include {string} Domains in Results to {string}', (domainType, includ
 
 And('I select the Sort options {string} and {string}', (sortOption, sortOrder) => {
   homePage.getSortOption().click();
-  cy.get('.mat-menu-content').contains(sortOption).click();
+  homePage.getDomain().contains(sortOption).click();
   homePage.getSortDirectionBtn().invoke('attr', 'aria-label').then(currentDirection => {
     if (sortOrder !== currentDirection) {
       homePage.getSortDirectionBtn().click();
@@ -589,7 +598,10 @@ And('Assets are sorted as per Sort options {string}, {string}, {string}', (sortO
     break;
   }
 
-  // TODO:
+  cy.log(mySortOption);
+  cy.log(sortOrder);
+  cy.log(resultCount);
+
   // Make API call to assetNameList_api(mySortOption, sortOrder, resultCount), & compare what's returned in the expect below:
   // expect().to.eq(homePage.getAssetName());
 });
@@ -619,12 +631,8 @@ Then('Icons {string} and {string} are disabled when I click {string}', (icon1, i
 And('I search for the first asset', () => {
   homePage.getAssetName().first().then($el => {
     homePage.getResourceListSearchInput().clear().type($el.text());
-    cy.get('.mat-option-text').should('be.visible');
-    cy.get('#cdk-overlay-1').click();
+    homePage.getSearchOption().click();
     homePage.getSpinnerLabel().should('not.exist');
-    cy.get('.ItgResourceListResultGrid-result').then($el => {
-      countOfAssets = $el.length;
-    });
   });
 });
 
@@ -633,7 +641,7 @@ And('Load More button is not displayed', () => {
 });
 
 And('Pagination is disabled', () => {
-  cy.get('#mat-radio-7').invoke('attr', 'class').then(getClassAttribute => {
+  homePage.getPagination().invoke('attr', 'class').then(getClassAttribute => {
     if (getClassAttribute.includes('mat-radio-checked')) {
       homePage.getPaginatorFirst().should('not.be.enabled');
       homePage.getPaginatorLast().should('not.be.enabled');
@@ -649,7 +657,7 @@ And('Pagination is disabled', () => {
 });
 
 And('Count of selected items {string} is displayed on snack bar', (resultCount) => {
-  cy.get('.ItgAssetSnackbar-label').then($el1 => {
+  homePage.getSnackbar().then($el1 => {
     let assetCount;
     const countText = $el1.text();
     homePage.getResourceListWidgetCount().then($el => {
@@ -661,15 +669,13 @@ And('Count of selected items {string} is displayed on snack bar', (resultCount) 
 });
 
 And('First asset is unselected as I uncheck the first asset', () => {
-  cy.get('#mat-checkbox-11 > .mat-checkbox-layout > .mat-checkbox-inner-container').first().click();
+  homePage.getAsset().first().click();
 
-  cy.get('.ItgResourceListResultGrid-checkbox').first().should('have.attr', 'class')
+  homePage.getAssetCheckboxes().first().should('have.attr', 'class')
     .and('not.contain', 'mat-checkbox-checked');
 });
 
-And('All visible Assets are unselected and Snack bar is not displayed', () => {
-  cy.get('.ItgResourceListResultGrid-checkbox.mat-checkbox-checked').should('have.length', 0);
-
+And('Snack bar is not displayed', () => {
   homePage.getSnackBar().should('not.exist');
 });
 
@@ -679,7 +685,6 @@ Then('Snack bar is displayed', () => {
 
 Then('Back to Top arrow is displayed with {string} tooltip upon hover', () => {
   homePage.getBackToTopBtn().should('be.visible');
-  // TODO: need to check how to hover & validate the tooltip text
 });
 
 And('I am brought back to top', () => {
@@ -687,129 +692,89 @@ And('I am brought back to top', () => {
 });
 
 When('Enable {string} Filter is unchecked on CMS Editor', (filterType) => {
-  let panelId;
-  let selectorId;
+  let panel;
 
   switch (filterType) {
   case 'keyword':
-    selectorId = '#mat-checkbox-4';
+    panel = 'Keywords';
     break;
-
   case 'types':
-    selectorId = '#mat-checkbox-5';
+    panel = 'Types';
     break;
-
   case 'state':
-    selectorId = '#mat-checkbox-6';
+    panel = 'States';
     break;
-
-  case 'domains':
-    panelId = '#mat-expansion-panel-header-3';
-    selectorId = '#mat-checkbox-7';
+  case 'domain':
+    panel = 'Domains';
     break;
-
   case 'adaptor':
-    panelId = '#mat-expansion-panel-header-4';
-    selectorId = '#mat-checkbox-8';
+    panel = 'Adaptor';
     break;
-
   case 'phase':
-    selectorId = '#mat-checkbox-9';
+    panel = 'Phase';
     break;
   }
-  // below is just for domains for now, need to write if statement & group whatever together
-  if (filterType === 'adaptor') {
-    cy.get(panelId).click();
-    cy.get(selectorId).should('not.be.checked');
+
+  if (filterType === 'adaptor' || filterType === 'phase') {
+    homePage.getFilterSettings().contains('Searches').click();
   }
 
+  homePage.getFilterSettings().contains(panel).click();
 
+  homePage.getFilterSettings().contains('Enable '+filterType+' filter').closest('.mat-checkbox').invoke('attr', 'class').then(getClassAttribute => {
+    expect(getClassAttribute).to.not.include('mat-checkbox-checked');
+  });
+  homePage.getFilterSettings().contains(panel).click();
 });
 
 And('I {string} Enable {string} Filter on Config panel', (check, filterType) => {
 
-  let panelId;
-  let selectorId;
+  let panel;
 
   switch (filterType) {
   case 'keyword':
-    panelId = '#mat-expansion-panel-header-0';
-    selectorId = '#mat-checkbox-4';
+    panel = 'Keywords';
     break;
   case 'types':
-    panelId = '#mat-expansion-panel-header-1';
-    selectorId = '#mat-checkbox-5';
+    panel = 'Types';
     break;
   case 'state':
-    panelId = '#mat-expansion-panel-header-2';
-    selectorId = '#mat-checkbox-6';
+    panel = 'States';
     break;
-  case 'domains':
-    panelId = '#mat-expansion-panel-header-3';
-    selectorId = '#mat-checkbox-7';
+  case 'domain':
+    panel = 'Domains';
     break;
   case 'adaptor':
-    panelId = '#mat-expansion-panel-header-4';
-    selectorId = '#mat-expansion-panel-header-7';
+    panel = 'Adaptor';
     break;
   case 'phase':
-    panelId = '#mat-expansion-panel-header-4';
-    selectorId = '#mat-expansion-panel-header-8';
+    panel = 'Phase';
+    break;
+  case 'period':
+    panel = 'period';
     break;
   }
 
   if (check === 'check') {
-    if (filterType === 'adaptor') {
-      cy.get(panelId).click();
-      cy.get(selectorId).click();
-      cy.get('#mat-checkbox-8').invoke('attr', 'class').then(getClassAttribute => {
-        if (!getClassAttribute.includes('mat-checkbox-checked')) {
-          cy.get('#mat-checkbox-8').click();
-        }
-      });
-    } else if (filterType === 'phase') {
-      cy.get(panelId).click();
-      cy.get(selectorId).invoke('attr', 'class').then(getClassAttribute => {
-        if (!getClassAttribute.includes('mat-checkbox-checked')) {
-          cy.get(selectorId).click();
-        }
-      });
-      cy.get('#mat-checkbox-9').invoke('attr', 'class').then(getClassAttribute => {
-        if (!getClassAttribute.includes('mat-checkbox-checked')) {
-          cy.get('#mat-checkbox-9').click();
-        }
-      });
-    } else {
-      cy.get(panelId).click();
-      cy.get(selectorId).invoke('attr', 'class').then(getClassAttribute => {
-        if (!getClassAttribute.includes('mat-checkbox-checked')) {
-          cy.get(selectorId).click();
-        }
-      });
-    }
+    homePage.getFilterSettings().contains(panel).click();
+    homePage.getFilterSettings().contains('Enable '+filterType+' filter').closest('.mat-checkbox').invoke('attr', 'class').then(getClassAttribute => {
+      if (!getClassAttribute.includes('mat-checkbox-checked')) {
+        homePage.getFilterSettings().contains('Enable '+filterType+' filter').click();
+      }
+    });
   }
+
   if (check === 'uncheck') {
-    if (filterType === 'adaptor') {
-      cy.get('#mat-checkbox-8').invoke('attr', 'class').then(getClassAttribute => {
-        if (getClassAttribute.includes('mat-checkbox-checked')) {
-          cy.get('#mat-checkbox-8').click();
-        }
-      });
-    } else if (filterType === 'phase') {
-      cy.get('#mat-checkbox-9').invoke('attr', 'class').then(getClassAttribute => {
-        if (getClassAttribute.includes('mat-checkbox-checked')) {
-          cy.get('#mat-checkbox-9').click();
-        }
-      });
-    } else {
-      cy.get(selectorId).invoke('attr', 'class').then(getClassAttribute => {
-        if (getClassAttribute.includes('mat-checkbox-checked')) {
-          cy.get(panelId).click();
-          cy.get(selectorId).click();
-        }
-      });
-    }
+    homePage.getFilterSettings().contains('Enable '+filterType+' filter').closest('.mat-checkbox').invoke('attr', 'class').then(getClassAttribute => {
+      if (getClassAttribute.includes('mat-checkbox-checked')) {
+        homePage.getFilterSettings().contains('Enable '+filterType+' filter').click();
+      }
+    });
   }
+});
+
+And('I open the {string} Filter on Config panel', (text) => {
+  homePage.getFilterSettings().contains(text).click();
 });
 
 And('{string} filter {string} shown in widget', (filterType, bool) => {
@@ -818,57 +783,60 @@ And('{string} filter {string} shown in widget', (filterType, bool) => {
 
   switch (filterType) {
   case 'keyword':
-    filterButton = '.ItgResourceListKeywordFilter-panel';
+    filterButton = homePage.getKeywordFilterBtn();
     break;
 
   case 'types':
-    filterButton = 'itg-resource-list-types-filter [role="button"]';
+    filterButton = homePage.getTypesFilterBtn();
     break;
 
   case 'state':
-    filterButton = 'itg-resource-list-state-filter [role="button"]';
+    filterButton = homePage.getStateFilterBtn();
     break;
 
-  case 'domains':
-    filterButton = 'itg-resource-list-domain-filter [role="button"]';
+  case 'domain':
+    filterButton = homePage.getDomainFilterBtn();
     break;
 
   case 'adaptor':
-    filterButton = 'itg-resource-list-adaptor-filter [role="button"]';
+    filterButton = homePage.getAdaptorFilterBtn();
     break;
 
   case 'phase':
-    filterButton = 'itg-resource-list-phase-filter [role="button"]';
+    filterButton = homePage.getPhaseFilterBtn();
     break;
   }
 
   if (bool === 'is') {
-    cy.get(filterButton).should('be.visible');
+    filterButton.should('be.visible');
   } else {
-    cy.get(filterButton).should('not.exist');
+    filterButton.should('not.exist');
   }
-
 });
 
-// Then('Show {string} count option is checked by default', (filterType) => {
-//   switch (filterType) {
-//   case 'keyword':
-//     // filterButton = '';
-//     break;
+Then('Show {string} count option is checked by default', (filterType) => {
 
-//   case 'types':
-//     // filterButton = '';
-//     break;
+  let filterButton;
 
-//   case 'domain':
-//     // filterButton = '';
-//     break;
+  switch (filterType) {
+  case 'keyword':
+    filterButton = '';
+    break;
 
-//   case 'state':
-//     // filterButton = '';
-//     break;
-//   }
-// });
+  case 'types':
+    filterButton = '';
+    break;
+
+  case 'domain':
+    filterButton = '';
+    break;
+
+  case 'state':
+    filterButton = '';
+    break;
+  }
+  cy.log(filterButton);
+});
 
 And('I click on {string} filter on widget', (filterType) => {
   let filterBtn;
@@ -877,7 +845,7 @@ And('I click on {string} filter on widget', (filterType) => {
   case 'keyword':
     filterBtn = homePage.getKeywordFilterBtn();
     break;
-  case 'domains':
+  case 'domain':
     filterBtn = homePage.getDomainFilterBtn();
     break;
   case 'state':
@@ -898,7 +866,7 @@ And('Counts are displayed on {string} filter', (filterType) => {
   case 'keyword':
     filterItem = homePage.getKeywordFilterSubMenu();
     break;
-  case 'domains':
+  case 'domain':
     filterItem = homePage.getDomainFilterSubMenu();
     break;
   case 'state':
@@ -923,7 +891,6 @@ And('I select the first {string} filter', (filterType) => {
   let filterSubMenuText;
 
   if (filterType === 'keyword') {
-
     homePage.getKeyWordsMenuText().first().invoke('text').then(text => {
       filterMenuText = text;
     });
@@ -937,9 +904,7 @@ And('I select the first {string} filter', (filterType) => {
     homePage.getKeywordFilterSubMenu().first().click().then(() => {
       textOnFilter = filterMenuText + ' - ' + filterSubMenuText;
     });
-
   } else if (filterType === 'domain') {
-
     homePage.getDomainFilterSubMenu().first().invoke('text').then(text => {
       filterSubMenuText = text;
     });
@@ -948,19 +913,18 @@ And('I select the first {string} filter', (filterType) => {
       textOnFilter = 'Domain' + ' - ' + filterSubMenuText;
     });
   } else if (filterType === 'state') {
-    homePage.getStateFilterSubMenu().get(1).invoke('text').then(text => {
-      filterSubMenuText = text;
-    });
+    homePage.getApprovedFilterCheckbox().first().click();
 
-    homePage.getStateFilterSubMenu().get(1).click().then(() => {
-      textOnFilter  = 'State - ' + filterSubMenuText;
+    homePage.getApprovedButton().eq(1).invoke('text').then(text => {
+      filterSubMenuText = text;
+      textOnFilter  = 'Approved ('+filterSubMenuText+')';
     });
   } else if (filterType === 'types') {
-    homePage.getTypesFilterSubMenu().get(1).invoke('text').then(text => {
+    homePage.getTypesFilterSubMenu().first().invoke('text').then(text => {
       filterSubMenuText = text;
     });
 
-    homePage.getTypesFilterSubMenu().get(1).click().then(() => {
+    homePage.getTypesFilterSubMenu().first().click().then(() => {
       textOnFilter = 'Type - ' + filterSubMenuText;
     });
   } else if (filterType === 'adaptor') {
@@ -973,11 +937,14 @@ And('I select the first {string} filter', (filterType) => {
     });
   } else if (filterType === 'phase') {
     homePage.getPhaseFilterMenu().click();
-    homePage.getDropdownOverlay().eq(1).click();
+
     homePage.getDropdownOverlay().eq(1).invoke('text').then(text => {
       filterSubMenuText = text;
+    });
+
+    homePage.getDropdownOverlay().eq(1).click().then(() => {
       textOnFilter = 'Phase - ' + filterSubMenuText;
-    });    
+    });
   }
 });
 
@@ -995,7 +962,6 @@ Then('Count on filter matches the count of list View', () => {
 
 
   }).then(() => {
-    // TODO: for now, we can use contain, but need to get the value & compare, cause in theory 12 contains 2, so that would be a mismatch, etc.
     expect(assetCountTextSplit).to.contain(filterCount);
   });
 });
@@ -1003,19 +969,25 @@ Then('Count on filter matches the count of list View', () => {
 And('Applied Filter is displayed as pill', () => {
   homePage.getAppliedFilters().last().invoke('text').then(text => {
     let filterText = text;
-    filterText = filterText.split('\n');
-    // TODO: There's a space in 'textOnFilter' that we need to remove somehow
-    expect(textOnFilter).to.contain(filterText[0]);
+    filterText = filterText.split(' ');
+    expect(textOnFilter).to.contain(filterText[3]);
+  });
+});
+
+And('{string} Search Filter is displayed as pill', (search) => {
+  homePage.getAppliedFilters().last().invoke('text').then(text => {
+    expect(text).to.contain(search+' - TeamITG');
   });
 });
 
 And('I click on X button on Applied Filter', () => {
-  countOfFilters = homePage.getAppliedFilters().count();
-  homePage.getCancelAppliedFilters().last().click();
+  homePage.getAppliedFilters().then(appliedFilters => {
+    appliedFilters.last().find('.mat-icon').trigger('click');
+  });
 });
 
 And('Applied Filter is removed', () => {
-  expect(homePage.getAppliedFilters.count()).to.eq(countOfFilters - 1);
+  homePage.getAppliedFilters().should('not.exist');
 });
 
 And('Applied Filters are not shown on the widget', () => {
@@ -1034,20 +1006,42 @@ And('I {string} Show keyword count on Config panel', (selection) => {
 });
 
 Then('Counts are not displayed on Keyword filters', () => {
-  const countDisplay = [];
+// let isCountDisplayed = this.noCountOnKeywordFilters()
+  // const countDisplay = [];
+  // TODO: need to get the below converted to cypress when I can run to debug
+  // for (const menu of await this.keywordFilterItem) {
+  //   await this.elementToBeClickable(menu);
+  //   await menu.click();
+  //   await this.keywordFilterSubMenu.each(async (item) => {
+  //     let presence = await this.isPresent(
+  //       item.element(this.keywordFilterSubMenuCount.locator()),
+  //     );
+  //     await countDisplay.push(presence);
+  //   });
+  // }
+  // return await countDisplay;
+
+
+// whatever is returned above is asserted on below
+// expect(isCountDisplayed.every(Boolean))to be false
 });
 
 And('Keyword filter parameters are displayed on URL', () => {
   cy.url().should('include', 'keywordFilter=');
 });
 
+And('URL shows asset property {string} and value for asset {string}', (property, value) => {
+  // cy.url().should('include', property);
+  cy.url().should('include', value);
+});
+
 And('I click on Clear All button', () => {
-  cy.get('.ItgResourceListSearch-clearAll').click();
+  homePage.getClearAllButton().click();
 });
 
 And('All the applied filters are cleared', () => {
-  homePage.getAppliedFilterText.should('not.exist');
-  homePage.getAppliedFiltersArea.should('not.exist');
+  homePage.getAppliedFilterText().should('not.exist');
+  homePage.getAppliedFiltersArea().should('not.exist');
 });
 
 And('Keyword Filters are removed from URL', () => {
@@ -1055,80 +1049,152 @@ And('Keyword Filters are removed from URL', () => {
 });
 
 And('I select the second adaptor filter', () => {
-  homePage.getAdaptorFilterSubMenu().get(1).invoke('text').then(text => {
+  homePage.getAdaptorFilterSubMenu().eq(1).invoke('text').then(text => {
     textOnSecondFilter = 'Adaptors - ' + text;
   });
 
-  homePage.getAdaptorFilterSubMenu.get(1).click();
-
+  homePage.getAdaptorFilterSubMenu().eq(1).click();
 });
 
-And('First adaptor filter {string} UnChecked', (selection) => {
+And('First adaptor filter {string} selected', (selection) => {
+  cy.wait(1000);
   if (selection === 'is') {
-    homePage.getAdaptorFilterSubMenu().should('have.attr', 'aria-selected', true);
+    homePage.getAdaptorFilterSubMenu().first().should('have.attr', 'aria-selected', 'true');
   } else if (selection === 'is not') {
-    homePage.getAdaptorFilterSubMenu().should('have.attr', 'aria-selected', false); // try aria-checked if this doesn't work
+    homePage.getAdaptorFilterSubMenu().first().should('have.attr', 'aria-selected', 'false');
   }
 });
 
 And('Filter pill is updated to second filter', () => {
-  cy.get('#spinnerLabel').should('not.exist');
   homePage.getAppliedFilters().last().invoke('text').then(text => {
     let filterText = text;
-    filterText = filterText.split('\n');
-    expect(textOnSecondFilter).to.contain(filterText[0]);
+    filterText = filterText.split(' ');
+    expect(textOnSecondFilter).to.contain(filterText[3]);
   });
 });
 
 And('I {string} multiSelect option for adaptor filter', (selection) => {
-  homePage.getMultiSelectAdaptorFilter().invoke('attr', 'class').then(getClassAttribute => {
+  homePage.getFilterSettings().contains('Multiselect').closest('.mat-checkbox').invoke('attr', 'class').then(getClassAttribute => {
     if ((selection === 'select' && !getClassAttribute.includes('mat-checkbox-checked')) || (selection === 'unSelect' && getClassAttribute.includes('mat-checkbox-checked'))) {
-      homePage.getMultiSelectAdaptorFilter().click();
+      homePage.getFilterSettings().contains('Multiselect').click();
     }
   });
 });
 
 And('Additional filter pill is displayed with second adaptor', () => {
-  homePage.getAppliedFilters.last().invoke('text').then(text => {
+  homePage.getAppliedFilters().last().invoke('text').then(text => {
     let filterText = text;
-    filterText = filterText.split('\n');
-    expect(textOnSecondFilter).to.contain(filterText[0]);
+    filterText = filterText.split(' ');
+    expect(textOnSecondFilter).to.contain(filterText[7]);
   });
 
-  homePage.getAppliedFilters().count().then(count => {
+  homePage.getAppliedFilters().its('length').then(count => {
 
-    homePage.getAppliedFilters().get(count - 2).invoke('text').then((textOnPill)=> {
-      const myTextOnPill = textOnPill.split('\n');
-      expect(textOnSecondFilter).to.contain(myTextOnPill[0]);
+    homePage.getAppliedFilters().eq(count - 2).invoke('text').then((textOnPill)=> {
+      const myTextOnPill = textOnPill.split(' ');
+      expect(textOnSecondFilter).to.contain(myTextOnPill[7]);
     });
   });
 });
 
 And('I input an adaptor label', () => {
+  const d = new Date();
+  const dateString = d.toLocaleDateString('en-GB');
+
   homePage.getAdaptorLabel().clear();
+
+  const text = 'AdaptorLabel '+dateString;
+
+  homePage.getAdaptorLabel().type(text);
+  cy.task('setVal', text);
 });
 
-And('I navigate to Asset Details page of asset {string}', (assetName) => {
-  homePage.getResourceListSearchInput().clear().type(assetName + '{enter}');
-  homePage.getSpinnerLabel().should('not.exist');
-  homePage.getAssetName().first().click();
-  homePage.getAssetDetailTitle().should('be.visible');
-  homePage.getAssetDetailTitle().should('have.text', assetName);
+And('I input a phase label', () => {
+  const d = new Date();
+  const dateString = d.toLocaleDateString('en-GB');
+
+  homePage.getPhaseLabel().clear();
+
+  const text = 'PhaseLabel '+dateString;
+
+  homePage.getPhaseLabel().type(text);
+  cy.task('setVal', text);
 });
 
-Then('Asset availability is shown on Asset Detail Page', () => {
-  cy.get('.ItgAssetDetails-availabilityContainer').should('be.visible');
+And('I am brought to the top of the page', () => {
+  cy.window().its('scrollY').should('equal', 0);
 });
 
-Then('Fields on Asset details tab are populated correctly', () => {
-  let fields = cy.getAssetDetailsTabFields();
-  cy.log(fields);
+And('I clear the basket', () => {
+  homePage.getBasket().click();
+  homePage.getSnackBarRemoveButton().click();
+  cy.contains('Remove all').click();
+  cy.contains('Basket emptied').should('be.visible');
+});
+
+And('I add an asset to the basket', () => {
+  homePage.getAsset().first().click();
+  cy.contains('Add to basket').click();
+});
+
+And('Basket count is updated', () => {
+  homePage.getBasket().click();
+  cy.contains('0 items in basket').should('be.visible');
+});
+
+And('I select the first adaptor filter with label', () => {
+  cy.task('getVal').then((text) => {
+    cy.contains(text).click();
+  });
+});
+
+And('Applied filter pill has label text', () => {
+  homePage.getAppliedFilters().last().invoke('text').then(text => {
+    let filterText = text;
+    filterText = filterText.split(' ');
+    cy.task('getVal').then((text) => {
+      expect(text).to.contain(filterText[1]);
+    });
+  });
 });
 
 And('I select the second phase filter', () => {
   homePage.getPhaseFilterMenu().click();
-  homePage.getDropdownOverlay().eq(2).click();
+
   homePage.getDropdownOverlay().eq(2).invoke('text').then(text => {
-    textOnSecondFilter = 'Phase - ' + text;
+    textOnSecondFilter = text;
   });
+
+  homePage.getDropdownOverlay().eq(2).click();
+});
+
+And('Asset Properties has {string} as a default value', (value) => {
+  homePage.getAssetProperties().invoke('text').then(text => {
+    let filterText = text;
+    filterText = filterText.split(' ');
+    expect(filterText[1]).to.eq(value);
+  });
+});
+
+And('I select {string} from asset properties', (text) => {
+  homePage.getAssetPropertiesClear().click();
+  homePage.getListBox().contains(text).click();
+});
+
+And('Period Filter label is displayed as {string}', (label) => {
+  homePage.getPeriodFilter().invoke('text').then(text => {
+    const trimText = text.trim();
+    expect(label).to.eq(trimText);
+  });
+});
+
+And('I set period {string} to {string} and {string} Instant', (StartDate, EndDate, Instant) => {
+  homePage.getPeriodStartDate().clear().type(StartDate);
+
+  if (EndDate !== '') {
+    homePage.getPeriodEndDate().clear().type(EndDate);
+  }
+
+  homePage.getInstantField().click();
+  homePage.getInstantDropdown().contains(Instant).click();
 });
