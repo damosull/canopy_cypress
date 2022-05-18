@@ -1,5 +1,5 @@
 
-Feature: Core Config Fields
+Feature: 06 Core Config Fields
 
               Description :This Feature covers CAR-264
     All Core widgets will by default have the core fields :
