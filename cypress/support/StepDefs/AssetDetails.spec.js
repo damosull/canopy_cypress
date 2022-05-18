@@ -1,19 +1,19 @@
 import { And, Then } from 'cypress-cucumber-preprocessor/steps';
-import HomePage from '../PageObjects/HomePage';
+import Widgets from '../PageObjects/Widgets';
 import AssetDetails from '../PageObjects/AssetDetails';
 import '@4tw/cypress-drag-drop';
 
-const homePage = new HomePage();
+const widgets = new Widgets();
 const assetDetails = new AssetDetails();
 
 let versionCount;
 
 And('I navigate to Asset Details page of asset {string}', (assetName) => {
-  homePage.getResourceListSearchInput().clear().type(assetName + '{enter}');
-  homePage.getSpinnerLabel().should('not.exist');
-  homePage.getAssetName().first().click();
-  homePage.getAssetDetailTitle().should('be.visible');
-  homePage.getAssetDetailTitle().should('have.text', assetName);
+  widgets.getResourceListSearchInput().clear().type(assetName + '{enter}');
+  widgets.getSpinnerLabel().should('not.exist');
+  widgets.getAssetName().first().click();
+  widgets.getAssetDetailTitle().should('be.visible');
+  widgets.getAssetDetailTitle().should('have.text', assetName);
 });
 
 Then('Asset availability is shown on Asset Detail Page', () => {
@@ -40,7 +40,7 @@ And('I navigate to Asset {string} tab', (tab) => {
 });
 
 And('I upload a new version', () => {
-  homePage.getAssetsInGrid().then(assets => {
+  widgets.getAssetsInGrid().then(assets => {
     versionCount = assets.length;
   });
   // TOOD: process to be completed below
@@ -49,7 +49,7 @@ And('I upload a new version', () => {
 });
 
 Then('New version is uploaded to the versions tab', () => {
-  homePage.getAssetsInGrid().should('have.length', versionCount + 1);
+  widgets.getAssetsInGrid().should('have.length', versionCount + 1);
 });
 
 And('I select the {string} option on Actions menu', (action) => {

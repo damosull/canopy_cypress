@@ -1,4 +1,4 @@
-class HomePage {
+class Widgets {
 
   getSaveLayout () {
     return cy.get('.ItgCmsPage-saveLayout');
@@ -441,4 +441,4 @@ class HomePage {
   }
 }
 
-export default HomePage;
+export default Widgets;

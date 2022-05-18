@@ -1,9 +1,9 @@
 import LoginPage from '../support/PageObjects/LoginPage';
-import HomePage from '../support/PageObjects/HomePage';
+import Widgets from './PageObjects/Widgets';
 import CommandsPage from '../support/PageObjects/CommandsPage';
 
 const loginPage = new LoginPage();
-const homePage = new HomePage();
+const widgets = new Widgets();
 const commandsPage = new CommandsPage();
 const username = 'autouser';
 const password = '1Qwertasdf';
@@ -27,10 +27,10 @@ Cypress.Commands.add('login', () => {
     loginPage.getUsernameInput().type(username);
     loginPage.getPasswordInput().type(password);
     loginPage.getLoginButton().click();
-    homePage.getBasket().should('be.visible');
+    widgets.getBasket().should('be.visible');
   });
   cy.visit('/home');
-  homePage.getBasket().should('be.visible');
+  widgets.getBasket().should('be.visible');
 });
 
 Cypress.Commands.add('getAssetDetailsTabFields', () => {
@@ -48,7 +48,7 @@ Cypress.Commands.add('getAssetDetailsTabFields', () => {
   let assetFieldsValue;  //assetFields.pop()
   let assetFieldsTitle;  //assetFields.pop()
 
-  homePage.getAssetDetailTitle().should('be.visible');
+  widgets.getAssetDetailTitle().should('be.visible');
 
   commandsPage.getAdaptorType().invoke('text').then(text => {
     adaptorType = text;
