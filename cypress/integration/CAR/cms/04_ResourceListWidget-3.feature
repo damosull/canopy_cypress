@@ -27,17 +27,7 @@ Ability to add Resource List widget and edit the configuration
       | adaptor    |
       | phase      |
 
-  @ignore
-  Scenario: 41 Disable Counts on Keyword filters
-    Given I click on widget Settings Button
-    And I 'check' Enable 'keyword' Filter on Config panel
-    And I 'uncheck' Show keyword count on Config panel
-    And I click on 'Close editor' button
-    # And I click on Keywords filter on widget
-    And I select the first 'keyword' filter
-    Then Counts are not displayed on Keyword filters
-
-  Scenario: 42 Clear All Filters
+  Scenario: 41 Clear All Filters
     Given I click on widget Settings Button
     And I 'check' Enable 'keyword' Filter on Config panel
     And I click on 'Close editor' button
@@ -47,14 +37,13 @@ Ability to add Resource List widget and edit the configuration
     And All the applied filters are cleared
     And Keyword Filters are removed from URL
 
-  @runthis
-  Scenario: 43 Add to Basket
+  Scenario: 42 Add to Basket
     And I add an asset to the basket
     Then I see '1 item was added to basket' text
     And I clear the basket
     And Basket count is updated
 
-  Scenario: 44 Adaptor Filter - Single Selection
+  Scenario: 43 Adaptor Filter - Single Selection
     Given I click on widget Settings Button
     And I open the 'Searches' Filter on Config panel
     And I 'check' Enable 'adaptor' Filter on Config panel
@@ -65,7 +54,7 @@ Ability to add Resource List widget and edit the configuration
     And First adaptor filter 'is not' selected
     And Filter pill is updated to second filter
 
-  Scenario: 45 Adaptor Filter - multiple Selection
+  Scenario: 44 Adaptor Filter - multiple Selection
     Given I click on widget Settings Button
     And I open the 'Searches' Filter on Config panel
     And I 'check' Enable 'adaptor' Filter on Config panel
@@ -77,7 +66,7 @@ Ability to add Resource List widget and edit the configuration
     And First adaptor filter 'is' selected
     And Additional filter pill is displayed with second adaptor
 
-  Scenario: 46 Adaptor filter - Adaptor label
+  Scenario: 45 Adaptor filter - Adaptor label
     Given I click on widget Settings Button
     And I open the 'Searches' Filter on Config panel
     And I 'check' Enable 'adaptor' Filter on Config panel
@@ -86,7 +75,7 @@ Ability to add Resource List widget and edit the configuration
     And I select the second adaptor filter
     And Applied filter pill has label text
 
-  Scenario: 47 Phase Filter - Single Selection
+  Scenario: 46 Phase Filter - Single Selection
     Given I click on widget Settings Button
     And I open the 'Searches' Filter on Config panel
     And I 'check' Enable 'phase' Filter on Config panel
@@ -96,7 +85,7 @@ Ability to add Resource List widget and edit the configuration
     And I select the second phase filter
     And Filter pill is updated to second filter
 
-  Scenario: 48 Phase filter - Phase label
+  Scenario: 47 Phase filter - Phase label
     Given I click on widget Settings Button
     And I open the 'Searches' Filter on Config panel
     And I 'check' Enable 'phase' Filter on Config panel
@@ -105,14 +94,14 @@ Ability to add Resource List widget and edit the configuration
     And I select the first 'phase' filter
     And Applied filter pill has label text
 
-  Scenario: 49 Retain position of asset on navigating back from Details to List page
+  Scenario: 48 Retain position of asset on navigating back from Details to List page
     Given I click on widget Settings Button
     And I select 'Load more' pagination and '50' results per page
     And I click on the last AssetName in Asset 'Grid' view
     And I click on Browser Back button
     Then I see the Last asset in the asset 'Grid' view
 
-  Scenario: 50 Asset Properties: Defaults to Name
+  Scenario: 49 Asset Properties: Defaults to Name
     Given I click on widget Settings Button
     And I open the 'Searches' Filter on Config panel
     And I open the 'Asset Properties' Filter on Config panel
@@ -122,7 +111,7 @@ Ability to add Resource List widget and edit the configuration
     And 'Name' Search Filter is displayed as pill
     And URL shows asset property 'Name' and value for asset 'TeamITG'
 
-  Scenario: 51 Asset Properties
+  Scenario: 50 Asset Properties
     Given I click on widget Settings Button
     And I open the 'Searches' Filter on Config panel
     And I open the 'Asset Properties' Filter on Config panel
@@ -134,7 +123,7 @@ Ability to add Resource List widget and edit the configuration
     And I click on X button on Applied Filter
     And Applied Filter is removed
 
-  Scenario Outline: 52 Period Filter - <Instant>:  <StartDate> - <FilterEndDate>
+  Scenario Outline: 51 Period Filter - <Instant>:  <StartDate> - <FilterEndDate>
     Given I click on widget Settings Button
     And I 'check' Enable 'period' Filter on Config panel
     Then Period Filter label is displayed as 'Created:  ANYTIME'
