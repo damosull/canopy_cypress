@@ -628,6 +628,55 @@ Then('Icons {string} and {string} are disabled when I click {string}', (icon1, i
   }
 });
 
+And('Pagination Range and PageNo on URL are shown for {string}', (resultCount, dataTable) => {
+  let assetCount;
+  let range;
+  let min;
+  let max;
+  let pageNo;
+
+  widgets.getResourceListWidgetCount().invoke('text').then(text => {
+    assetCount = text.split(' ')[1];
+  }).then(() => {
+    dataTable.raw().forEach((page) => {
+      if (page.toString() === 'Last Page') {
+        if (widgets.getPaginatorLast().should('be.enabled')) {
+          widgets.getPaginatorLast().click();
+          min = (Math.floor(assetCount / resultCount) * resultCount + 1).toString();
+          max = assetCount.toString();
+          pageNo = Math.floor(assetCount / resultCount);
+        }
+      } else if (page.toString() === 'Previous Page') {
+        if (widgets.getPaginatorPrev().should('be.enabled')) {
+          widgets.getPaginatorPrev().click();
+          max = (
+            Math.floor(assetCount / resultCount) * resultCount
+          ).toString();
+          min = (max - resultCount + 1).toString();
+          pageNo = Math.floor(assetCount / resultCount) - 1;
+        }
+      } else if (page.toString() === 'First Page') {
+        if (widgets.getPaginatorFirst().should('be.enabled')) {
+          widgets.getPaginatorFirst().click();
+          min = '1'.toString();
+          max = resultCount;
+          pageNo = 0;
+        }
+      } else if (page.toString() === 'Next Page') {
+        if (widgets.getPaginatorNext().should('be.enabled')) {
+          widgets.getPaginatorNext().click();
+        }
+        min = (Number(resultCount) + 1).toString();
+        max = (Number(resultCount) * 2).toString();
+        pageNo = 1;
+      }
+      range = min.concat(' – ', max, ' of ', assetCount);
+      widgets.getPaginatorRangeLabel().should('contain', range.toString());
+      cy.url().should('include', 'page=' + pageNo);
+    });
+  });
+});
+
 And('I search for the first asset', () => {
   widgets.getAssetName().first().then($el => {
     widgets.getResourceListSearchInput().clear().type($el.text());

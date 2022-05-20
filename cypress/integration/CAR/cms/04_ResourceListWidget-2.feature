@@ -72,7 +72,6 @@ Ability to add Resource List widget and edit the configuration
     And I select pagination Navigator 'First page'
     And All visible assets are selected
 
-  @ignore
   Scenario: 27 Asset Selection not retained on navigating to Asset Detail page
     Given I click on widget Settings Button
     And I select 'Grid' view as Search Result style
@@ -146,28 +145,22 @@ Ability to add Resource List widget and edit the configuration
       | Load more       | 10          |
       | Load more       | 100         |
 
-  @ignore
-  Scenario Outline: 32 Pagination
+  Scenario: 32 Pagination
     Given I click on widget Settings Button
     And I set Include 'Sub' Domains in Results to 'true'
     And I set Include 'Parent' Domains in Results to 'true'
-    And I select '<PaginationStyle>' pagination and '<ResultCount>' results per page
+    And I select 'Pagination' pagination and '10' results per page
     And I select 'Grid' view as Search Result style
     Then Icons 'Next Page' and 'Last Page' are disabled when I click 'Last Page'
     And Icons 'Previous Page' and 'First Page' are disabled when I click 'First Page'
-    # And Pagination Range and PageNo on URL are shown for '<ResultCount>'
-    #   | Pagination    |
-    #   | Last Page     |
-    #   | Previous Page |
-    #   | First Page    |
-    #   | Next Page     |
-    And Results per page should be 'equal to' '<ResultCount>'
+    And Pagination Range and PageNo on URL are shown for '10'
+      | Last Page     |
+      | Previous Page |
+      | First Page    |
+      | Next Page     |
+    And Results per page should be 'equal to' '10'
     And URL captures Asset Details page
     And I am on same page on refreshing the page
-
-    Examples:
-      | PaginationStyle | ResultCount |
-      | Pagination      | 10          |
 
   Scenario Outline: 33 No InfiniteScroll/LoadMore/Pagination when there are no more assets to load
     Given I click on widget Settings Button

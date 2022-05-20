@@ -439,6 +439,10 @@ class Widgets {
   getAssetDetailTitle () {
     return cy.get('.ItgAssetDetails-name');
   }
+
+  getPaginatorRangeLabel () {
+    return cy.get('.mat-paginator-range-label');
+  }
 }
 
 export default Widgets;

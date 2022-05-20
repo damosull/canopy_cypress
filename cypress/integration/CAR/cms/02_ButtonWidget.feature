@@ -131,4 +131,3 @@ Feature covers all the Button widget Configurations
       | inputType | url                                           |
       | button    | https://cloud-test-ng.itgcanopy.com/itg-test/ |
       | link      | https://cloud-test-ng.itgcanopy.com/itg-test/ |
-      
