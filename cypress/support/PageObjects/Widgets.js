@@ -1,5 +1,13 @@
 class Widgets {
 
+  getSideMenuButton () {
+    return cy.get('.ItgHome-openSideMenu > .mat-icon');
+  }
+
+  getActivatePanelButton () {
+    return cy.get('.ItgHome-activatePanel');
+  }
+
   getSaveLayout () {
     return cy.get('.ItgCmsPage-saveLayout');
   }
@@ -68,8 +76,9 @@ class Widgets {
     return cy.get('.ItgWidgetSettings-spacingSlider > label > .ItgWidgetSettings-inputContainer > .mat-slider');
   }
 
+
   getBasket () {
-    return cy.get('.ItgToolbar-basket');
+    return cy.get('itg-user-basket');
   }
 
   getSnackBarRemoveButton () {

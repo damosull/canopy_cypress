@@ -13,6 +13,14 @@ Given('I login to ITG', () => {
   cy.login();
 });
 
+And('I click on the side menu button', () => {
+  widgets.getSideMenuButton().click();
+});
+
+And('I click on activate panel Button', () => {
+  widgets.getActivatePanelButton().click();
+});
+
 And('I click on {string} button', (button) => {
   cy.contains(button).click();
 });
@@ -511,6 +519,7 @@ And('the below sort options are available', (dataTable) => {
 
 And('I see {string} tooltip on hovering over Sort Direction', () => {
   widgets.getSortDirectionBtn().trigger('mouseover');
+  // TODO: the tooltip is appearing on-screen but when I try to select it, it disappers. Can't find it in the HTML either
 });
 
 And('I set the sort direction to {string}', (direction) => {
@@ -1246,4 +1255,8 @@ And('I set period {string} to {string} and {string} Instant', (StartDate, EndDat
 
   widgets.getInstantField().click();
   widgets.getInstantDropdown().contains(Instant).click();
+});
+
+And('I click the back button', () => {
+  cy.get('.ItgBasket-back').click();
 });

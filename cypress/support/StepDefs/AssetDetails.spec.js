@@ -68,7 +68,7 @@ And('Basket count on toolbar is updated', () => {
 });
 
 And('I click on Basket', () => {
-  cy.get('itg-user-basket > .mat-focus-indicator').click();
+  cy.get('itg-user-basket').click();
 });
 
 Then('Count of items in basket is displayed as {string}', (count) => {
