@@ -1,6 +1,6 @@
 import { And, Then } from 'cypress-cucumber-preprocessor/steps';
-import Shares from '../PageObjects/Shares';
-import Widgets from '../PageObjects/Widgets';
+import Shares from '../PageObjects/SharesPage';
+import Widgets from '../PageObjects/WidgetsPage';
 
 const shares = new Shares();
 const widgets = new Widgets();

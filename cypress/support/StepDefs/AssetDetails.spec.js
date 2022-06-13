@@ -1,5 +1,5 @@
 import { And, Then } from 'cypress-cucumber-preprocessor/steps';
-import Widgets from '../PageObjects/Widgets';
+import Widgets from '../PageObjects/WidgetsPage';
 import AssetDetails from '../PageObjects/AssetDetails';
 import '@4tw/cypress-drag-drop';
 

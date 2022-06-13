@@ -1,5 +1,5 @@
 import { Given, And, Then, When } from 'cypress-cucumber-preprocessor/steps';
-import Widgets from '../PageObjects/Widgets';
+import Widgets from '../PageObjects/WidgetsPage';
 import '@4tw/cypress-drag-drop';
 
 const widgets = new Widgets();
