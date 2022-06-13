@@ -1,23 +1,27 @@
 class Widgets {
 
-  getSideMenuButton () {
-    return cy.get('.ItgHome-openSideMenu > .mat-icon');
+  getSaveLayout () {
+    return cy.get('.ItgCmsPage-saveLayout');
+  }
+
+  getOpenSideMenuButton () {
+    return cy.get('.ItgHome-openSideMenu');
+  }
+
+  getCloseSideMenuButton () {
+    return cy.get('.ItgHome-closeSideMenu');
   }
 
   getActivatePanelButton () {
     return cy.get('.ItgHome-activatePanel');
   }
 
-  getSaveLayout () {
-    return cy.get('.ItgCmsPage-saveLayout');
-  }
-
   getClearLayoutButton () {
     return cy.get('.ItgCmsPage-clearLayout');
   }
 
-  getWidgetPanel () {
-    return cy.get('.ItgCmsPageToolkit-container');
+  getWidgetSettingsPanel () {
+    return cy.get('.ItgWidgetSettings-container');
   }
 
   getWidgetPanelTitle () {
@@ -37,7 +41,7 @@ class Widgets {
   }
 
   getWidgetSettingsBtn () {
-    return cy.get(':nth-child(1) > .ItgActiveWidget > .ItgActiveWidget-container > .ItgActiveWidget-buttons > .ItgActiveWidget-button');
+    return cy.get('.ItgSectionWidget-column > .ItgActiveWidget > .ItgActiveWidget-container > .ItgActiveWidget-buttons > .ItgActiveWidget-button > .mat-icon');
   }
 
   getEditingSectionPanel () {
@@ -75,7 +79,6 @@ class Widgets {
   getWidgetSpacingSlider () {
     return cy.get('.ItgWidgetSettings-spacingSlider > label > .ItgWidgetSettings-inputContainer > .mat-slider');
   }
-
 
   getBasket () {
     return cy.get('itg-user-basket');
@@ -170,7 +173,7 @@ class Widgets {
   }
 
   getAssetCheckboxes () {
-    return cy.get('.mat-checkbox-input');
+    return cy.get('.mat-checkbox-inner-container');
   }
 
   getSelectVisibleIcon () {
@@ -182,11 +185,11 @@ class Widgets {
   }
 
   getAssetName () {
-    return cy.get('.ItgResourceListDetailLink-resultName');
+    return cy.get('.ItgResourceListResultGrid-title');
   }
 
   getAsset () {
-    return cy.get('.mat-checkbox-layout > .mat-checkbox-inner-container');
+    return cy.get('#mat-checkbox-111 > .mat-checkbox-layout > .mat-checkbox-inner-container');
   }
 
   getPeriodFilter () {
@@ -302,15 +305,11 @@ class Widgets {
   }
 
   getSortOption () {
-    return cy.get('.ItgResourceListSorter-label .mat-button-wrapper');
+    return cy.get('.ItgResourceListSorter-label > .mat-button-wrapper');
   }
 
   getSortOptions () {
     return cy.get('.ItgResourceListSorter-label');
-  }
-
-  getSortButton () {
-    return cy.get('.mat-menu-content > button');
   }
 
   getPaginationStyle () {
@@ -451,6 +450,26 @@ class Widgets {
 
   getPaginatorRangeLabel () {
     return cy.get('.mat-paginator-range-label');
+  }
+
+  getEditingModeButton () {
+    return cy.get('.ItgHome-sideMenuOptions > .ng-star-inserted');
+  }
+
+  getBasketCount () {
+    return cy.get('.ItgBasket-count');
+  }
+
+  getBackButton () {
+    return cy.get('.ItgBasket-back');
+  }
+
+  getAssetAvailability () {
+    return cy.get('.ItgAssetDetails-availabilityContainer');
+  }
+
+  getAssetTab () {
+    return cy.get('.mat-tab-label');
   }
 }
 

@@ -14,7 +14,7 @@ Given('I login to ITG', () => {
 });
 
 And('I click on the side menu button', () => {
-  widgets.getSideMenuButton().click();
+  widgets.getOpenSideMenuButton().click();
 });
 
 And('I click on activate panel Button', () => {
@@ -79,12 +79,25 @@ And('I click on close button on Widget panel', () => {
   widgets.getWidgetPanelCloseBtn().click();
 });
 
-And('Widget Panel is collapsed', () => {
-  widgets.getWidgetPanel().should('not.be.visible');
+And('Widget Settings Panel is collapsed', () => {
+  widgets.getWidgetSettingsPanel().should('not.exist');
 });
 
 And('I click on widget Settings Button', () => {
-  widgets.getWidgetSettingsBtn().click();
+  widgets.getWidgetSettingsBtn().first().click();
+});
+
+And('I click on Editing mode button', () => {
+  widgets.getOpenSideMenuButton().click();
+  widgets.getEditingModeButton().click();
+});
+
+And('I see Editing mode button', () => {
+  widgets.getEditingModeButton().should('be.visible');
+});
+
+And('I click on Close editor button', () => {
+  widgets.getCloseSideMenuButton().click();
 });
 
 And('I update the widget title to {string}', (text) => {
@@ -92,7 +105,7 @@ And('I update the widget title to {string}', (text) => {
 });
 
 Then('widget title is set to {string}', (title) => {
-  widgets.getActiveWidgetTitle().should('have.text', title);
+  widgets.getWidgetTitleField().should('have.text', title);
 });
 
 And('Right hand panel is shown', () => {
@@ -100,7 +113,7 @@ And('Right hand panel is shown', () => {
 });
 
 And('Config panel is collapsed', () => {
-  widgets.getEditingSectionPanel().should('not.be.visible');
+  widgets.getWidgetSettingsPanel().should('not.exist');
 });
 
 And('Right hand panel is titled {string}', (widgetHeader) => {
@@ -359,11 +372,11 @@ And('Assets on Resource List are shown in {string} view', (string) => {
 
 And('I select {string} view as Search Result style', (string) => {
   if (string === 'List') {
-    widgets.getListCheckBox().should('be.visible');
+    widgets.getListCheckBox().scrollIntoView().should('be.visible');
     widgets.getListCheckBox().click();
   }
   if (string === 'Grid') {
-    widgets.getGridCheckBox().should('be.visible');
+    widgets.getGridCheckBox().scrollIntoView().should('be.visible');
     widgets.getGridCheckBox().click();
   }
 });
@@ -375,9 +388,15 @@ And('AssetName and AssetType are shown under the asset in Grid view', () => {
 
 And('I click on the first AssetName in Asset {string} view', (view) => {
   if (view === 'Grid') {
-    widgets.getAssetName().first().click();
+    widgets.getAssetName().first().invoke('text').then(text => {
+      cy.task('setVal', text);
+      cy.contains(text).click();
+    });
   } else if (view === 'List') {
-    widgets.getAssetNameInList().first().click();
+    widgets.getAssetNameInList().first().invoke('text').then(text => {
+      cy.task('setVal', text);
+      cy.contains(text).click();
+    });
   }
 });
 
@@ -403,6 +422,20 @@ And('I see the Last asset in the asset {string} view', (view) => {
       });
     } else if (view === 'List') {
       widgets.getAssetNameInList().last().invoke('text').then(text => {
+        expect(text).to.eq(value);
+      });
+    }
+  });
+});
+
+And('I see the First asset in the asset {string} view', (view) => {
+  cy.task('getVal').then((value) => {
+    if (view === 'Grid') {
+      widgets.getAssetName().first().invoke('text').then(text => {
+        expect(text).to.eq(value);
+      });
+    } else if (view === 'List') {
+      widgets.getAssetNameInList().first().invoke('text').then(text => {
         expect(text).to.eq(value);
       });
     }
@@ -441,16 +474,16 @@ And('I click on Browser Back button', () => {
 And('I see the first asset on Asset {string} view', (view) => {
   let firstAsset;
   if (view === 'Grid') {
-    widgets.getAssetsInGrid().first().should('be.visible');
-    widgets.getAssetsInGrid().first().then($el => {
+    widgets.getAssetName().first().should('be.visible');
+    widgets.getAssetName().first().then($el => {
       firstAsset = $el.text();
       expect(firstAsset).to.contain(assetName);
     });
   }
 
   if (view === 'List') {
-    widgets.getAssetNameInList().first().should('be.visible');
-    widgets.getAssetNameInList().first().then($el => {
+    widgets.getAssetName().first().should('be.visible');
+    widgets.getAssetName().first().then($el => {
       firstAsset = $el.text();
       expect(firstAsset).to.contain(assetName);
     });
@@ -500,7 +533,9 @@ And('I select pagination Navigator {string}', (page) => {
 });
 
 Then('All visible assets are not selected', () => {
-  widgets.getAssetCheckboxes().should('have.attr', 'aria-checked', 'false');
+  widgets.getAssetCheckboxes().should('have.attr', 'class')
+    .and('not.contain', 'mat-checkbox-checked');
+
 });
 
 Then('Sort options are defaulted to Date Created and Descending', () => {
@@ -510,16 +545,14 @@ Then('Sort options are defaulted to Date Created and Descending', () => {
 });
 
 And('the below sort options are available', (dataTable) => {
-  widgets.getSortOptions().click();
+  widgets.getSortOption().click({force: true});
   dataTable.rawTable.forEach(($ele, index) => {
-    widgets.getSortButton().eq(index).should('have.text', ' ' + $ele.toString() + ' ');
+    cy.get(('.mat-menu-content > :nth-child(value)').replace('value', index + 1)).should('have.text', ' ' + $ele.toString() + ' ');
   });
-  widgets.getActiveSortOption().click();
 });
 
 And('I see {string} tooltip on hovering over Sort Direction', () => {
   widgets.getSortDirectionBtn().trigger('mouseover');
-  // TODO: the tooltip is appearing on-screen but when I try to select it, it disappers. Can't find it in the HTML either
 });
 
 And('I set the sort direction to {string}', (direction) => {
@@ -567,7 +600,7 @@ And('Sort options {string} and {string} is shown in URL', (sortOption, sortDirec
 
   switch (sortOption) {
   case 'Name':
-    value = 'asset-name';
+    value = 'name';
     break;
   case 'Type':
     value = 'asset-type';
@@ -616,8 +649,9 @@ And('Assets are sorted as per Sort options {string}, {string}, {string}', (sortO
 });
 
 And('I scroll beyond the last asset', () => {
-  widgets.getAssetsInGrid().last().trigger('mouseover');
-  cy.scrollTo(0, 40000);
+  // widgets.getAssetsInGrid().last().trigger('mouseover');
+  // cy.scrollTo('bottom');
+  widgets.getLoadMoreBtn().scrollIntoView().click();
 });
 
 Then('Icons {string} and {string} are disabled when I click {string}', (icon1, icon2, page) => {
@@ -635,55 +669,6 @@ Then('Icons {string} and {string} are disabled when I click {string}', (icon1, i
       widgets.getPaginatorFirst().should('not.be.enabled');
     }
   }
-});
-
-And('Pagination Range and PageNo on URL are shown for {string}', (resultCount, dataTable) => {
-  let assetCount;
-  let range;
-  let min;
-  let max;
-  let pageNo;
-
-  widgets.getResourceListWidgetCount().invoke('text').then(text => {
-    assetCount = text.split(' ')[1];
-  }).then(() => {
-    dataTable.raw().forEach((page) => {
-      if (page.toString() === 'Last Page') {
-        if (widgets.getPaginatorLast().should('be.enabled')) {
-          widgets.getPaginatorLast().click();
-          min = (Math.floor(assetCount / resultCount) * resultCount + 1).toString();
-          max = assetCount.toString();
-          pageNo = Math.floor(assetCount / resultCount);
-        }
-      } else if (page.toString() === 'Previous Page') {
-        if (widgets.getPaginatorPrev().should('be.enabled')) {
-          widgets.getPaginatorPrev().click();
-          max = (
-            Math.floor(assetCount / resultCount) * resultCount
-          ).toString();
-          min = (max - resultCount + 1).toString();
-          pageNo = Math.floor(assetCount / resultCount) - 1;
-        }
-      } else if (page.toString() === 'First Page') {
-        if (widgets.getPaginatorFirst().should('be.enabled')) {
-          widgets.getPaginatorFirst().click();
-          min = '1'.toString();
-          max = resultCount;
-          pageNo = 0;
-        }
-      } else if (page.toString() === 'Next Page') {
-        if (widgets.getPaginatorNext().should('be.enabled')) {
-          widgets.getPaginatorNext().click();
-        }
-        min = (Number(resultCount) + 1).toString();
-        max = (Number(resultCount) * 2).toString();
-        pageNo = 1;
-      }
-      range = min.concat(' – ', max, ' of ', assetCount);
-      widgets.getPaginatorRangeLabel().should('contain', range.toString());
-      cy.url().should('include', 'page=' + pageNo);
-    });
-  });
 });
 
 And('I search for the first asset', () => {
@@ -727,10 +712,14 @@ And('Count of selected items {string} is displayed on snack bar', (resultCount) 
 });
 
 And('First asset is unselected as I uncheck the first asset', () => {
-  widgets.getAsset().first().click();
+  widgets.getAssetCheckboxes().first().scrollIntoView().click();
 
   widgets.getAssetCheckboxes().first().should('have.attr', 'class')
     .and('not.contain', 'mat-checkbox-checked');
+});
+
+And('I select the first asset', () => {
+  widgets.getAssetCheckboxes().first().scrollIntoView().click();
 });
 
 And('Snack bar is not displayed', () => {
@@ -873,7 +862,6 @@ And('{string} filter {string} shown in widget', (filterType, bool) => {
 });
 
 Then('Show {string} count option is checked by default', (filterType) => {
-
   let filterButton;
 
   switch (filterType) {
@@ -893,6 +881,7 @@ Then('Show {string} count option is checked by default', (filterType) => {
     filterButton = '';
     break;
   }
+
   cy.log(filterButton);
 });
 
@@ -1003,6 +992,8 @@ And('I select the first {string} filter', (filterType) => {
     widgets.getDropdownOverlay().eq(1).click().then(() => {
       textOnFilter = 'Phase - ' + filterSubMenuText;
     });
+  } else if (filterType === 'Downloadable Resource') {
+    cy.contains(filterType).click();
   }
 });
 
@@ -1185,9 +1176,14 @@ And('I am brought to the top of the page', () => {
 
 And('I clear the basket', () => {
   widgets.getBasket().click();
-  widgets.getSnackBarRemoveButton().click();
-  cy.contains('Remove all').click();
-  cy.contains('Basket emptied').should('be.visible');
+
+  widgets.getBasketCount().invoke('text').then(basketCountText => {
+    if (basketCountText.includes('0 items') === false) {
+      widgets.getSnackBarRemoveButton().click();
+      cy.contains('Remove all').click();
+      cy.contains('Basket emptied').should('be.visible');
+    }
+  });
 });
 
 And('I add an asset to the basket', () => {
@@ -1198,6 +1194,30 @@ And('I add an asset to the basket', () => {
 And('Basket count is updated', () => {
   widgets.getBasket().click();
   cy.contains('0 items in basket').should('be.visible');
+});
+
+And('Basket count is updated on selecting removal option {string}', (removalOption) => {
+  let count;
+  let snackBarCount;
+  let countOnBasketTitle;
+
+  cy.wait(1000);
+
+  widgets.getBasketCount().invoke('text').then(basketCountText => {
+    countOnBasketTitle = basketCountText.split(' ');
+    count = countOnBasketTitle[1];
+  }).then(() => {
+
+    if (removalOption === 'Remove selected') {
+      snackBarCount = '99';
+    } else if (removalOption === 'Remove visible') {
+      snackBarCount = '70';
+    } else if (removalOption === 'Remove all') {
+      snackBarCount = '0';
+    }
+
+    expect(count).to.eq(snackBarCount);
+  });
 });
 
 And('I select the first adaptor filter with label', () => {
@@ -1255,8 +1275,58 @@ And('I set period {string} to {string} and {string} Instant', (StartDate, EndDat
 
   widgets.getInstantField().click();
   widgets.getInstantDropdown().contains(Instant).click();
+  cy.wait(2000);
+});
+
+And('Pagination Range and PageNo on URL are shown for {string}', (resultCount, dataTable) => {
+  let assetCount;
+  let range;
+  let min;
+  let max;
+  let pageNo;
+
+  widgets.getResourceListWidgetCount().invoke('text').then(text => {
+    assetCount = text.split(' ')[1];
+  }).then(() => {
+    dataTable.raw().forEach((page) => {
+      if (page.toString() === 'Last Page') {
+        if (widgets.getPaginatorLast().should('be.enabled')) {
+          widgets.getPaginatorLast().click();
+          min = (Math.floor(assetCount / resultCount) * resultCount + 1).toString();
+          max = assetCount.toString();
+          pageNo = Math.floor(assetCount / resultCount);
+        }
+      } else if (page.toString() === 'Previous Page') {
+        if (widgets.getPaginatorPrev().should('be.enabled')) {
+          widgets.getPaginatorPrev().click();
+          max = (
+            Math.floor(assetCount / resultCount) * resultCount
+          ).toString();
+          min = (max - resultCount + 1).toString();
+          pageNo = Math.floor(assetCount / resultCount) - 1;
+        }
+      } else if (page.toString() === 'First Page') {
+        if (widgets.getPaginatorFirst().should('be.enabled')) {
+          widgets.getPaginatorFirst().click();
+          min = '1'.toString();
+          max = resultCount;
+          pageNo = 0;
+        }
+      } else if (page.toString() === 'Next Page') {
+        if (widgets.getPaginatorNext().should('be.enabled')) {
+          widgets.getPaginatorNext().click();
+        }
+        min = (Number(resultCount) + 1).toString();
+        max = (Number(resultCount) * 2).toString();
+        pageNo = 1;
+      }
+      range = min.concat(' – ', max, ' of ', assetCount);
+      widgets.getPaginatorRangeLabel().should('contain', range.toString());
+      cy.url().should('include', 'page=' + pageNo);
+    });
+  });
 });
 
 And('I click the back button', () => {
-  cy.get('.ItgBasket-back').click();
+  widgets.getBackButton().click();
 });

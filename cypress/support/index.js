@@ -18,3 +18,11 @@ import './commands';
 require('cypress-xpath');
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+
+beforeEach(() => {
+  // cy.log('User is logged in');
+  // cy.setLocalStorage('key', 'value');
+  // cy.setCookie('key', 'value');
+  // cy.restoreLocalStorage();
+  cy.exec('rm -rf cypress/downloads || true');
+});

@@ -4,19 +4,19 @@ class CoreConfigFields {
   }
 
   getTopSpacingButton () {
-    return cy.get('#mat-button-toggle-5-button > .mat-button-toggle-label-content');
+    return cy.get('[value="top"]');
   }
 
   getRightSpacingButton () {
-    return cy.get('#mat-button-toggle-6-button > .mat-button-toggle-label-content');
+    return cy.get('[value="right"]');
   }
 
   getBottomSpacingButton () {
-    return cy.get('#mat-button-toggle-7-button > .mat-button-toggle-label-content');
+    return cy.get('[value="bottom"]');
   }
 
   getLeftSpacingButton () {
-    return cy.get('#mat-button-toggle-8-button > .mat-button-toggle-label-content');
+    return cy.get('[value="left"]');
   }
 
   getSpacingSliderLabel () {

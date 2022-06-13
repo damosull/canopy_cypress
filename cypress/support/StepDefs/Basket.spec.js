@@ -5,7 +5,9 @@ import Basket from '../PageObjects/Basket';
 const widgets = new Widgets();
 const basket = new Basket();
 
+// eslint-disable-next-line no-unused-vars
 let countOfItems;
+// eslint-disable-next-line no-unused-vars
 let basketCount;
 let assetTitle;
 let typeOfAsset;
@@ -14,12 +16,17 @@ Then('URL should include {string}', (urlSubString) => {
   cy.url().should('include', urlSubString);
 });
 
-And('Title of Basket Page is {string}', (title) => {
-  cy.get('.ItgBasket-title').should('have.text', title);
+And('Title of Basket page is {string}', (title) => {
+  basket.getTitle().should('have.text', title);
 });
 
 And('I add to basket', () => {
   cy.contains('Add to basket').click();
+});
+
+And('I click on Export button', () => {
+  basket.getExportButton().click();
+  cy.wait(1000);
 });
 
 And('Preview results per page should be {string} {string}', (string, value) => {
@@ -40,11 +47,11 @@ And('Preview results per page should be {string} {string}', (string, value) => {
 
   cy.wait(2000);
 
-  cy.get('.ItgResourceListResultGrid-previewContainer').should('have.length', expectedCount);
+  widgets.getAssetsInGrid().should('have.length', expectedCount);
 });
 
 And('I scroll beyond the last asset in preview', () => {
-  cy.get('.ItgResourceListResultGrid-previewContainer').last().trigger('mouseover');
+  widgets.getAssetsInGrid().last().trigger('mouseover');
   cy.scrollTo(0, 40000, { ensureScrollable: false });
 });
 
@@ -68,6 +75,16 @@ And('I click on the first Asset in Basket', () => {
   cy.url().should('include', 'assetDetails');
 });
 
+And('I click on the last Asset in Basket', () => {
+  widgets.getAssetName().last().invoke('text').then(text => {
+    assetTitle = text;
+  });
+  widgets.getAssetType().last().invoke('text').then(text => {
+    typeOfAsset = text;
+  });
+  widgets.getAssetName().last().click();
+});
+
 Then('Asset Details Page opens with AssetName as Title', () => {
   cy.url().should('include', 'assetDetails');
   widgets.getAssetDetailTitle().should('have.text', assetTitle);
@@ -88,19 +105,25 @@ And('URL captures Asset Details Page', () => {
 
 And('I am on Basket page on going back', () => {
   cy.go('back');
-  cy.get('.ItgBasket-container').should('be.visible');
+  basket.getBasketContainer().should('be.visible');
 });
 
 And('I Select visible assets and Add to basket', () => {
   widgets.getSpinnerLabel().should('not.exist');
   widgets.getSelectVisibleIcon().click();
   cy.contains('Add to basket').click();
-  cy.get('.cdk-overlay-container .mat-simple-snackbar span').should('be.visible');
+});
+
+And('I Select visible assets', () => {
+  widgets.getSpinnerLabel().should('not.exist');
+  widgets.getSelectVisibleIcon().click();
+  // cy.contains('Add to basket').click();
+  // cy.get('.cdk-overlay-container .mat-simple-snackbar span').should('be.visible');
 });
 
 And('I click on Select visible icon on Basket', () => {
   widgets.getSpinnerLabel().should('not.exist');
-  cy.get('.ItgBasket-selectVisible').click();
+  basket.getSelectVisible().click();
   widgets.getSpinnerLabel().should('not.exist');
 });
 
@@ -109,11 +132,11 @@ And('Count of selected items {string} is displayed on Basket snack bar', (result
   let snackBarCount;
   let countOnBasketTitle;
 
-  cy.get('.ItgAssetSnackbar-label').invoke('text').then(text => {
+  widgets.getSnackbar().invoke('text').then(text => {
     count = text;
   });
 
-  cy.get('.ItgBasket-count').invoke('text').then(basketCountText => {
+  widgets.getBasketCount().invoke('text').then(basketCountText => {
     countOnBasketTitle = basketCountText.split(' ');
     countOnBasketTitle = countOnBasketTitle[1];
   }).then(() => {
@@ -123,7 +146,7 @@ And('Count of selected items {string} is displayed on Basket snack bar', (result
 });
 
 And('I click on the Sort button', () => {
-  cy.get('.ItgResourceListSorter-container > .mat-menu-trigger > .mat-button-wrapper').click();
+  basket.getSortButton().click();
 });
 
 And('I see the sort options below', (dataTable) => {
@@ -133,5 +156,29 @@ And('I see the sort options below', (dataTable) => {
 });
 
 And('I click on active sort option', () => {
-  cy.get('.ItgResourceListSorter-activeOption').click();
+  widgets.getActiveSortOption().click();
+});
+
+And('I click away from the dropdown', () => {
+  basket.getBackground().click();
+});
+
+And('I click on the remove button', () => {
+  widgets.getSnackBarRemoveButton().click();
+  cy.contains('Remove all').click();
+  cy.contains('Basket emptied').should('be.visible');
+});
+
+And('Assets in the export are in the same order as the list', () => {
+  cy.parseXlsx('/cypress/downloads/Statistics.xlsx').then(jsonData => {
+    expect(jsonData[0].data[1]).to.contain('hello');
+  });
+});
+
+And('I select the {string} filter', (string) => {
+  basket.getFiltersPanel().contains(string).click();
+});
+
+And('I click on the Download button', () => {
+  basket.getDownloadButton().click();
 });

@@ -1,9 +1,9 @@
-import LoginPage from '../support/PageObjects/LoginPage';
-import Widgets from './PageObjects/Widgets';
-import CommandsPage from '../support/PageObjects/CommandsPage';
+import LoginPage from './PageObjects/LoginPage';
+import WidgetsPage from './PageObjects/WidgetsPage';
+import CommandsPage from './PageObjects/CommandsPage';
 
 const loginPage = new LoginPage();
-const widgets = new Widgets();
+const widgets = new WidgetsPage();
 const commandsPage = new CommandsPage();
 const username = 'autouser';
 const password = '1Qwertasdf';
@@ -27,10 +27,10 @@ Cypress.Commands.add('login', () => {
     loginPage.getUsernameInput().type(username);
     loginPage.getPasswordInput().type(password);
     loginPage.getLoginButton().click();
-    widgets.getSideMenuButton().should('be.visible');
+    widgets.getOpenSideMenuButton().should('be.visible');
   });
   cy.visit('/home');
-  widgets.getSideMenuButton().should('be.visible');
+  widgets.getOpenSideMenuButton().should('be.visible');
 });
 
 Cypress.Commands.add('getAssetDetailsTabFields', () => {

@@ -3,10 +3,13 @@ import CoreConfigFields from '../PageObjects/CoreConfigFields';
 
 const coreConfigFields = new CoreConfigFields();
 
-let versionCount;
+// eslint-disable-next-line no-unused-vars
 let topPadding = 0;
+// eslint-disable-next-line no-unused-vars
 let bottomPadding = 0;
+// eslint-disable-next-line no-unused-vars
 let leftPadding = 0;
+// eslint-disable-next-line no-unused-vars
 let rightPadding = 0;
 
 And('I select Top,Right,Bottom,Left widget Spacing on Config Panel', () => {
