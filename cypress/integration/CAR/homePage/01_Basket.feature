@@ -1,5 +1,5 @@
 @test
-Feature: Basket Component: Basket
+Feature: 01 Basket Component: Basket
 This feature covers all the Basket functions for a User with Basket Services
 
   Background:

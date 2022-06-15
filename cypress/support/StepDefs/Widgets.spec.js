@@ -558,7 +558,7 @@ And('I see {string} tooltip on hovering over Sort Direction', () => {
 And('I set the sort direction to {string}', (direction) => {
   widgets.getSortDirectionBtn().invoke('attr', 'aria-label').then(currentDirection => {
     if (direction !== currentDirection) {
-      widgets.getSortDirectionBtn().click();
+      widgets.getSortDirectionBtn().click({ force:true });
     }
   });
 });
@@ -581,6 +581,7 @@ And('I set Include {string} Domains in Results to {string}', (domainType, includ
 });
 
 And('I select the Sort options {string} and {string}', (sortOption, sortOrder) => {
+  cy.wait(1000);
   widgets.getSortOption().click();
   widgets.getDomain().contains(sortOption).click();
   widgets.getSortDirectionBtn().invoke('attr', 'aria-label').then(currentDirection => {

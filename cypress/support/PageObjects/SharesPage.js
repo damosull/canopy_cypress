@@ -24,6 +24,14 @@ class Shares {
     return cy.get('.ItgShares-detailLink');
   }
 
+  getShareDetailsName () {
+    return cy.get('.ItgShareDetails-name');
+  }
+
+  getShareDetailsSubTitle () {
+    return cy.get('.ItgShareDetails-subTitle');
+  }
+
   getCreateShareButton () {
     return cy.get('.mat-dialog-actions > :nth-child(2)');
   }
@@ -46,6 +54,38 @@ class Shares {
 
   getNonShareableAssetHeader () {
     return cy.get(':nth-child(2) > .mat-subheader');
+  }
+
+  getSharesDetailsItemLabel () {
+    return cy.get('.ItgShareDetails-summaryItemLabel');
+  }
+
+  getShareDetailsItemSubtitle () {
+    return cy.get('.ItgShareDetails-summaryItemSubtitle');
+  }
+
+  getShareDetailsBackButton () {
+    return cy.get('.ItgShareDetails-header > .mat-focus-indicator');
+  }
+
+  getShareDetailsSortOption () {
+    return cy.get('.ItgResourceListSorter-label .mat-button-wrapper');
+  }
+
+  getShareDetailsSortDirection () {
+    return cy.get('.ItgResourceListSorter-direction');
+  }
+
+  getGuestsTabCount () {
+    return cy.get('.ItgShareGuests-count');
+  }
+
+  getDialogTitle () {
+    return cy.get('.mat-dialog-title');
+  }
+
+  getDurationDropdown () {
+    return cy.get('mat-select[formcontrolname="hours"]');
   }
 }
 
