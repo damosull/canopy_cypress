@@ -194,7 +194,7 @@ This Feature covers all the shares functions for a User with Shares Services
     Then Asset count 'is' updated on Shares Assets tab
     And Asset count 'is' updated on Shares Title
 
-  Scenario: 20 Guests Tab Title and Message when No guests are added
+  Scenario: 21 Guests Tab Title and Message when No guests are added
     And I click on Shares button on toolbar
     And I access Share Details page of Share
     When I click on Guests Tab on the Share
@@ -204,15 +204,14 @@ This Feature covers all the shares functions for a User with Shares Services
     And Guest count is not displayed when there are no guests on a share
     And Invite New Guests CTA is displayed
 
-  Scenario: 21 Guests Tab: Guests table, Count of guests, Infinite Scroll
+  Scenario: 22 Guests Tab: Guests table, Count of guests, Infinite Scroll
     And I click on Shares button on toolbar
     And I access Share Details page of Share
     And I click on Guests Tab on the Share
     And I click on the Invite New Guests CTA
-    And I enter Guest details 'guest1@email.com','Guest Msg','2 days'
+    And I enter Guest details 'guest1@email.com','Guest Msg'
     When I click on 'Confirm' button
     Then Count of Guests is shown on Guests tab Header
-    # # TODO: assertion in below step commented out due to API call needed to validate
     And Count of Guests is shown in Guests tab
     And Guests table has below columns
       | Id        |
@@ -221,12 +220,12 @@ This Feature covers all the shares functions for a User with Shares Services
       | Start     |
       | End       |
 
-  Scenario: 22 Guests Tab : Default Sort, Tooltip on Sort Order
+  Scenario: 23 Guests Tab : Default Sort, Tooltip on Sort Order
     And I click on Shares button on toolbar
     And I access Share Details page of Share
     And I click on Guests Tab on the Share
     And I click on the Invite New Guests CTA
-    And I enter Guest details 'guest1@email.com','Guest Msg','2 days'
+    And I enter Guest details 'guest1@email.com','Guest Msg'
     When I click on 'Confirm' button
     Then Sort options are defaulted to Created and Descending
     And I click on Guest sort options
@@ -239,7 +238,7 @@ This Feature covers all the shares functions for a User with Shares Services
     And I set the sort direction to 'Ascending'
     And I see 'Ascending' tooltip on hovering over Sort Direction
 
-  Scenario: 23 Guests Tab : Invite Guests Overlay
+  Scenario: 24 Guests Tab : Invite Guests Overlay
     And I click on Shares button on toolbar
     And I access Share Details page of Share
     When I click on Guests Tab on the Share
@@ -247,15 +246,15 @@ This Feature covers all the shares functions for a User with Shares Services
     And I click on the Invite New Guests CTA
     And Title on Overlay is 'Invite Guests'
 
-  Scenario: Guests Tab : 24 Invite Guests Overlay: Cancel Overlay
+  Scenario: 25 Guests Tab : Invite Guests Overlay: Cancel Overlay
     And I click on Shares button on toolbar
     And I access Share Details page of Share
     And I click on Guests Tab on the Share
     And I click on the Invite New Guests CTA
-    When I enter Guest details 'guest1@email.com','Guest Msg','2 days'
+    When I enter Guest details 'guest1@email.com','Guest Msg'
     Then I click on X Button on the Overlay
 
-  Scenario: 25 Guests Overlay : Mandatory fields
+  Scenario: 26 Guests Overlay : Mandatory fields
     And I click on Shares button on toolbar
     And I access Share Details page of Share
     And I click on Guests Tab on the Share
@@ -270,7 +269,7 @@ This Feature covers all the shares functions for a User with Shares Services
     And I enter Guest details 'guest1@email.com','null','2 days'
     And Confirm button on Invite guests Overlay is 'enabled'
 
-  Scenario: 26 Guests Overlay : Create a New Guest
+  Scenario: 27 Guests Overlay : Create a New Guest
     And I click on Shares button on toolbar
     And I access Share Details page of Share
     And I click on Guests Tab on the Share
@@ -279,7 +278,7 @@ This Feature covers all the shares functions for a User with Shares Services
     Then I click on 'Confirm' button
     # Then Toast Notification pops up on adding a guest
 
-  Scenario: 27 Guests Overlay : Invalid email address
+  Scenario: 28 Guests Overlay : Invalid email address
     And I click on Shares button on toolbar
     And I access Share Details page of Share
     And I click on Guests Tab on the Share
@@ -288,12 +287,12 @@ This Feature covers all the shares functions for a User with Shares Services
     Then I see 'Please provide a valid email address!' text
     And Confirm button on Overlay is disabled
 
-  Scenario: 28 Guests tab : Sort
+  Scenario: 29 Guests tab : Sort
     And I click on Shares button on toolbar
     And I access Share Details page of Share
     And I click on Guests Tab on the Share
     And I click on the Invite New Guests CTA
-    And I enter Guest details 'guest1@email.com','Guest Msg','2 days'
+    And I enter Guest details 'guest1@email.com','Guest Msg'
     And I click on 'Confirm' button
     When I select the Sort options 'Modified' and 'Ascending'
     Then Selected Sort option 'Modified' is highlighted
@@ -301,13 +300,13 @@ This Feature covers all the shares functions for a User with Shares Services
     And Guests are sorted as per Sort options 'Modified' and 'Ascending'
     And I see the same sort options on refreshing the URL
 
-  Scenario: 29 Shares Overview Page
+  Scenario: 30 Shares Overview Page
     And I click on Shares button on toolbar
     When I access Share Details page of Share
     Then Shares Overview tab has title 'Share information'
     And Field Titles on Shares Overview tab are populated correctly
 
-  Scenario: 30 Edit existing Share : Cancel Changes
+  Scenario: 31 Edit existing Share : Cancel Changes
     And I click on Shares button on toolbar
     And I access Share Details page of Share
     When I click on 'Edit Share' button
@@ -316,7 +315,7 @@ This Feature covers all the shares functions for a User with Shares Services
     And I edit the Share 'auto_share'
     And Share is not edited on clicking on Cancel Button
 
-  Scenario: 31 Edit existing Share
+  Scenario: 32 Edit existing Share
     And I click on Shares button on toolbar
     And I access Share Details page of Share
     And I click on 'Edit Share' button

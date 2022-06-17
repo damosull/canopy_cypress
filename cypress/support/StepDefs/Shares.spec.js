@@ -17,7 +17,7 @@ let created;
 let modified;
 let description;
 
-let shareDetails = {};
+const shareDetails = {};
 
 And('I click on Shares button on toolbar', () => {
   shares.getShares().click();
@@ -155,9 +155,9 @@ And('Share detail page shows Share Availability period', () => {
   });
   shares.getShareDetailsItemSubtitle().eq(2).invoke('text').then(text => {
     let today = new Date();
-    let dd = String(today.getDate()).padStart(2, '0');
-    let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0
-    let yyyy = today.getFullYear();
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const yyyy = today.getFullYear();
 
     today = dd + '/' + mm + '/' + yyyy;
     expect(text.trim()).to.equal(today + ' - ∞');
@@ -337,7 +337,7 @@ And('Title on Overlay is {string}', (modalTitle) => {
   shares.getDialogTitle().contains(modalTitle);
 });
 
-And('I enter Guest details {string},{string},{string}', (email, message, duration) => {
+And('I enter Guest details {string},{string}', (email, message) => {
   if (email.includes('@')) {
     email = email.split('@');
     email = email[0] + Date.now() + '@' + email[1];
@@ -350,7 +350,7 @@ And('I enter Guest details {string},{string},{string}', (email, message, duratio
     cy.get('[formcontrolname="message"]').type(message);
   }
   shares.getDurationDropdown().click();
-  cy.get('.mat-select-panel .mat-option').contains(duration).click();
+  cy.get('.mat-select-panel .mat-option').first().click();
   cy.wait(1000);
 });
 
@@ -387,7 +387,7 @@ Then('Shares Overview tab has title {string}', (title) => {
 });
 
 And('Field Titles on Shares Overview tab are populated correctly', () => {
-  let expectedOverviewFields = 'Name: *Available from:Available until:Owner:Created on:Modified on:Description:';
+  const expectedOverviewFields = 'Name: *Available from:Available until:Owner:Created on:Modified on:Description:';
   cy.get('.ItgShareDetailsInfo-form .mat-form-field .mat-form-field-label').invoke('text').then(text => {
     expect(text).to.eql(expectedOverviewFields);
   });

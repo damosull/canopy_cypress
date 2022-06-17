@@ -21,9 +21,7 @@ Then('Asset availability is shown on Asset Detail Page', () => {
 });
 
 Then('Fields on Asset details tab are populated correctly', () => {
-  // TODO: need help to compare what's returned below against an API
   cy.getAssetDetailsTabFields();
-  // Compare the above to something like this: let fields_api = await this.getAssetDetailTabFields_API();
 });
 
 And('I navigate to Asset {string} tab', (tab) => {
@@ -40,9 +38,6 @@ And('I upload a new version', () => {
   widgets.getAssetsInGrid().then(assets => {
     versionCount = assets.length;
   });
-  // TOOD: process to be completed below
-  // let path = process.cwd() + '/Images/TeamITGVersion.png';
-  //   await this.uploadNewVersion(path);
 });
 
 Then('New version is uploaded to the versions tab', () => {
@@ -51,8 +46,6 @@ Then('New version is uploaded to the versions tab', () => {
 
 And('I select the {string} option on Actions menu', (action) => {
   assetDetails.getActionsMenu().click();
-  // sortOptionList.first() is visible
-  // filter_elementAll(this.sortOptionList, action)
   widgets.getDomain().contains(action).click();
 });
 

@@ -21,7 +21,9 @@ And('Title of Basket page is {string}', (title) => {
 });
 
 And('I add to basket', () => {
+  cy.contains('Available Actions').click();
   cy.contains('Add to basket').click();
+  cy.contains('added to basket').should('be.visible');
 });
 
 And('I click on Export button', () => {
@@ -61,7 +63,9 @@ And('I add the first asset to Basket', () => {
   basket.getBasketCount().invoke('text').then(text => {
     basketCount = text;
   });
+  cy.contains('Available Actions').click();
   cy.contains('Add to basket').click();
+  cy.contains('added to basket').should('be.visible');
 });
 
 And('I click on the first Asset in Basket', () => {
@@ -111,14 +115,14 @@ And('I am on Basket page on going back', () => {
 And('I Select visible assets and Add to basket', () => {
   widgets.getSpinnerLabel().should('not.exist');
   widgets.getSelectVisibleIcon().click();
+  cy.contains('Available Actions').click();
   cy.contains('Add to basket').click();
+  cy.contains('added to basket').should('be.visible');
 });
 
 And('I Select visible assets', () => {
   widgets.getSpinnerLabel().should('not.exist');
   widgets.getSelectVisibleIcon().click();
-  // cy.contains('Add to basket').click();
-  // cy.get('.cdk-overlay-container .mat-simple-snackbar span').should('be.visible');
 });
 
 And('I click on Select visible icon on Basket', () => {

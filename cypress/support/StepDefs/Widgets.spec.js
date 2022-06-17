@@ -644,14 +644,9 @@ And('Assets are sorted as per Sort options {string}, {string}, {string}', (sortO
   cy.log(mySortOption);
   cy.log(sortOrder);
   cy.log(resultCount);
-
-  // Make API call to assetNameList_api(mySortOption, sortOrder, resultCount), & compare what's returned in the expect below:
-  // expect().to.eq(widgets.getAssetName());
 });
 
 And('I scroll beyond the last asset', () => {
-  // widgets.getAssetsInGrid().last().trigger('mouseover');
-  // cy.scrollTo('bottom');
   widgets.getLoadMoreBtn().scrollIntoView().click();
 });
 
@@ -862,30 +857,6 @@ And('{string} filter {string} shown in widget', (filterType, bool) => {
   }
 });
 
-Then('Show {string} count option is checked by default', (filterType) => {
-  let filterButton;
-
-  switch (filterType) {
-  case 'keyword':
-    filterButton = '';
-    break;
-
-  case 'types':
-    filterButton = '';
-    break;
-
-  case 'domain':
-    filterButton = '';
-    break;
-
-  case 'state':
-    filterButton = '';
-    break;
-  }
-
-  cy.log(filterButton);
-});
-
 And('I click on {string} filter on widget', (filterType) => {
   let filterBtn;
 
@@ -1053,27 +1024,6 @@ And('I {string} Show keyword count on Config panel', (selection) => {
       widgets.getShowKeyboardCount().click();
     }
   });
-});
-
-Then('Counts are not displayed on Keyword filters', () => {
-// let isCountDisplayed = this.noCountOnKeywordFilters()
-  // const countDisplay = [];
-  // TODO: need to get the below converted to cypress when I can run to debug
-  // for (const menu of await this.keywordFilterItem) {
-  //   await this.elementToBeClickable(menu);
-  //   await menu.click();
-  //   await this.keywordFilterSubMenu.each(async (item) => {
-  //     let presence = await this.isPresent(
-  //       item.element(this.keywordFilterSubMenuCount.locator()),
-  //     );
-  //     await countDisplay.push(presence);
-  //   });
-  // }
-  // return await countDisplay;
-
-
-// whatever is returned above is asserted on below
-// expect(isCountDisplayed.every(Boolean))to be false
 });
 
 And('Keyword filter parameters are displayed on URL', () => {

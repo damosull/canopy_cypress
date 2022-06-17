@@ -8,11 +8,11 @@ This feature covers all the Basket functions for a User with Basket Services
   Scenario: 01 Create Resource List Widget
     And I click on the side menu button
     And I click on activate panel Button
-    And I click on clear layout Button
-    And I create a 'Resource List' Widget
+    When I click on clear layout Button
+    Then I create a 'Resource List' Widget
 
   Scenario: 02 Basket Title and URL
-    And I click on Basket
+    When I click on Basket
     Then URL should include '/basket'
     And Title of Basket page is 'User Basket'
 
@@ -29,7 +29,7 @@ This feature covers all the Basket functions for a User with Basket Services
     And I add to basket
     # Then Toast notification pops up '100 items were added to basket'
     And I click on Basket
-    Then Count of items in basket is displayed as '100'
+    And Count of items in basket is displayed as '100'
     And Assets on Resource List are shown in 'Grid' view
     And Preview results per page should be 'equal to' '30'
     And I scroll beyond the last asset in preview
@@ -38,7 +38,7 @@ This feature covers all the Basket functions for a User with Basket Services
   Scenario: 04 "View Details" from Assets inside the basket
     And I add the first asset to Basket
     And I click on Basket
-    And I click on the first Asset in Basket
+    When I click on the first Asset in Basket
     Then Asset Details Page opens with AssetName as Title
     And Asset Preview is displayed on Asset Details Page
     And URL captures Asset Details Page
@@ -51,8 +51,8 @@ This feature covers all the Basket functions for a User with Basket Services
     And I click on activate panel Button
     And I click on clear layout Button
     And I create a 'Resource List' Widget
-    Given I click on widget Settings Button
-    And I select 'Load more' pagination and '50' results per page
+    When I click on widget Settings Button
+    Then I select 'Load more' pagination and '50' results per page
     And I Select visible assets and Add to basket
     And I click on Basket
     And I click on Select visible icon on Basket
@@ -65,11 +65,11 @@ This feature covers all the Basket functions for a User with Basket Services
     And I click on the side menu button
     And I click on activate panel Button
     And I click on clear layout Button
-    Then I create a 'Resource List' Widget
-    When I select 'Load more' pagination and '50' results per page
+    When I create a 'Resource List' Widget
+    Then I select 'Load more' pagination and '50' results per page
     And I Select visible assets and Add to basket
     And I click on Basket
-    Then Sort options are defaulted to Date Created and Descending
+    And Sort options are defaulted to Date Created and Descending
     And I click on the Sort button
     And I see the sort options below
       | Name          |
@@ -85,25 +85,25 @@ This feature covers all the Basket functions for a User with Basket Services
   Scenario: 07 Assets sorted as per the sort order
     And I click on the side menu button
     And I click on activate panel Button
-    And I click on clear layout Button
+    When I click on clear layout Button
     Then I create a 'Resource List' Widget
     And I select 'Load more' pagination and '50' results per page
     And I Select visible assets and Add to basket
     And I click on Basket
     And I select the Sort options 'Name' and 'Descending'
-    Then Selected Sort option 'Name' is highlighted
+    And Selected Sort option 'Name' is highlighted
     And Sort options 'Name' and 'Descending' is shown in URL
 
   Scenario: 08 Retain position of asset on navigating back from Details Page to Basket
     And I click on the side menu button
     And I click on activate panel Button
-    And I click on clear layout Button
+    When I click on clear layout Button
     Then I create a 'Resource List' Widget
     And I Select visible assets and Add to basket
     And I click on Basket
     And I click on the first AssetName in Asset 'Grid' view
     And I click on Browser Back button
-    Then I see the First asset in the asset 'Grid' view
+    And I see the First asset in the asset 'Grid' view
 
   Scenario Outline: 09 Removing Assets from Basket - <option>
     And I clear the basket
@@ -111,8 +111,8 @@ This feature covers all the Basket functions for a User with Basket Services
     And I click on the side menu button
     And I click on activate panel Button
     And I click on clear layout Button
-    And I create a 'Resource List' Widget
-    And I select 'Load more' pagination and '100' results per page
+    When I create a 'Resource List' Widget
+    Then I select 'Load more' pagination and '100' results per page
     And I Select visible assets and Add to basket
     And I click on Basket
     And I select the first asset
@@ -136,8 +136,8 @@ This feature covers all the Basket functions for a User with Basket Services
     And I click the back button
     And I click on the side menu button
     And I click on activate panel Button
-    And I click on clear layout Button
-    And I create a 'Resource List' Widget
+    When I click on clear layout Button
+    Then I create a 'Resource List' Widget
     And I select 'Load more' pagination and '50' results per page
     And I Select visible assets and Add to basket
     And I click on Basket
@@ -161,8 +161,8 @@ This feature covers all the Basket functions for a User with Basket Services
     And I 'check' Enable 'types' Filter on Config panel
     And I select the 'Downloadable Resource' filter
     And I Select visible assets and Add to basket
-    And I click on Basket
-    And I select the first asset
+    When I click on Basket
+    Then I select the first asset
     And I click on the Download button
     And I see 'Download all' button
     And I see 'Download visible' button
