@@ -79,7 +79,8 @@ And('I click the first share', () => {
 });
 
 And('I select the shareable test asset', () => {
-  cy.contains(/^shareable test$/).parents('.ItgResourceListResultGrid-item').find('.mat-checkbox-inner-container').click();
+  shares.getAsset('shareable test');
+  // cy.contains(/^shareable test$/).parents('.ItgResourceListResultGrid-item').find('.mat-checkbox-inner-container').click();
 });
 
 And('I select the shareable2 test asset', () => {
@@ -107,12 +108,12 @@ And('Clicking on X icon closes the overlay', () => {
   shares.getCloseButton().click();
 });
 
-And('Share {string} is not listed on Shares list page', (text) => {
-  cy.contains(text).should('not.exist');
+And('Share {string} is not listed on Shares list page', () => {
+  shares.getElementByText().should('not.exist');
 });
 
-And('Share {string} is listed on Shares list page', (text) => {
-  cy.contains(text).should('exist');
+And('Share {string} is listed on Shares list page', () => {
+  shares.getElementByText().should('exist');
 });
 
 And('Shareable assets are populated with counts', () => {
@@ -180,21 +181,21 @@ And('I am navigated to Shares list page on clicking on Back button', () => {
 });
 
 And('I click on Assets Tab on the Share', () => {
-  cy.get('.mat-tab-label-content').contains('Assets').click();
+  shares.getTabs().contains('Assets').click();
 });
 
 Then('Shared Assets tab title is {string}', (title) => {
-  cy.get('.ItgShareDetailsAssets-title').invoke('text').then(text => {
+  shares.getAssetsTabTitle().invoke('text').then(text => {
     expect(text.trim()).to.equal(title);
   });
 });
 
 And('Assets on Assets tab are listed in grid format', () => {
-  cy.get('.ItgResourceListResultGrid-container').first().should('be.visible');
+  shares.getAssetsGrid().first().should('be.visible');
 });
 
 And('Assets tab has the count of Assets displayed', () => {
-  cy.get('.ItgShareDetailsAssets-count').should('be.visible');
+  shares.getAssetsCountOnTab().should('be.visible');
 });
 
 Then('Shares Assets tab is recorded in the url', () => {
@@ -202,19 +203,19 @@ Then('Shares Assets tab is recorded in the url', () => {
 });
 
 And('the below sort options are available', (dataTable) => {
-  cy.get('.ItgResourceListSorter-container > .mat-menu-trigger').click();
+  shares.getSortOptions().click();
   dataTable.rawTable.forEach(($ele, index) => {
-    cy.get(('.mat-menu-content > :nth-child(value)').replace('value', index + 1)).should('have.text', ' ' + $ele.toString() + ' ');
+    shares.getOptionValue(index).should('have.text', ' ' + $ele.toString() + ' ');
   });
 });
 
 And('I click on Guest sort options', () => {
-  cy.get('.ItgResourceListSorter-container > .mat-menu-trigger').click();
+  shares.getSortOptions().click();
 });
 
 And('the below guest sort options are available', (dataTable) => {
   dataTable.rawTable.forEach(($ele, index) => {
-    cy.get(('.mat-menu-content > :nth-child(value)').replace('value', index + 1)).should('have.text', ' ' + $ele.toString() + ' ');
+    shares.getOptionValue(index).should('have.text', ' ' + $ele.toString() + ' ');
   });
 });
 
@@ -236,7 +237,7 @@ And('I see the same sort options on refreshing the URL', () => {
 });
 
 And('I click on Select visible icon on Shares Assets tab', () => {
-  cy.get('.ItgShareDetailsAssets-selectVisible').click();
+  shares.getSelectVisibileAssetsIcon().click();
 });
 
 And('Count of selected items is displayed on Share snack bar', () => {
@@ -244,14 +245,14 @@ And('Count of selected items is displayed on Share snack bar', () => {
 });
 
 And('First asset is unselected as i uncheck the first asset', () => {
-  cy.get('.ItgResourceListResultGrid-item .mat-checkbox-inner-container').click();
+  shares.getAssetCheckbox().click();
 
-  cy.get('.ItgResourceListResultGrid-item .mat-checkbox-inner-container').should('have.attr', 'class')
+  shares.getAssetCheckbox().should('have.attr', 'class')
     .and('not.contain', 'mat-checkbox-checked');
 });
 
 And('I click on Remove CTA on Shares SnackBar', () => {
-  cy.get('.ItgShareAssetsSnackbarButtons-removeButton').click();
+  shares.getRemoveBtn().click();
 });
 
 Then('Title on Remove Share Asset Overlay is populated correctly', () => {
@@ -259,33 +260,33 @@ Then('Title on Remove Share Asset Overlay is populated correctly', () => {
 });
 
 And('Overlay has description {string}', (message_expected) => {
-  cy.get('.ItgButtonsModal-description').invoke('text').then(text => {
+  shares.getOverlay().invoke('text').then(text => {
     expect(text).to.equal(message_expected);
   });
 });
 
 And('Asset count {string} updated on Shares Assets tab', (bool) => {
   if (bool === 'is') {
-    cy.get('#mat-tab-label-0-1 > .mat-tab-label-content').should('be.visible');
+    shares.getAssetCount().should('be.visible');
   } else if (bool === 'is not') {
-    cy.get('#mat-tab-label-0-1 > .mat-tab-label-content').should('be.visible');
+    shares.getAssetCount().should('be.visible');
   }
 });
 
 And('Asset count {string} updated on Shares Title', (bool) => {
   if (bool === 'is') {
-    cy.get('.ItgShareDetailsAssets-count').should('be.visible');
+    shares.getAssetsGrid().should('be.visible');
   } else if (bool === 'is not') {
-    cy.get('.ItgShareDetailsAssets-count').should('be.visible');
+    shares.getAssetsGrid().should('be.visible');
   }
 });
 
 And('I click on Confirm Button on the Remove Share Asset Overlay', () => {
-  cy.contains('Confirm').click();
+  shares.getConfirmButton().click();
 });
 
 And('I click on Guests Tab on the Share', () => {
-  cy.get('.mat-tab-label-content').contains('Guests').click();
+  shares.getTabs().contains('Guests').click();
 });
 
 And('Shares Guests tab is recorded on URL', () => {
@@ -293,13 +294,13 @@ And('Shares Guests tab is recorded on URL', () => {
 });
 
 And('Shares Guests tab has a title {string}', (title) => {
-  cy.get('.ItgShareGuests-title').invoke('text').then(text => {
+  shares.getGuestsTabTitle().invoke('text').then(text => {
     expect(text).to.equal(title);
   });
 });
 
 And('Shares Guests tab shows a message when there are no Guests', () => {
-  cy.get('.ItgShareGuests-noGuests p').invoke('text').then(text => {
+  shares.getNoGuestsParagraph().invoke('text').then(text => {
     expect(text.trim()).to.equal('No Guests. Please Invite New Share Guests.');
   });
 });
@@ -309,11 +310,11 @@ And('Guest count is not displayed when there are no guests on a share', () => {
 });
 
 And('Invite New Guests CTA is displayed', () => {
-  cy.get('.ItgShareGuests-inviteGuests').contains('Invite New Guests');
+  shares.getInviteGuestsButton().contains('Invite New Guests');
 });
 
 Then('Count of Guests is shown on Guests tab Header', () => {
-  cy.get('.mat-tab-label-content').contains('Guests').should('be.visible');
+  shares.getTabs().contains('Guests').should('be.visible');
 });
 
 And('Count of Guests is shown in Guests tab', () => {
@@ -322,7 +323,7 @@ And('Count of Guests is shown in Guests tab', () => {
 
 And('Guests table has below columns', (dataTable) => {
   dataTable.rawTable.forEach(($ele) => {
-    cy.get('.ItgShareGuests-container [role="columnheader"]').invoke('text').then(text => {
+    shares.getGuestsTableHeaders().invoke('text').then(text => {
       expect(text).contains($ele.toString());
       cy.log(text);
     });
@@ -330,7 +331,7 @@ And('Guests table has below columns', (dataTable) => {
 });
 
 And('I click on the Invite New Guests CTA', () => {
-  cy.contains('Invite New Guests').click();
+  shares.getInviteGuestsButton().click();
 });
 
 And('Title on Overlay is {string}', (modalTitle) => {
@@ -344,98 +345,96 @@ And('I enter Guest details {string},{string}', (email, message) => {
   } else {
     email = email + Date.now();
   }
-  cy.get('#mat-chip-list-input-0').type(email+'{enter}');
+  shares.getEmailInput().type(email+'{enter}');
 
   if (message !== 'null') {
-    cy.get('[formcontrolname="message"]').type(message);
+    shares.getMessageInput().type(message);
   }
   shares.getDurationDropdown().click();
-  cy.get('.mat-select-panel .mat-option').first().click();
+  shares.getDropdownOption().first().click();
   cy.wait(1000);
 });
 
 And('I click the active sort option', () => {
-  cy.get('.ItgResourceListSorter-activeOption').click();
+  widgets.getActiveSortOption().click();
 });
 
 And('I click on X Button on the Overlay', () => {
-  cy.get('.ItgDialogHeader-closeButton').click();
+  shares.getCancelOverlayButton().click();
 });
 
 Then('Confirm button on Invite guests Overlay is {string}', bool => {
   if (bool === 'disabled') {
-    cy.contains('Confirm').should('have.attr', 'disabled', 'disabled');
+    shares.getConfirmButton().should('have.attr', 'disabled', 'disabled');
   } else {
-    cy.contains('Confirm').should('be.enabled');
+    shares.getConfirmButton().should('be.enabled');
   }
 });
 
 And('the below Duration options are available', (dataTable) => {
   shares.getDurationDropdown().click();
   dataTable.rawTable.forEach(($ele, index) => {
-    cy.get(('#mat-select-0-panel > :nth-child(value)').replace('value', index + 1)).should('have.text', ' ' + $ele.toString() + ' ');
+    shares.getSelectValue(index).should('have.text', ' ' + $ele.toString() + ' ');
   });
-  cy.get('#mat-option-0').click();
+  shares.getFirstOption().click();
 });
 
 And('Confirm button on Overlay is disabled', () => {
-  cy.contains('Confirm').should('not.be.enabled');
+  shares.getConfirmButton().should('not.be.enabled');
 });
 
 Then('Shares Overview tab has title {string}', (title) => {
-  cy.get('.ItgShareDetailsInfo-title').should('have.text', title);
+  shares.getDetailsInfoTitle().should('have.text', title);
 });
 
 And('Field Titles on Shares Overview tab are populated correctly', () => {
   const expectedOverviewFields = 'Name: *Available from:Available until:Owner:Created on:Modified on:Description:';
-  cy.get('.ItgShareDetailsInfo-form .mat-form-field .mat-form-field-label').invoke('text').then(text => {
+  shares.getFieldTitles().invoke('text').then(text => {
     expect(text).to.eql(expectedOverviewFields);
   });
 });
 
 Then('Edit Share button is disabled and says Editing', () => {
-  cy.get('.ItgShareDetailsInfo-header > .mat-focus-indicator').should('be.disabled').should('contain', 'Editing');
+  shares.getEditButton().should('be.disabled').should('contain', 'Editing');
 });
 
 And('Owner, CreatedOn, ModifiedOn fields are Read only', () => {
-  cy.get('[formcontrolname="owner"]')
-    .should('have.attr', 'readonly');
-  cy.get('[formcontrolname="created"]')
-    .should('have.attr', 'readonly');
-  cy.get('[formcontrolname="modified"]')
+  shares.getOwnerInput().should('have.attr', 'readonly');
+  shares.getCreatedInput().should('have.attr', 'readonly');
+  shares.getModifiedInput()
     .should('have.attr', 'readonly');
 });
 
 And('I edit the Share {string}', (shareName) => {
-  cy.get('input[formcontrolname="name"]').invoke('val').then((text) => {
+  shares.getNameInput().invoke('val').then((text) => {
     name = text;
   });
 
-  cy.get('mat-checkbox[formcontrolname="enabled"]').invoke('val').then(text => {
+  shares.getEnabledInput().invoke('val').then(text => {
     enabled = text;
   });
 
-  cy.get('input[formcontrolname="start"]').invoke('text').then(text => {
+  shares.getStartInput().invoke('text').then(text => {
     start = text;
   });
 
-  cy.get('input[formcontrolname="end"]').invoke('val').then(text => {
+  shares.getEndInput().invoke('val').then(text => {
     end = text;
   });
 
-  cy.get('input[formcontrolname="owner"]').invoke('val').then(text => {
+  shares.getOwnerInput().invoke('val').then(text => {
     owner = text;
   });
 
-  cy.get('input[formcontrolname="created"]').invoke('val').then(text => {
+  shares.getCreatedInput().invoke('val').then(text => {
     created = text;
   });
 
-  cy.get('input[formcontrolname="modified"]').invoke('val').then(text => {
+  shares.getModifiedInput().invoke('val').then(text => {
     modified = text;
   });
 
-  cy.get('textarea[formcontrolname="description"]').invoke('val').then(text => {
+  shares.getDescriptionInput().invoke('val').then(text => {
     description = text;
   }).then(() => {
 
@@ -447,10 +446,10 @@ And('I edit the Share {string}', (shareName) => {
 
     shareDetails.description = 'auto_editedDescription';
 
-    cy.get('input[formcontrolname="name"]').clear().type(shareDetails.name);
+    shares.getNameInput().clear().type(shareDetails.name);
 
-    cy.get('.mat-checkbox-inner-container').click().then(() => {
-      cy.get('mat-checkbox[formcontrolname="enabled"]').invoke('attr', 'class').then(getClassAttribute => {
+    shares.getCheckbox().click().then(() => {
+      shares.getEnabledInput().invoke('attr', 'class').then(getClassAttribute => {
         if (getClassAttribute.includes('mat-checkbox-checked')) {
           shareDetails.enabled = true;
         } else {
@@ -459,57 +458,57 @@ And('I edit the Share {string}', (shareName) => {
       });
     });
 
-    cy.get('input[formcontrolname="start"]').click().clear().type(shareDetails.availableFrom);
+    shares.getStartInput().click().clear().type(shareDetails.availableFrom);
 
-    cy.get('input[formcontrolname="end"]').click().clear().type(shareDetails.availableUntil);
+    shares.getEndInput().click().clear().type(shareDetails.availableUntil);
 
-    cy.get('textarea[formcontrolname="description"]').clear().type(shareDetails.description);
+    shares.getDescriptionInput().clear().type(shareDetails.description);
   });
 });
 
 Then('Share is not edited on clicking on Cancel Button', () => {
-  cy.contains('Cancel').click();
+  shares.getBtnCancel().click();
 
-  cy.get('input[formcontrolname="name"]').invoke('val').then((text) => {
+  shares.getNameInput().invoke('val').then((text) => {
     expect(name).to.eq(text);
   });
 
-  cy.get('mat-checkbox[formcontrolname="enabled"]').invoke('val').then(text => {
+  shares.getEnabledInput().invoke('val').then(text => {
     expect(enabled).to.eq(text);
   });
 
-  cy.get('input[formcontrolname="start"]').invoke('text').then(text => {
+  shares.getStartInput().invoke('text').then(text => {
     expect(start).to.eq(text);
   });
 
-  cy.get('input[formcontrolname="end"]').invoke('val').then(text => {
+  shares.getEndInput().invoke('val').then(text => {
     expect(end).to.eq(text);
   });
 
-  cy.get('input[formcontrolname="owner"]').invoke('val').then(text => {
+  shares.getOwnerInput().invoke('val').then(text => {
     expect(owner).to.eq(text);
   });
 
-  cy.get('input[formcontrolname="created"]').invoke('val').then(text => {
+  shares.getCreatedInput().invoke('val').then(text => {
     expect(created).to.eq(text);
   });
 
-  cy.get('input[formcontrolname="modified"]').invoke('val').then(text => {
+  shares.getModifiedInput().invoke('val').then(text => {
     expect(modified).to.eq(text);
   });
 
-  cy.get('textarea[formcontrolname="description"]').invoke('val').then(text => {
+  shares.getDescriptionInput().invoke('val').then(text => {
     expect(description).to.eq(text);
   });
 });
 
 Then('I add guests to the share', () => {
-  cy.contains('Invite New Guests').click();
-  cy.get('#mat-chip-list-input-0').type('guest@guest.com'+'{enter}');
-  cy.get('[formcontrolname="message"]').type('some message');
-  cy.get('.mat-select-placeholder').click();
-  cy.contains('3 days').click();
-  cy.contains('Confirm').click();
+  shares.getInviteGuestsButton().click();
+  shares.getEmailInput().type('guest@guest.com'+'{enter}');
+  shares.getMessageInput().type('some message');
+  shares.getSelect().click();
+  shares.getDuration('3 days').click();
+  shares.getConfirmButton().click();
 });
 
 And('Share Guests Sort options {string} and {string} are shown in URL', (SortOption, SortOrder) => {
@@ -520,21 +519,21 @@ And('Share Guests Sort options {string} and {string} are shown in URL', (SortOpt
 });
 
 And('Guests are sorted as per Sort options {string} and {string}', () => {
-  cy.get('.ItgShareGuests-emailCell').should('be.visible');
+  shares.getEmailCell().should('be.visible');
 });
 
 Then('Share is edited on clicking on Save Button', () => {
-  cy.get('.ItgShareDetailsInfo-saveButton').click();
+  shares.getBtnSave().click();
 
-  cy.get('.ItgSnackbar-text').should('be.visible').invoke('text').then((text) => {
+  shares.getSnackBarText().should('be.visible').invoke('text').then((text) => {
     expect(text).to.eq('Share saved');
   });
 
-  cy.get('input[formcontrolname="name"]').invoke('val').then((text) => {
+  shares.getNameInput().invoke('val').then((text) => {
     expect(text).to.eq(shareDetails.name);
   });
 
-  cy.get('mat-checkbox[formcontrolname="enabled"]').then(($ele) => {
+  shares.getEnabledInput().then(($ele) => {
     if ($ele.hasClass('mat-checkbox-checked')) {
       expect(shareDetails.enabled).to.eq(true);
     } else {
@@ -542,11 +541,11 @@ Then('Share is edited on clicking on Save Button', () => {
     }
   });
 
-  cy.get('input[formcontrolname="start"]').invoke('val').then(text => {
+  shares.getStartInput().invoke('val').then(text => {
     expect(text).to.eq(shareDetails.availableFrom);
   });
 
-  cy.get('input[formcontrolname="end"]').invoke('val').then(text => {
+  shares.getEndInput().invoke('val').then(text => {
     expect(text).to.eq(shareDetails.availableUntil);
   });
 });
