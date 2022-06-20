@@ -58,3 +58,11 @@ Toolbar to display UserName,Domain,Site, Language languageOnDropDownItems. Navig
     And I click on Sites option on Toolbar
     When I select second site on Sites dropdown
     Then Site option on Toolbar is updated to the new site
+
+  Scenario: 08 Select a language
+    Then Language option is set to 'English'
+    And I see the language menu Items in 'English'
+    And I select 'Spanish' on language dropdown
+    And Language option is set to 'Spanish'
+    And I see the language menu Items in 'Spanish'
+    And I select 'Inglés' on language dropdown
