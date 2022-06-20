@@ -15,6 +15,14 @@ class LoginPage {
   getLogoutButton () {
     return cy.get('.ItgToolbar-signOut');
   }
+
+  getLoginError () {
+    return cy.get('.ItgLogin-error');
+  }
+
+  getBtnEditingMode () {
+    return cy.get('.ItgCmsPage-toggleEdit .mat-button-wrapper');
+  }
 }
 
 export default LoginPage;
