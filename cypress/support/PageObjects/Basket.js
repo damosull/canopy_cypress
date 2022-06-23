@@ -39,6 +39,14 @@ class Basket {
   getBackground () {
     return cy.get('.cdk-overlay-backdrop');
   }
+
+  getShares () {
+    return cy.get('.ItgUserShares-button');
+  }
+
+  getBtnAddToShare () {
+    return cy.contains('Add to share');
+  }
 }
 
 export default Basket;

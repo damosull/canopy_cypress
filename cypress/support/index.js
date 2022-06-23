@@ -26,3 +26,11 @@ beforeEach(() => {
   // cy.restoreLocalStorage();
   cy.exec('rm -rf cypress/downloads || true');
 });
+
+before(() => {
+  // cy.log('User is logged in');
+  // cy.setLocalStorage('key', 'value');
+  // cy.setCookie('key', 'value');
+  // cy.restoreLocalStorage();
+  cy.exec('npm cache clear --force');
+});
