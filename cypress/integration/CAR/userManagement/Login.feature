@@ -22,7 +22,8 @@ To test the Login feature for the Canopy site against various positive and negat
       |                        | 1Qwertasdf    | null     |
 
   Scenario: 02 Wrong Routes/Resources
-    Given I navigate to an unknown route on ITG app
+    Given I login to ITG
+    When I navigate to an unknown route on ITG app
     Then I am directed to 404 Error page
     And 404 Error title '404 Not Found' is shown
     And 404 Error Message "You've reached a page that does not seem to exist" is shown
@@ -30,9 +31,10 @@ To test the Login feature for the Canopy site against various positive and negat
     And I am redirected to 'Home' page
 
   Scenario: 03 Wrong Menu Node
-    Given I navigate to an unknown menu node
+    Given I login to ITG
+    When I navigate to an unknown menu node
     Then I am directed to 404 Error page
     And 404 Error title '404 Not Found' is shown
-    And 404 Error Message 'You've reached a page that does not seem to exist' is shown
+    And 404 Error Message "You've reached a page that does not seem to exist" is shown
     And I click on Back to home link
     And I am redirected to 'Home' page
