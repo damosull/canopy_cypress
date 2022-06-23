@@ -13,7 +13,7 @@ User with no ContentManagement and no Edit Access does not see CMS Pages and can
     And I do not see Basket on toolbar
     And I do not see Shares on toolbar
     And I do not see Select Visible icon on Resource List
-    And I do not see Resource list SnackBar
+    And Snack bar is not displayed
     And I do not see checkboxes on the assets
 
   Scenario: 02 User with No Basket Services do not see Actions menu on Asset Details page
