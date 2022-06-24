@@ -17,5 +17,5 @@ User with no ContentManagement and no Edit Access does not see CMS Pages and can
     And I do not see checkboxes on the assets
 
   Scenario: 02 User with No Basket Services do not see Actions menu on Asset Details page
-    And I navigate to Asset Details page of asset 'icon warning white'
+    And I navigate to Asset Details page of the first asset
     Then Actions menu is not displayed

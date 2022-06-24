@@ -24,5 +24,5 @@ And('I do not see checkboxes on the assets', () => {
 });
 
 And('Actions menu is not displayed', () => {
-  assetDetails.getActionsMenu().should('exist');
+  assetDetails.getActionsMenu().should('not.exist');
 });

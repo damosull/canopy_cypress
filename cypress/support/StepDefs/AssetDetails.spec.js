@@ -8,12 +8,9 @@ const assetDetails = new AssetDetails();
 
 let versionCount;
 
-And('I navigate to Asset Details page of asset {string}', (assetName) => {
-  widgets.getResourceListSearchInput().first().clear().type(assetName + '{enter}');
-  widgets.getSpinnerLabel().should('not.exist');
+And('I navigate to Asset Details page of the first asset', () => {
   widgets.getAssetName().first().click();
   widgets.getAssetDetailTitle().scrollIntoView().should('be.visible');
-  widgets.getAssetDetailTitle().should('have.text', assetName);
 });
 
 Then('Asset availability is shown on Asset Detail Page', () => {
