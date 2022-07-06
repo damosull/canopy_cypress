@@ -97,6 +97,7 @@ And('Language option is set to {string}', language => {
 
 And('I see the language menu Items in {string}', language => {
   toolbar.getBtnLanguage().click().then(() => {
+    cy.wait(2000);
     toolbar.getLanguageList().invoke('text').then(text => {
       if (language === 'English') {
         expect(text.trim()).to.contain('English');

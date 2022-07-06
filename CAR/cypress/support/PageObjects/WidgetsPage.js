@@ -17,7 +17,7 @@ class Widgets {
   }
 
   getClearLayoutButton () {
-    return cy.get('.ItgCmsPage-clearLayout');
+    return cy.get('.ItgCmsPageEditingMenu-clearLayout');
   }
 
   getWidgetSettingsPanel () {
@@ -453,7 +453,7 @@ class Widgets {
   }
 
   getEditingModeButton () {
-    return cy.get('.ItgHome-sideMenuOptions > .ng-star-inserted');
+    return cy.get('.ItgHome-sideMenuOptions > :nth-child(2)');
   }
 
   getBasketCount () {
@@ -470,6 +470,22 @@ class Widgets {
 
   getAssetTab () {
     return cy.get('.mat-tab-label');
+  }
+
+  getSideMenuPanelTitle () {
+    return cy.get('.ItgSideMenuPanel-title');
+  }
+
+  getSideMenuBackButton () {
+    return cy.get('.ItgSideMenuPanel-backButton');
+  }
+
+  getActiveSectionWidgets () {
+    return cy.get('.ItgSectionWidget-activeWidget');
+  }
+
+  getSidePanelHeader (el) {
+    return cy.contains(el);
   }
 }
 

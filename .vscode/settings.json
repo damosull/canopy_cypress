@@ -10,6 +10,9 @@
       "json5",
       "markdown"
     ],
+    "eslint.workingDirectories": [
+      {"mode": "auto"}
+    ],
     "cSpell.words": [],
     "cSpell.minWordLength": 4,
     "cSpell.showStatus": true,
@@ -21,7 +24,6 @@
     "editor.folding": false,
     "editor.hideCursorInOverviewRuler": true,
     "editor.occurrencesHighlight": false,
-    "editor.renderIndentGuides": false,
     "editor.roundedSelection": false,
     "editor.selectionHighlight": true,
     "editor.scrollBeyondLastLine": false,
@@ -40,8 +42,8 @@
     "editor.guides.bracketPairs": "active",
     "editor.guides.indentation": false,
     "cucumberautocomplete.smartSnippets": true,
-    "cucumberautocomplete.steps": "cypress/support/StepDefs/*.spec.js",
-    "cucumberautocomplete.syncfeatures": "cypress/integration/*.feature",
+    "cucumberautocomplete.steps": "*/cypress/support/StepDefs/*.spec.js",
+    "cucumberautocomplete.syncfeatures": "*/cypress/integration/*.feature",
     "cucumberautocomplete.strictGherkinCompletion": false,
     "cucumberautocomplete.strictGherkinValidation": false,
     "cucumberautocomplete.skipDocStringsFormat": false,

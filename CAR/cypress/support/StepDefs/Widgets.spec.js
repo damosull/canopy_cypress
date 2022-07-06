@@ -46,25 +46,28 @@ And('I create a {string} Widget', (widget) => {
   case 'Section':
     value = '0';
     break;
-  case 'Heading':
+  case 'Carousel':
     value = '1';
     break;
-  case 'Image':
+  case 'Heading':
     value = '2';
     break;
-  case 'WYSIWYG':
+  case 'Image':
     value = '3';
     break;
-  case 'Resource List':
+  case 'WYSIWYG':
     value = '4';
     break;
-  case 'Button':
+  case 'Resource List':
     value = '5';
+    break;
+  case 'Button':
+    value = '6';
     break;
   }
 
   widgets.getWidget().eq(value).drag(widgets.getblankArea(), { target: { position: 'top' }});
-  cy.contains('Editing ' + widget).should('be.visible');
+  widgets.getSideMenuPanelTitle().contains(widget);
 });
 
 And('Left hand panel is shown', () => {
@@ -1281,3 +1284,17 @@ And('Pagination Range and PageNo on URL are shown for {string}', (resultCount, d
 And('I click the back button', () => {
   widgets.getBackButton().click();
 });
+
+And('I click the side menu back button', () => {
+  widgets.getSideMenuBackButton().click();
+});
+
+And('I scroll down to {string}', el => {
+  widgets.getSidePanelHeader(el).trigger('mouseover');
+});
+
+And('I click the {string} panel header', el => {
+  widgets.getSidePanelHeader(el).click();
+});
+
+And;
