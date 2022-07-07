@@ -32,5 +32,5 @@ before(() => {
   // cy.setLocalStorage('key', 'value');
   // cy.setCookie('key', 'value');
   // cy.restoreLocalStorage();
-  cy.exec('npm cache clear --force');
+  // cy.exec('npm cache clear --force');
 });
