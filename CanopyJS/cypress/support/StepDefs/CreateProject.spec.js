@@ -1,4 +1,6 @@
-import { When, Then } from 'cypress-cucumber-preprocessor/steps';
+/// <reference types="cypress" />
+
+import { When, Then, And } from 'cypress-cucumber-preprocessor/steps';
 import CreateProjectPage from '../PageObjects/CreateProjectPage';
 
 const createProjectPage = new CreateProjectPage();
@@ -42,4 +44,30 @@ When('user enters {string} inside {string} {string} multi checkbox dropdown',(va
 
 Then('user clicks {string} button after filling form',(name)=>{
   createProjectPage.clickOnButton(name);
+});
+
+Then('the value should be {string}', val => {
+  createProjectPage.getOptionPill().contains(val);
+});
+
+And('User clicks {string} button', val => {
+  cy.contains(val).click();
+});
+
+Then('error messages are displayed for the required fields', () => {
+  cy.contains('You must choose at least one option');
+  createProjectPage.getFormValidationMessages().should('have.length', 5);
+  createProjectPage.getFormValidationMessages().each(message => {
+    cy.wrap(message).should('contain', 'Required field');
+  });
+  createProjectPage.getFieldLabelByName('Project end').should('have.class', 'has-error');
+  createProjectPage.getFieldLabelByName('Digital Channel').should('have.class', 'has-error');
+  createProjectPage.getFieldLabelByName('Campaign Name').should('have.class', 'has-error');
+  createProjectPage.getFieldLabelByName('Dealer Address').should('have.class', 'has-error');
+});
+
+When('A User that {string} edit project permissions clicks the project list options menu', val => {
+  // TODO: Should be clicking clearAll() button, but can't find it
+  // TODO: Need to use process.env in below function
+  createProjectPage.clickOnProjectBurgerMenu(val);
 });

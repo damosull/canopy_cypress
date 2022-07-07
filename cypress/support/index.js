@@ -14,23 +14,7 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
-import './commands';
-require('cypress-xpath');
+import './commands'
+
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
-
-beforeEach(() => {
-  // cy.log('User is logged in');
-  // cy.setLocalStorage('key', 'value');
-  // cy.setCookie('key', 'value');
-  // cy.restoreLocalStorage();
-  // cy.exec('rm -rf cypress/downloads || true');
-});
-
-before(() => {
-  // cy.log('User is logged in');
-  // cy.setLocalStorage('key', 'value');
-  // cy.setCookie('key', 'value');
-  // cy.restoreLocalStorage();
-  cy.exec('npm cache clear --force');
-});

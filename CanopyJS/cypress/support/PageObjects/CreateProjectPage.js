@@ -52,5 +52,35 @@ class CreateProjectPage {
   clickOnButton (btnName) {
     cy.contains(btnName).click();
   }
+
+  getFormValidationMessages () {
+    return cy.get('.canopy-form-field-validation-msg');
+  }
+
+  getFieldLabelByName (name) {
+    return cy.get(`[field-label="${name}"]`);
+  }
+
+  getOptionPill () {
+    return cy.get('.option-pill');
+  }
+
+  getProjectNames () {
+    return cy.get('[ng-click="onViewItemDetails(item, null, $event)"]');
+  }
+
+  clickOnProjectBurgerMenu (val) {
+    let projectNames=[];
+    if (val ==='has not') {
+      this.getProjectNames().then($els => {
+        projectNames = Array.from($els, el => el.innerText);
+        cy.contains('td', projectNames[0])
+          .siblings().eq(10)
+          .click();
+      });
+    } else {
+      // TODO: Need to use process.env
+    }
+  }
 }
 export default CreateProjectPage;
